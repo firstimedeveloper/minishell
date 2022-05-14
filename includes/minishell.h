@@ -3,4 +3,10 @@
 
 #include "libft/libft.h"
 
+typedef struct  s_minishell
+{
+    int temp;
+
+} t_minishell;
+
 #endif
