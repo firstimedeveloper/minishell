@@ -6,7 +6,7 @@
 #    By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/15 15:47:16 by juhan             #+#    #+#              #
-#    Updated: 2022/05/14 16:16:09 by juhan            ###   ########.fr        #
+#    Updated: 2022/05/14 16:28:23 by juhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ LIB_PATH=libft
 SRC_PATH=./src/
 BUILD_PATH=./build/
 
-FILE_NAMES=minishell handle_line
+FILE_NAMES=minishell handle_line parse/parse
 SRC=$(addprefix $(SRC_PATH), $(addsuffix .c, $(FILE_NAMES)))
 OBJ=$(SRC:$(SRC_PATH)%.c=$(BUILD_PATH)%.o)
 
