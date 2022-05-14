@@ -2,6 +2,8 @@ CC=gcc
 CFLAGS=-Wall -Wextra -Werror
 RM=rm -f
 AR=ar -rcs
+SRC_PATH=./src/
+BUILD_PATH=./build/
 FILE_NAMES=memset \
 	bzero \
 	memcpy \
@@ -36,23 +38,21 @@ FILE_NAMES=memset \
 	putstr_fd \
 	putendl_fd \
 	putnbr_fd
+SRC=$(addprefix $(SRC_PATH)ft_, $(addsuffix .c, $(FILE_NAMES)))
+OBJ=$(SRC:$(SRC_PATH)%.c=$(BUILD_PATH)%.o)
 
-SRCS=$(addprefix ft_, $(addsuffix .c, $(FILE_NAMES)))
-
-OBJS=$(SRCS:.c=.o)
-INCLUDES=libft.h
 NAME=libft.a
 
 all : $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(OBJ)
 	$(AR) $@ $^
 
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD_PATH)%.o : $(SRC_PATH)%.c
+	$(CC) -I. $(CFLAGS) -c $< -o $@
 
 clean :
-	$(RM) $(OBJS)
+	$(RM) $(OBJ)
 
 fclean : clean
 	@$(RM) $(NAME)
