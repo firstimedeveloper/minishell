@@ -25,6 +25,6 @@ typedef struct  s_minishell
 
 } t_minishell;
 
-int     parse(t_minishell *shell, char *line);
-void    read_line(char *line_read);
+int     parse(t_minishell *sh, char *line);
+void    read_line(char **line_read);
 #endif
