@@ -12,6 +12,7 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new)
 	cur = *lst;
 	while (cur && cur->next)
 		cur = cur->next;
+	new->prev = cur;
 	cur->next = new;
 }
 

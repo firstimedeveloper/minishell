@@ -12,6 +12,7 @@
 #define TYPE_CMD 0
 #define TYPE_ARG 1
 #define TYPE_PIPE 2
+#define TYPE_REDIR 3
 
 typedef struct s_cmd
 {
@@ -19,6 +20,7 @@ typedef struct s_cmd
 	int				type;
 	char			*content;
 	struct s_cmd	*next;
+	struct s_cmd	*prev;
 }	t_cmd;
 
 
@@ -43,7 +45,7 @@ void	ft_lstiter(t_cmd *lst, void (*f)(void *));
 
 t_cmd	*ft_lstlast(t_cmd *lst);
 t_cmd	*ft_lstmap(t_cmd *lst, void *(*f)(void *), void (*del)(void *));
-t_cmd	*ft_lstnew(void *content);
+t_cmd	*ft_lstnew(void *content, int type, int is_head);
 int	ft_lstsize(t_cmd *lst);
 
 #endif

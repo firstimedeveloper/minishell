@@ -7,27 +7,27 @@ t_cmd	*ft_lstlast(t_cmd *lst)
 	return (lst);
 }
 
-t_cmd	*ft_lstmap(t_cmd *lst, void *(*f)(void *), void (*del)(void *))
-{
-	t_cmd	*new_lst;
-	t_cmd	*temp;
+// t_cmd	*ft_lstmap(t_cmd *lst, void *(*f)(void *), void (*del)(void *))
+// {
+// 	t_cmd	*new_lst;
+// 	t_cmd	*temp;
 
-	new_lst = 0;
-	while (lst)
-	{
-		temp = ft_lstnew(f(lst->content));
-		if (!temp)
-		{
-			ft_lstclear(&new_lst, del);
-			return (0);
-		}
-		ft_lstadd_back(&new_lst, temp);
-		lst = lst->next;
-	}
-	return (new_lst);
-}
+// 	new_lst = 0;
+// 	while (lst)
+// 	{
+// 		temp = ft_lstnew(f(lst->content));
+// 		if (!temp)
+// 		{
+// 			ft_lstclear(&new_lst, del);
+// 			return (0);
+// 		}
+// 		ft_lstadd_back(&new_lst, temp);
+// 		lst = lst->next;
+// 	}
+// 	return (new_lst);
+// }
 
-t_cmd	*ft_lstnew(void *content)
+t_cmd	*ft_lstnew(void *content, int type, int is_head)
 {
 	t_cmd	*ret;
 
@@ -35,7 +35,10 @@ t_cmd	*ft_lstnew(void *content)
 	if (!ret)
 		return (0);
 	ret->content = content;
+	ret->type = type;
+	ret->is_head = is_head;
 	ret->next = 0;
+	ret->prev = 0;
 	return (ret);
 }
 
