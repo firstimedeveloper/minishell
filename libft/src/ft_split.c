@@ -65,8 +65,11 @@ static size_t	ft_strclen(char const *s, char c)
 			s++;
 			len++;
 		}
-		s++;
-		len++;
+		if (*s != '\0' || *s == first_char)
+		{
+			s++;
+			len++;
+		}
 		return (len);
 	}
 	while (*s)

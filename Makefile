@@ -15,16 +15,16 @@ LIB_PATH=libft
 SRC_PATH=./src/
 BUILD_PATH=./build/
 
-FILE_NAMES=minishell handle_line parse/parse
+FILE_NAMES=minishell handle_line parse/parse lst_util1 lst_util2
 SRC=$(addprefix $(SRC_PATH), $(addsuffix .c, $(FILE_NAMES)))
 OBJ=$(SRC:$(SRC_PATH)%.c=$(BUILD_PATH)%.o)
 
-NAME=minishell 
+NAME=minishell
 
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB_PATH)/libft.a
-	$(CC) -lreadline $(LIB_PATH)/libft.a $(OBJ) -o $@ 
+	$(CC) -lreadline $(LIB_PATH)/libft.a $(OBJ) -o $@
 
 $(LIB_PATH)/libft.a:
 	make -C libft

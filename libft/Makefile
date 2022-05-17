@@ -37,7 +37,7 @@ FILE_NAMES=memset \
 	putchar_fd \
 	putstr_fd \
 	putendl_fd \
-	putnbr_fd
+	putnbr_fd \
 SRC=$(addprefix $(SRC_PATH)ft_, $(addsuffix .c, $(FILE_NAMES)))
 OBJ=$(SRC:$(SRC_PATH)%.c=$(BUILD_PATH)%.o)
 
