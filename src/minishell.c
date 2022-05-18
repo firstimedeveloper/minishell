@@ -13,10 +13,13 @@ int main(int argc, char **argv)
     while (1)
     {
         read_line(&line);
-		printf("==parsing line==\n");
-        parse(&sh, line);
-		printf("\n==handling cmd==\n");
-		handle_cmd(&sh);
+		if (*line)
+		{
+			printf("==parsing line==\n");
+			parse(&sh, line);
+			printf("\n==handling cmd==\n");
+			handle_cmd(&sh);
+		}
     }
 
     return (0);

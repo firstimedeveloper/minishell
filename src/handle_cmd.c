@@ -71,6 +71,7 @@ int	excecute_find(t_minishell *sh, char **argv)
 		exec_path = ft_strdirjoin(*paths, *argv);
 		printf("exec path: %s\n", exec_path);
 		paths++;
+		execve(exec_path, argv, NULL);
 		free(exec_path);
 	}
 	return (1);
@@ -100,8 +101,10 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 {
 	t_cmd	*next;
 	char	**argv;
-	int	builtin_type;
-	int	arg_count;
+	int		builtin_type;
+	int		arg_count;
+	pid_t	pid;
+	int		status;
 
 	builtin_type = is_builtin(cmd, cmd->content);
 	next = cmd;
@@ -117,11 +120,20 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 		next = next->next;
 	}
 	argv = create_argv(cmd, arg_count);
-	if (builtin_type)
-		excecute_builtin(argv, builtin_type);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (builtin_type)
+			excecute_builtin(argv, builtin_type);
+		else
+			excecute_find(sh, argv);
+		ft_free_all(argv);
+		exit(0);
+	}
 	else
-		excecute_find(sh, argv);
-	ft_free_all(argv);
+	{
+		waitpid(pid, &status, 0);
+	}
 	return (next);
 }
 
@@ -137,5 +149,6 @@ int	handle_cmd(t_minishell *sh)
 			cur = excecute_cmd(sh, cur);
 		}
 	}
+	ft_lstclear(&sh->cmd_list, free);
 	return (1);
 }
