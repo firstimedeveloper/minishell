@@ -28,7 +28,7 @@ int check_op(char *str)		// 옵션이면 0을 옵션 아니면 1을 출력한다
 	str = str + 2;
 	while (*str)
 	{
-		if (str != 'n')
+		if (*str != 'n')
 			return (1);
 	}
 	return (0);
