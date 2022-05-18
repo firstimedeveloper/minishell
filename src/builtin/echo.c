@@ -30,6 +30,7 @@ int check_op(char *str)		// 옵션이면 0을 옵션 아니면 1을 출력한다
 	{
 		if (*str != 'n')
 			return (1);
+		str++;
 	}
 	return (0);
 }
@@ -40,7 +41,7 @@ int cmd_echo(char **argv)
 	printf("cmd echo is called\n");
 
 	i = 1;
-	while (argv)
+	while (argv[i])
 	{
 		if (!check_op(argv[i]))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
 			i++;
@@ -51,7 +52,7 @@ int cmd_echo(char **argv)
 				printf(" ");
 		}
 	}
-	if (ft_strncmp(argv[1], "-n", ft_strlen(argv[1]), 2))	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
+	if (check_op(argv[1]))	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
 		printf("\n");
 	return (0);
 }
