@@ -61,7 +61,7 @@ int	excecute_find(t_minishell *sh, char **argv)
 	char	*path;
 	char	*exec_path;
 
-	execve(*argv, argv, NULL);
+	execve(*argv, argv, sh->envp);
 	path = getenv("PATH");
 	paths = ft_split(path, ':'); // will not work if path has ' or "
 	//printf("unknown cmd path:\n");
@@ -70,7 +70,7 @@ int	excecute_find(t_minishell *sh, char **argv)
 		exec_path = ft_strdirjoin(*paths, *argv);
 		//printf("exec path: %s\n", exec_path);
 		paths++;
-		execve(exec_path, argv, NULL);
+		execve(exec_path, argv, sh->envp);
 		free(exec_path);
 	}
 	return (1);

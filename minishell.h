@@ -36,6 +36,7 @@ typedef struct  s_minishell
 {
 	int		in;
 	int		out;
+	char	**envp;
 	t_cmd   *cmd_list;
 
 } t_minishell;
