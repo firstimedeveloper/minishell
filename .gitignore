@@ -1,6 +1,6 @@
-test*.c
 *.o
 a.out
 minishell
-
 */libft.a
+test*.c
+test*
