@@ -24,7 +24,9 @@ int parse(t_minishell *sh, char *line)
 
 	is_head = 1;
 	split = ft_split(line, ' ');
-	printf("%s ", *split);
+	if (!split || !*split)
+		return (1);
+	//printf("%s ", *split);
 	cur = ft_lstnew(*split++, TYPE_CMD, is_head);
 	sh->cmd_list = cur;
 	while (*split)
@@ -38,18 +40,18 @@ int parse(t_minishell *sh, char *line)
 		if (!tmp)
 			return 1; //임시
 		ft_lstadd_back(&sh->cmd_list, tmp);
-		printf("%s ", *split);
+		//printf("%s ", *split);
 		split++;
 		cur = cur->next;
 	}
-	printf("\n");
+	//printf("\n");
 	cur = sh->cmd_list;
 	while (cur)
 	{
-		if (cur->is_head)
-			printf("HEAD");
-		printf("\ttype:%d %s", cur->type, cur->content);
-		printf("\n");
+		//if (cur->is_head)
+			//printf("HEAD");
+		//printf("\ttype:%d %s", cur->type, cur->content);
+		//printf("\n");
 		cur = cur->next;
 	}
 	return 0;

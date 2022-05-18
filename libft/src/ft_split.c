@@ -100,8 +100,8 @@ static char	**init(char const *s, char c, size_t *len)
 	if (!s)
 		return (0);
 	*len = ft_count_words(s, c);
-	ft_putnbr_fd(*len, 1);
-	ft_putchar_fd(' ', 1);
+	//ft_putnbr_fd(*len, 1);
+	//ft_putchar_fd(' ', 1);
 	ret = malloc(sizeof(char *) * (*len + 1));
 	if (!ret)
 		return (0);
@@ -122,7 +122,7 @@ char	**ft_split(char const *s, char c)
 		if (*s != c)
 		{
 			word_len = ft_strclen(s, c);
-			ft_putnbr_fd(word_len, 1);
+			//ft_putnbr_fd(word_len, 1);
 			ret[i] = malloc(sizeof(char) * (word_len + 1));
 			if (!ret[i])
 				return (ft_free_all(ret));
