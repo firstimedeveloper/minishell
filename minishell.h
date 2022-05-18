@@ -48,13 +48,13 @@ int	handle_cmd(t_minishell *sh);
 /*
 *	builtin functions
 */
-int cmd_cd(t_cmd *cmd);
-int cmd_echo(t_cmd *cmd);
-int cmd_env(t_cmd *cmd);
-int cmd_exit(t_cmd *cmd);
-int cmd_export(t_cmd *cmd);
-int cmd_pwd(t_cmd *cmd);
-int cmd_unset(t_cmd *cmd);
+int cmd_cd(char **argv);
+int cmd_echo(char **argv);
+int cmd_env(char **argv);
+int cmd_exit(char **argv);
+int cmd_export(char **argv);
+int cmd_pwd(char **argv);
+int cmd_unset(char **argv);
 
 /*
 * util functions

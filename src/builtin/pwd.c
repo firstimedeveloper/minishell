@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int cmd_pwd(t_cmd *cmd)
+int cmd_pwd(char **argv)
 {
 	(void)cmd;
 	printf("cmd pwd is called\n");

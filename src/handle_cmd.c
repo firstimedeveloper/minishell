@@ -34,42 +34,75 @@ int	is_builtin(t_cmd *cmd, char *content)
 
 }
 
-int	excecute_builtin(t_cmd *cmd, int builtin)
+int	excecute_builtin(char **argv, int builtin)
 {
-	(void)cmd;
 	if (builtin == TYPE_CMD_CD)
-		return (cmd_cd(cmd));
+		return (cmd_cd(argv));
 	else if (builtin == TYPE_CMD_ECHO)
-		return (cmd_echo(cmd));
+		return (cmd_echo(argv));
 	else if (builtin == TYPE_CMD_ENV)
-		return (cmd_env(cmd));
+		return (cmd_env(argv));
 	else if (builtin == TYPE_CMD_EXIT)
-		return (cmd_exit(cmd));
+		return (cmd_exit(argv));
 	else if (builtin == TYPE_CMD_EXPORT)
-		return (cmd_export(cmd));
+		return (cmd_export(argv));
 	else if (builtin == TYPE_CMD_PWD)
-		return (cmd_pwd(cmd));
+		return (cmd_pwd(argv));
 	else if (builtin == TYPE_CMD_UNSET)
-		return (cmd_unset(cmd));
+		return (cmd_unset(argv));
 
 	return (0);
 }
 
-int	excecute_find(t_cmd *cmd)
+int	excecute_find(t_minishell *sh, char **argv)
 {
-	(void)cmd;
+	(void)sh;
+	char	**paths;
+	char	*path;
+
+
+	path = getenv("PATH");
+	paths = ft_split(path, ':'); // will not work if path has ' or "
+
+	(void)paths;
+	printf("unknown cmd path:\n");
+	while (*argv)
+	{
+		printf("%s\n", *argv);
+		argv++;
+	}
 	return (1);
+}
+
+char	**create_argv(t_cmd *cmd, int len)
+{
+	char	**argv;
+	char	**argv_cpy;
+	int		i;
+
+	argv = malloc(sizeof(char *) * (len + 1));
+	argv_cpy = argv;
+	i = 0;
+	while (i < len)
+	{
+		*argv_cpy = ft_strdup(cmd->content);
+		argv_cpy++;
+		i++;
+		cmd = cmd->next;
+	}
+	return (argv);
 }
 
 t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 {
 	t_cmd	*next;
-	(void)sh;
-	// check if built in,
-	int	tmp;
+	char	**argv;
+	int	builtin_type;
+	int	arg_count;
 
-	tmp = is_builtin(cmd, cmd->content);
+	builtin_type = is_builtin(cmd, cmd->content);
 	next = cmd;
+	arg_count = 0;
 	while (next)
 	{
 		if (next->type == TYPE_PIPE)
@@ -77,14 +110,15 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 			next = next->next;
 			break ;
 		}
-
+		arg_count++;
 		next = next->next;
 	}
-	if (tmp)
-		excecute_builtin(cmd, tmp);
+	argv = create_argv(cmd, arg_count);
+	if (builtin_type)
+		excecute_builtin(argv, builtin_type);
 	else
-		excecute_find(cmd);
-
+		excecute_find(sh, argv);
+	ft_free_all(argv);
 	return (next);
 }
 

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int cmd_cd(t_cmd *cmd)
+int cmd_cd(char **argv)
 {
 	(void)cmd;
 	printf("cmd cd is called\n");

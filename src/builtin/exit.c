@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int cmd_exit(t_cmd *cmd)
+int cmd_exit(char **argv)
 {
 	(void)cmd;
 	printf("cmd exit is called\n");
