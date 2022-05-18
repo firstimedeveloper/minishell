@@ -2,7 +2,7 @@
 
 int cmd_export(char **argv)
 {
-	(void)cmd;
+	(void)argv;
 	printf("cmd export is called\n");
 
 	return (1);

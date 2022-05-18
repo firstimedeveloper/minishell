@@ -2,7 +2,7 @@
 
 int cmd_env(char **argv)
 {
-	(void)cmd;
+	(void)argv;
 	printf("cmd env is called\n");
 
 	return (1);

@@ -2,7 +2,7 @@
 
 int cmd_pwd(char **argv)
 {
-	(void)cmd;
+	(void)argv;
 	printf("cmd pwd is called\n");
 
 	return (1);

@@ -2,7 +2,7 @@
 
 int cmd_unset(char **argv)
 {
-	(void)cmd;
+	(void)argv;
 	printf("cmd unset is called\n");
 
 	return (1);

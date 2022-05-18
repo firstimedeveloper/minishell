@@ -2,7 +2,7 @@
 
 int cmd_exit(char **argv)
 {
-	(void)cmd;
+	(void)argv;
 	printf("cmd exit is called\n");
 
 	return (1);
