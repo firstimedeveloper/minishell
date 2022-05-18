@@ -4,11 +4,11 @@ void	handle_cmd_type(char *s, int is_head, int *type)
 {
 	if (is_head)
 		*type = TYPE_CMD;
-	else if (*s == '|' || !ft_strncmp(s, "\"|\"", 3) || !ft_strncmp(s, "'|'", 3))
+	else if (*s == '|')
 		*type = TYPE_PIPE;
-	else if (*s == '<' || !ft_strncmp(s, "\"<\"", 3) || !ft_strncmp(s, "'<'", 3))
+	else if (*s == '<')
 		*type = TYPE_REDIR;
-	else if (*s == '>' || !ft_strncmp(s, "\">\"", 3) || !ft_strncmp(s, "'>'", 3))
+	else if (*s == '>')
 		*type = TYPE_REDIR;
 	else
 		*type = TYPE_ARG;
