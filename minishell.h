@@ -9,6 +9,14 @@
 #include <termios.h>
 #include <signal.h>
 
+#define TYPE_CMD_CD 1
+#define TYPE_CMD_ECHO 2
+#define TYPE_CMD_ENV 3
+#define TYPE_CMD_EXIT 4
+#define TYPE_CMD_EXPORT 5
+#define TYPE_CMD_PWD 6
+#define TYPE_CMD_UNSET 7
+
 #define TYPE_CMD 0
 #define TYPE_ARG 1
 #define TYPE_PIPE 2
@@ -26,6 +34,8 @@ typedef struct s_cmd
 
 typedef struct  s_minishell
 {
+	int		in;
+	int		out;
 	t_cmd   *cmd_list;
 
 } t_minishell;
@@ -33,8 +43,21 @@ typedef struct  s_minishell
 int     parse(t_minishell *sh, char *line);
 void    read_line(char **line_read);
 
+int	handle_cmd(t_minishell *sh);
+
 /*
- * util functions
+*	builtin functions
+*/
+int cmd_cd(t_cmd *cmd);
+int cmd_echo(t_cmd *cmd);
+int cmd_env(t_cmd *cmd);
+int cmd_exit(t_cmd *cmd);
+int cmd_export(t_cmd *cmd);
+int cmd_pwd(t_cmd *cmd);
+int cmd_unset(t_cmd *cmd);
+
+/*
+* util functions
 */
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void	ft_lstadd_front(t_cmd **lst, t_cmd *new);
