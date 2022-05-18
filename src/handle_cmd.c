@@ -68,7 +68,7 @@ int	excecute_find(t_minishell *sh, char **argv)
 	printf("unknown cmd path:\n");
 	while (*paths)
 	{
-		exec_path = ft_strjoin(*paths, *argv);
+		exec_path = ft_strdirjoin(*paths, *argv);
 		printf("exec path: %s\n", exec_path);
 		paths++;
 		free(exec_path);
