@@ -85,6 +85,7 @@ char	**create_argv(t_cmd *cmd, int len)
 	argv = malloc(sizeof(char *) * (len + 1));
 	argv_cpy = argv;
 	i = 0;
+	argv[len] = 0;
 	while (i < len)
 	{
 		*argv_cpy = ft_strdup(cmd->content);
