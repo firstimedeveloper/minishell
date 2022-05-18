@@ -1,9 +1,40 @@
 #include "minishell.h"
 
-int cmd_echo(t_cmd *cmd)
+
+
+int check_op(char *str)		// 옵션이면 0을 옵션 아니면 1을 출력한다. 
 {
-	(void)cmd;
+	if (ch_strncmp(char ))
+}
+
+
+int cmd_echo(char **argv)
+{
+	int i;
 	printf("cmd echo is called\n");
 
-	return (1);
+	i = 1;
+	while (argv)
+	{
+		if (!ft_strncmp(argv[1], "-n", ft_strlen(argv[1]), 2))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
+			i++;
+		else 
+		{
+			printf("%s", argv[i]);
+			if (argv[++i])		//다음 단어가 있으면 띄어쓰기 출력 하고 인덱스++
+				printf(" ");
+		}
+	}
+	if (ft_strncmp(argv[1], "-n", ft_strlen(argv[1]), 2))	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
+		printf("\n");
+	return (0);
 }
+
+
+//옵션 -n 
+//echo는 기본적으로 개행이 붙어서 나오고 n옵션이 붙으면 개행없이 출력된다. 
+/*
+echo -nnnnnn도 동작한다.
+echo -n-n-n은 문자열로 인식한다. 
+echo -n -n -n 도 옵션으로 인식한다.
+*/
