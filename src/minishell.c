@@ -25,23 +25,23 @@ char **copy_envp(char **envp)
 
 int main(int argc, char **argv, char **envp)
 {
-    (void)argc;
-    (void)argv;
+	(void)argc;
+	(void)argv;
 
-    t_minishell sh;
+	t_minishell sh;
 	(void)sh;
-    char        *line;
+	char		*line;
 
 	//sh.envp = copy_envp(envp);
 	sh.envp = envp;
-    line = NULL;
-    while (1)
-    {
-        read_line(&line);
+	line = NULL;
+	while (1)
+	{
+		read_line(&line);
 		if (parse(&sh, line) == 1)
 			continue ;
 		handle_cmd(&sh);
-    }
+	}
 
-    return (0);
+	return (0);
 }

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void    read_line(char **line_read)
+void	read_line(char **line_read)
 {
 	if (*line_read)
 	{
