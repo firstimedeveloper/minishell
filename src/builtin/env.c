@@ -3,6 +3,13 @@
 int	cmd_env(char **envp)
 {
 	printf("cmd env is called\n");
+	int	i;
 
-	return (1);
+	i = 0;
+	while (envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
+	}
+	return (0);
 }
