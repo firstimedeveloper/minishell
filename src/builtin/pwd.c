@@ -1,16 +1,18 @@
 #include "minishell.h"
+#define MAX 1024
 
-int cmd_pwd(char **argv)
+int	cmd_pwd(char **argv)
 {
 	printf("cmd pwd is called\n");
-	char	path[1024];
+	char	*path;
 
 	(void)argv;	
-	if(getcwd(path, 1024) == NULL) 
+	if(getcwd(path, MAX) == NULL) 
 	{
 		//에러처리		return (1);
 	}
 	printf("%s\n", path);
+	free (path);
 	return (0);
 }
 
