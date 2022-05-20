@@ -34,14 +34,14 @@ int	is_builtin(t_cmd *cmd, char *content)
 
 }
 
-int	excecute_builtin(char **argv, int builtin)
+int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 {
 	if (builtin == TYPE_CMD_CD)
 		return (cmd_cd(argv));
 	else if (builtin == TYPE_CMD_ECHO)
 		return (cmd_echo(argv));
 	else if (builtin == TYPE_CMD_ENV)
-		return (cmd_env(argv));
+		return (cmd_env(sh->envp));//환경변수를 읽어와야해서 변경 argv에서 envp로 파라미터 변경
 	else if (builtin == TYPE_CMD_EXIT)
 		return (cmd_exit(argv));
 	else if (builtin == TYPE_CMD_EXPORT)
@@ -123,7 +123,7 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 	if (pid == 0)
 	{
 		if (builtin_type)
-			excecute_builtin(argv, builtin_type);
+			excecute_builtin(sh, argv, builtin_type);
 		else
 			excecute_find(sh, argv);
 		ft_free_all(argv);

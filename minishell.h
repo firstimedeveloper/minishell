@@ -51,7 +51,7 @@ int	handle_cmd(t_minishell *sh);
 */
 int cmd_cd(char **argv);
 int cmd_echo(char **argv);
-int cmd_env(char **argv);
+int cmd_env(char **envp);
 int cmd_exit(char **argv);
 int cmd_export(char **argv);
 int cmd_pwd(char **argv);

@@ -32,8 +32,8 @@ int main(int argc, char **argv, char **envp)
 	(void)sh;
 	char		*line;
 
-	//sh.envp = copy_envp(envp);
-	sh.envp = envp;
+	sh.envp = copy_envp(envp);
+	//sh.envp = envp;
 	line = NULL;
 	while (1)
 	{

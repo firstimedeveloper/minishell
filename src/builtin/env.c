@@ -1,8 +1,7 @@
 #include "minishell.h"
 
-int cmd_env(char **argv)
+int	cmd_env(char **envp)
 {
-	(void)argv;
 	printf("cmd env is called\n");
 
 	return (1);
