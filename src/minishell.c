@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 int main(int argc, char **argv, char **envp)
 {
 	(void)argc;
@@ -12,7 +10,7 @@ int main(int argc, char **argv, char **envp)
 	char		*line;
 
 	sh.envp = copy_envp(envp);
-	//sh.envp = envp;
+	//sh.envp = envp;	minishell만의 환경변수리스트를 만들어야한다고 생각해서 위의 코드 살림
 	line = NULL;
 	while (1)
 	{

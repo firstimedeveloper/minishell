@@ -1,6 +1,4 @@
-
 #include "minishell.h"
-
 
 char    **copy_envp(char **envp)
 {
@@ -25,7 +23,7 @@ char    **copy_envp(char **envp)
 	return (ret);
 }
 
-int	ch_strncmp(const char *s1, const char *s2, size_t n) //echo.c에도 있음
+int	ch_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
 
