@@ -53,7 +53,7 @@ int cmd_cd(char **argv);
 int cmd_echo(char **argv);
 int cmd_env(char **envp);
 int cmd_exit(char **argv);
-int cmd_export(char **argv);
+int cmd_export(t_minishell *sh, char **argv);
 int cmd_pwd(char **argv);
 int cmd_unset(char **argv);
 
@@ -71,5 +71,12 @@ t_cmd	*ft_lstlast(t_cmd *lst);
 t_cmd	*ft_lstmap(t_cmd *lst, void *(*f)(void *), void (*del)(void *));
 t_cmd	*ft_lstnew(void *content, int type, int is_head);
 int	ft_lstsize(t_cmd *lst);
+
+/*
+* utils.c
+*/
+char	**copy_envp(char **envp);
+int		ch_strncmp(const char *s1, const char *s2, size_t n);
+
 
 #endif

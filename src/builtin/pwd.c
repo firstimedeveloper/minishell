@@ -7,10 +7,13 @@ int	cmd_pwd(char **argv)
 	char	*path;
 
 	(void)argv;	
-	if(getcwd(path, MAX) == NULL) 
+	path = NULL; //
+//	if(getcwd(path, MAX) == NULL) 
 	{
 		//에러처리		return (1);
 	}
+	 getcwd(path, MAX);
+	printf("%s\n", path);
 	printf("%s\n", path);
 	free (path);
 	return (0);

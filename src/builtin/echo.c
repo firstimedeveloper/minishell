@@ -1,27 +1,8 @@
 #include "minishell.h"
 
-int	ch_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (i < n && *s1 && *s2)
-	{
-		if (*s1 != *s2)
-			break ;
-		i++;
-		s1++;
-		s2++;
-	}
-	if (i == n)
-		return (0);
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
-}
 
 
-int check_op(char *str)		// 옵션이면 0을 옵션 아니면 1을 출력한다. 
+int	check_op(char *str) // 옵션이면 0을 옵션 아니면 1을 출력한다. 
 {
 	if (ch_strncmp(str, "-n", 2))	//옵션 아니면 return 1
 		return (1);
@@ -35,7 +16,7 @@ int check_op(char *str)		// 옵션이면 0을 옵션 아니면 1을 출력한다
 	return (0);
 }
 
-int cmd_echo(char **argv)
+int	cmd_echo(char **argv)
 {
 	int i;
 	printf("cmd echo is called\n");
