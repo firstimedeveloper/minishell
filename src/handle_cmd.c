@@ -41,7 +41,7 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 	else if (builtin == TYPE_CMD_ECHO)
 		return (cmd_echo(argv));
 	else if (builtin == TYPE_CMD_ENV)
-		return (cmd_env(sh->envp));//환경변수를 읽어와야해서 변경 argv에서 envp로 파라미터 변경
+		return (cmd_env(sh->envp, argv));//환경변수를 읽어와야해서 변경 argv에서 envp로 파라미터 변경
 	else if (builtin == TYPE_CMD_EXIT)
 		return (cmd_exit(argv));
 	else if (builtin == TYPE_CMD_EXPORT)
