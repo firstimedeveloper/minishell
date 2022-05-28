@@ -1,5 +1,4 @@
 #include "minishell.h"
-#define MAX 1024
 
 int	cmd_pwd(char **argv)
 {
@@ -7,21 +6,18 @@ int	cmd_pwd(char **argv)
 	char	*path;
 
 	(void)argv;	
-	path = NULL; //
-//	if(getcwd(path, MAX) == NULL) 
+	path = (char *)getenv("PWD");
+	if (!path)
 	{
-		//에러처리		return (1);
+		//에러처리
 	}
-	 getcwd(path, MAX);
 	printf("%s\n", path);
-	printf("%s\n", path);
-	free (path);
 	return (0);
 }
 
 
 /*
 getcwd
-
 생길 수 있는 에러 사항 확인하기 
+getcwd는 버퍼의 크기를 지정해야하서 getenv를 사용
 */
