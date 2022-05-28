@@ -1,8 +1,57 @@
-
 #include "minishell.h"
 
+void	export_print(char **envp);
 
+void	ft_free_double(char **ptr)
+{
+	int	i;
 
+	i = -1;
+	while (ptr[++i])
+		free(ptr[i]);
+	free(ptr);
+}
+
+int	ft_envplen(char **envp)
+{
+	int	len;
+
+	len = 0;
+	while (*envp)
+	{
+		len++;
+		envp++;
+	}
+	return (len);
+}
+
+int	check_argv(char *str)
+{
+	if (*str == '=' || (*str >= '0' && *str <= '9'))
+	{
+		printf("export: `%s': not a valid identifier\n", str);	/////
+		return (1);
+	}
+	return (0);
+}
+
+char	**export_add(char **envp, char *str)	//세로줄을 하나 늘린 배열을 할당해서 복사하고 추가한다음에 새로 할당한 배열을 가리키도록 할 것
+{
+	int	i;
+	char	**new;
+
+	i = ft_envplen(envp) + 1;
+	new = malloc(sizeof(char *) * (i + 1));
+//	if (!new)
+//		return (1);
+	new[i--] = NULL;
+	new[i] = str;
+	while (--i > -1)
+		new[i] = ft_strdup(envp[i]);
+	ft_free_double(envp);
+	envp = new;
+	return (envp);
+}
 
 char	**sort_envp(char **envp)
 {
@@ -10,8 +59,8 @@ char	**sort_envp(char **envp)
 	int		i;
 	int		j;
 
-	i = -1;
-	while (envp[++i])
+	i = ft_envplen(envp);
+	while (envp[--i])
 	{
 		j = -1;
 		while (++j < i)
@@ -31,49 +80,44 @@ char	**sort_envp(char **envp)
 void	export_print(char **envp)
 {
 	char	**envp_tmp;
+	char	**tmp_tmp;
 	int		i;
-
 
 	envp_tmp = copy_envp(envp);
 	envp_tmp = sort_envp(envp_tmp);
-	printf("print\n");	//we can print until here
-
-	i = 0;
-	while (envp[i])
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
-
-//	printf("%s\n", *envp_tmp);
+	tmp_tmp = envp_tmp;
 	while (*envp_tmp)
 	{
-		i = -1;
+		i = 0;
 		printf("declare -x ");
-		while (*envp_tmp[++i] != '=')
-			printf("%c", *envp_tmp[i]);
-		printf("\"");
-		while (*envp[++i])
-			printf("%c", *envp_tmp[i]);
+		while ((*envp_tmp)[i] != '=')
+			printf("%c", (*envp_tmp)[i++]);
+		printf("=\"");
+		while ((*envp_tmp)[++i])
+			printf("%c", (*envp_tmp)[i]);
 		printf("\"\n");
 		envp_tmp++;
 	}
-	free(envp_tmp);
+	ft_free_double(tmp_tmp);	////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기 
 }
 
 int	cmd_export(t_minishell *sh, char **argv)
 {
-	//char	**new_env;
 	printf("cmd export is called\n");
 
+	int i;
+
+	i = 0;
 	if (!argv[1])	// 인자가 없으면 환경변수 출력
-	{
-		printf("hi\n");
 		export_print(sh->envp);
-	}
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
-		printf("nono\n");
+		while (argv[++i])
+		{
+			if (check_argv(argv[i]) != 0)
+				continue;
+			sh->envp = export_add(sh->envp, argv[i]);
+		}
 	}
 	return (0);
 }
