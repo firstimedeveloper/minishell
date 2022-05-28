@@ -1,28 +1,5 @@
 #include "minishell.h"
 
-char    **copy_envp(char **envp)
-{
-	char	**ret;
-	int		count;
-	int		i;
-
-	count = 0;
-	i = 0;
-	while (envp[i++])
-		count++;
-	ret = malloc(sizeof(char *) * (count + 1));
-	if (!ret)
-		return (0);
-	ret[count] = 0;
-	i = 0;
-	while (i < count)
-	{
-		ret[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	return (ret);
-}
-
 int	ch_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
@@ -41,4 +18,14 @@ int	ch_strncmp(const char *s1, const char *s2, size_t n)
 	if (i == n)
 		return (0);
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
+
+void	ft_free_double(char **ptr)
+{
+	int	i;
+
+	i = -1;
+	while (ptr[++i])
+		free(ptr[i]);
+	free(ptr);
 }

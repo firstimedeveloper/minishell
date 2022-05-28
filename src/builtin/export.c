@@ -1,40 +1,5 @@
 #include "minishell.h"
 
-void	export_print(char **envp);
-
-void	ft_free_double(char **ptr)
-{
-	int	i;
-
-	i = -1;
-	while (ptr[++i])
-		free(ptr[i]);
-	free(ptr);
-}
-
-int	ft_envplen(char **envp)
-{
-	int	len;
-
-	len = 0;
-	while (*envp)
-	{
-		len++;
-		envp++;
-	}
-	return (len);
-}
-
-int	check_argv(char *str)
-{
-	if (*str == '=' || (*str >= '0' && *str <= '9'))
-	{
-		printf("export: `%s': not a valid identifier\n", str);	/////
-		return (1);
-	}
-	return (0);
-}
-
 char	**export_add(char **envp, char *str)	//세로줄을 하나 늘린 배열을 할당해서 복사하고 추가한다음에 새로 할당한 배열을 가리키도록 할 것
 {
 	int	i;
@@ -75,7 +40,6 @@ char	**sort_envp(char **envp)
 	}
 	return (envp);
 }
-
 
 void	export_print(char **envp)
 {
