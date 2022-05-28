@@ -53,9 +53,9 @@ int cmd_cd(char **argv);
 int cmd_echo(char **argv);
 int cmd_env(char **envp, char **argv);
 int cmd_exit(char **argv);
-int cmd_export(t_minishell *sh, char **argv);
+int cmd_export(char **envp, char **argv);
 int cmd_pwd(char **argv);
-int cmd_unset(char **argv);
+int cmd_unset(char **envp, char **argv);
 
 /*
 * util functions
@@ -75,8 +75,15 @@ int	ft_lstsize(t_cmd *lst);
 /*
 * utils.c
 */
-char	**copy_envp(char **envp);
 int		ch_strncmp(const char *s1, const char *s2, size_t n);
+void	ft_free_double(char **ptr);
+
+/*
+* envp_utils.c
+*/
+int	ft_envplen(char **envp);
+int	check_argv(char *str);
+char	**copy_envp(char **envp);
 
 
 #endif
