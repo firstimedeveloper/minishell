@@ -104,6 +104,7 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 	int		arg_count;
 	pid_t	pid;
 	int		status;
+	//int		pipefd[2];
 
 	builtin_type = is_builtin(cmd, cmd->content);
 	next = cmd;
@@ -119,17 +120,20 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 		next = next->next;
 	}
 	argv = create_argv(cmd, arg_count);
+	if (builtin_type)
+		excecute_builtin(sh, argv, builtin_type);
 	pid = fork();
 	if (pid == 0)
 	{
-		if (builtin_type)
-			excecute_builtin(sh, argv, builtin_type);
-		else
-			excecute_find(sh, argv);
+		excecute_find(sh, argv);
 		ft_free_all(argv);
 		exit(0);
 	}
-	else
+	else if (pid < 0)
+	{
+		// error occurred
+	}
+	else // parent process
 	{
 		waitpid(pid, &status, 0);
 	}

@@ -62,10 +62,10 @@ void	export_print(char **envp)
 		printf("\"\n");
 		envp_tmp++;
 	}
-	ft_free_double(tmp_tmp);	////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기 
+	ft_free_double(tmp_tmp);	////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기
 }
 
-int	cmd_export(t_minishell *sh, char **argv)
+int	cmd_export(char **envp, char **argv)
 {
 	printf("cmd export is called\n");
 
@@ -73,14 +73,14 @@ int	cmd_export(t_minishell *sh, char **argv)
 
 	i = 0;
 	if (!argv[1])	// 인자가 없으면 환경변수 출력
-		export_print(sh->envp);
+		export_print(envp);
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
 		while (argv[++i])
 		{
 			if (check_argv(argv[i]) != 0)
 				continue;
-			sh->envp = export_add(sh->envp, argv[i]);
+			envp = export_add(envp, argv[i]);
 		}
 	}
 	return (0);
@@ -105,19 +105,19 @@ bash: export: `=bb': not a valid identifier
 bash-3.2$ export WATER= bb
 WATER=
 
-bash-3.2$ export WATER=bb aa //aa도 환경변수로 등록은 됨 env로 나오진 않음 
+bash-3.2$ export WATER=bb aa //aa도 환경변수로 등록은 됨 env로 나오진 않음
 WATER=bb
 
 bash-3.2$ export hello
-내 노트북에서는 이렇게 작성하면 환경변수는 설정되는데 env로 했을때 출력되지는 않음 
+내 노트북에서는 이렇게 작성하면 환경변수는 설정되는데 env로 했을때 출력되지는 않음
 
 bash-3.2$ export WATER==aa
 WATER==aa
->>>>처음 등호빼고 그 후로 다 값 
+>>>>처음 등호빼고 그 후로 다 값
 
 bash-3.2$ export
-이렇게하면 환경변수의 목록을 출력  
-ex) 
+이렇게하면 환경변수의 목록을 출력
+ex)
 declare -x aa
 declare -x bb
 declare -x hello
