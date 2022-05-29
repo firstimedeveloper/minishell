@@ -37,17 +37,17 @@ int	is_builtin(t_cmd *cmd, char *content)
 int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 {
 	if (builtin == TYPE_CMD_CD)
-		return (cmd_cd(sh->envp, argv));
+		return (cmd_cd(argv));
 	else if (builtin == TYPE_CMD_ECHO)
-		return (cmd_echo(sh->envp, argv));
+		return (cmd_echo(argv));
 	else if (builtin == TYPE_CMD_ENV)
 		return (cmd_env(sh->envp, argv));//환경변수를 읽어와야해서 변경 argv에서 envp로 파라미터 변경
 	else if (builtin == TYPE_CMD_EXIT)
-		return (cmd_exit(sh->envp, argv));
+		return (cmd_exit(argv));
 	else if (builtin == TYPE_CMD_EXPORT)
 		return (cmd_export(sh->envp, argv));
 	else if (builtin == TYPE_CMD_PWD)
-		return (cmd_pwd(sh->envp, argv));
+		return (cmd_pwd(argv));
 	else if (builtin == TYPE_CMD_UNSET)
 		return (cmd_unset(sh->envp, argv));
 
