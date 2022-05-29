@@ -81,8 +81,8 @@ void	ft_free_double(char **ptr);
 /*
 * envp_utils.c
 */
-int	ft_envplen(char **envp);
-int	check_argv(char *str);
+int		ft_envplen(char **envp);
+int		check_argv(char *str);
 char	**copy_envp(char **envp);
 char	*get_envp_name(char *envp);
 char	*ft_getenv(char **envp, char *envp_name);

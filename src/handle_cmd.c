@@ -50,7 +50,6 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 		return (cmd_pwd(sh->envp, argv));
 	else if (builtin == TYPE_CMD_UNSET)
 		return (cmd_unset(sh->envp, argv));
-
 	return (0);
 }
 

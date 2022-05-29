@@ -16,28 +16,52 @@ char	*get_envp_name(char *envp)
 	return (name);
 }
 
-char	*ft_getenv(char **envp, char *envp_name)
-	//envp_name 에는 변수명만 들어오므로 
-	//while문을 돌면서 환경변수를 다 가져다가 뒤에 있는 함수를 거쳐서 
-	//나온값이 envp_name이랑 같은지 확인하기
-	//같으면 그 값만 출력하도록 하기 
+//e과 같은 이름의 환경변수의 값을 반환 없으면 NULL	반환
+char	*ft_getenv(char **envp, char *e)
 {
-	char	*value =NULL;
-	(void) envp;
-	(void) envp_name;
-//	while ()
-//	{
-//		ft_str
-//	}
+	char	*value;
+	char	*name;
+
+	while (*envp)
+	{
+		name = get_envp_name(*envp);
+		if (ft_strncmp(name, e, ft_strlen(name), ft_strlen(e)) == 0)
+			break ;
+		envp++;
+	}
+	if (!(*envp))
+		return (NULL);
+	while (**envp != '=')
+		(*envp)++;
+	(*envp)++;
+	value = ft_strdup(*envp);
+	free(name);
 	return (value);
 }
+///// 만일 환경변수에 값이 없을 떄는 어떻게 처리할 것인지 생각하기
 
+//이미 있는 환경변수 찾아서 값만 변경하는 함수 
 char	**change_envp(char **envp, char *str)
-//이미 있는 환경변수 찾아서 값만 변경하는 함수
-//이거 만들어서 export에서 가져다가 쓸까? 
 {
-	(void) envp;
-	(void) str;
+	char	**ch_envp;
+	char	*s;			//str_name
+	char	*e;			//envp_name
+	int	i;
 
-	return (NULL);
+	s = get_envp_name(str);
+	i = ft_envplen(envp);
+	if (ft_getenv(envp, s) == NULL)	//환경변수가 존재하지 않으면
+		return (envp);
+	ch_envp = malloc(sizeof(char *) * (i + 1));
+	ch_envp[i] = NULL;
+	while (--i > -1)
+	{
+		e = get_envp_name(envp[i]);
+		if (ft_strncmp(e, s, ft_strlen(e), ft_strlen(s)) == 0)
+			ch_envp[i--] = ft_strdup(str);
+		ch_envp[i] = ft_strdup(envp[i]);
+		free(e);
+	}
+	free(s);
+	return (ch_envp);
 }
