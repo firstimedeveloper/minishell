@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 int	check_op(char *str) // 옵션이면 0을 옵션 아니면 1을 출력한다. 
 {
 	if (ch_strncmp(str, "-n", 2))	//옵션 아니면 return 1
@@ -16,22 +14,37 @@ int	check_op(char *str) // 옵션이면 0을 옵션 아니면 1을 출력한다.
 	return (0);
 }
 
-int	cmd_echo(char **argv)
+void	echo_print(char **envp, char *str)
+{
+	char	*envp;
+
+	if (*str == '$')
+	{
+		str++;
+		envp = ft_getenv(envp, str);	//아 이거 쓰면 안될 것 같은게 그럼 본쉘의 환경변수를 검색하게 되잖아 
+		if (!envp)
+			printf("");
+		else
+			printf("%s", envp);
+	}
+	else
+		printf("%s", str);
+}
+
+int	cmd_echo(char **envp, char **argv)
 {
 	int i;
 	printf("cmd echo is called\n");
-
-	i = 1;
+(void) envp;
+	i = 1;	
+	while (argv[i])
+		if (!check_op(argv[1]) && !check_op(argv[i]))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
+			i++;
 	while (argv[i])
 	{
-		if (!check_op(argv[i]))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
-			i++;
-		else 
-		{
-			printf("%s", argv[i]);
+			echo_print(envp, argv[i]);
 			if (argv[++i])		//다음 단어가 있으면 띄어쓰기 출력 하고 인덱스++
 				printf(" ");
-		}
 	}
 	if (check_op(argv[1]))	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
 		printf("\n");

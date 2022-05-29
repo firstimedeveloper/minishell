@@ -65,7 +65,7 @@ void	export_print(char **envp)
 	ft_free_double(tmp_tmp);	////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기 
 }
 
-int	cmd_export(t_minishell *sh, char **argv)
+int	cmd_export(char **envp, char **argv)
 {
 	printf("cmd export is called\n");
 
@@ -73,14 +73,14 @@ int	cmd_export(t_minishell *sh, char **argv)
 
 	i = 0;
 	if (!argv[1])	// 인자가 없으면 환경변수 출력
-		export_print(sh->envp);
+		export_print(envp);
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
 		while (argv[++i])
 		{
-			if (check_argv(argv[i]) != 0)
+			if (check_argv(argv[i]) != 0)	//오류있는 인자는 넘어가기
 				continue;
-			sh->envp = export_add(sh->envp, argv[i]);
+			envp = export_add(envp, argv[i]);
 		}
 	}
 	return (0);
@@ -127,3 +127,9 @@ bash-3.2$ export WATER====aa cc=b
 WATER====aa
 cc=b
 */
+
+
+
+
+
+////// export TEST='testing' 이런 경우 구현해야할 지

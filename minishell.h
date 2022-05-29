@@ -52,7 +52,7 @@ int	handle_cmd(t_minishell *sh);
 int cmd_cd(char **envp, char **argv);
 int cmd_echo(char **envp, char **argv);
 int cmd_env(char **envp, char **argv);
-int cmd_exit(char **envp, char **argv);
+int cmd_exit(char **argv);
 int cmd_export(char **envp, char **argv);
 int cmd_pwd(char **envp, char **argv);
 int cmd_unset(char **envp, char **argv);
@@ -84,6 +84,11 @@ void	ft_free_double(char **ptr);
 int	ft_envplen(char **envp);
 int	check_argv(char *str);
 char	**copy_envp(char **envp);
+char	*get_envp_name(char *envp);
+char	*ft_getenv(char **envp, char *envp_name);
+char	**change_envp(char **envp, char *str);
+
+
 
 
 #endif

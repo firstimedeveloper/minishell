@@ -1,12 +1,12 @@
 #include "minishell.h"
 
-int	cmd_pwd(char **argv)
+int	cmd_pwd(char **envp, char **argv) // + envp
 {
 	printf("cmd pwd is called\n");
 	char	*path;
 
 	(void)argv;	
-	path = (char *)getenv("PWD");
+	path = (char *)getenv("PWD"); // ft_getenv로 변경하기 
 	if (!path)
 	{
 		//에러처리
