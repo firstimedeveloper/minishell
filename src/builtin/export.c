@@ -80,8 +80,20 @@ int	cmd_export(char **envp, char **argv)
 		{
 			if (check_argv(argv[i]) != 0)	//오류있는 인자는 넘어가기
 				continue;
-			envp = export_add(envp, argv[i]);
+			if (ft_getenv(envp, get_envp_name(argv[i])))
+				envp = change_envp(envp, argv[i]);//////////수정필요
+			else
+				envp = export_add(envp, argv[i]);
 		}
+/*
+		int	j;
+		j = 0;
+		while (envp[j])
+		{
+			printf("export %d	:	%s\n", j, envp[j]);
+			j++;
+		}
+*/
 	}
 	return (0);
 }

@@ -21,24 +21,26 @@ char	*ft_getenv(char **envp, char *e)
 {
 	char	*value;
 	char	*name;
+	char	**temp;
 
-	while (*envp)
+	temp = copy_envp(envp);
+	while (*temp)
 	{
-		name = get_envp_name(*envp);
+		name = get_envp_name(*temp);
 		if (ft_strncmp(name, e, ft_strlen(name), ft_strlen(e)) == 0)
 			break ;
-		envp++;
+		temp++;
 	}
-	if (!(*envp))
+	if (!(*temp))
 		return (NULL);
-	while (**envp != '=')
-		(*envp)++;
-	(*envp)++;
-	value = ft_strdup(*envp);
+	while (**temp != '=')
+		(*temp)++;
+	(*temp)++;
+	value = ft_strdup(*temp);
 	free(name);
 	return (value);
 }
-///// 만일 환경변수에 값이 없을 떄는 어떻게 처리할 것인지 생각하기
+///// 만일 환경변수는 있는데 값이 없을 떄는 어떻게 처리할 것인지 생각하기
 
 //이미 있는 환경변수 찾아서 값만 변경하는 함수 
 char	**change_envp(char **envp, char *str)
