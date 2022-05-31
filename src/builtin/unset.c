@@ -31,18 +31,18 @@ int	cmd_unset(char **envp, char **argv)
 
 	i = 0;
 	while (argv[++i])
-	{
 		if (check_argv(argv[i]) == 0 && ft_strchr(argv[i], '=') == NULL)	//오류있는 인자는 넘어가기
 			envp = unset_del(envp, argv[i]);
-	}
 
+
+/*
 	i = 0;
-	while (argv[i])
+	while (envp[i])
 	{
 		printf("unset %d	:	%s\n", i, envp[i]);
 		i++;
 	}
-
+*/
 	return (0);
 }
 
