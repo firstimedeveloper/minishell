@@ -87,6 +87,7 @@ char	**copy_envp(char **envp);
 char	*get_envp_name(char *envp);
 char	*ft_getenv(char **envp, char *envp_name);
 char	**change_envp(char **envp, char *str);
+char	**ch_envp_with_name(char **envp, char *s1, char *s2);
 
 
 

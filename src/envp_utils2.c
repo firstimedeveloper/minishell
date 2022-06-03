@@ -42,7 +42,7 @@ char	*ft_getenv(char **envp, char *e)
 }
 ///// 만일 환경변수는 있는데 값이 없을 떄는 어떻게 처리할 것인지 생각하기
 
-//이미 있는 환경변수 찾아서 값만 변경하는 함수 
+//이미 있는 환경변수 찾아서 값만 변경하는 함수 str -> NAME=VALUE 형태
 char	**change_envp(char **envp, char *str)
 {
 	char	**ch_envp;
@@ -66,4 +66,14 @@ char	**change_envp(char **envp, char *str)
 	}
 	free(s);
 	return (ch_envp);
+}
+
+char	**ch_envp_with_name(char **envp, char *s1, char *s2)
+{
+	char	*str;
+
+	str = ft_strjoin(s1, s2);
+	envp = change_envp(envp, str);
+	free(str);
+	return (envp);
 }
