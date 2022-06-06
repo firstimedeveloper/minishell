@@ -37,7 +37,7 @@ int	is_builtin(t_cmd *cmd, char *content)
 int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 {
 	if (builtin == TYPE_CMD_CD)
-		return (cmd_cd(sh->envp, argv));
+		return (cmd_cd(sh, argv));
 	else if (builtin == TYPE_CMD_ECHO)
 		return (cmd_echo(sh->envp, argv));
 	else if (builtin == TYPE_CMD_ENV)
@@ -45,11 +45,11 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 	else if (builtin == TYPE_CMD_EXIT)
 		return (cmd_exit(argv));
 	else if (builtin == TYPE_CMD_EXPORT)
-		return (cmd_export(sh->envp, argv));
+		return (cmd_export(sh, argv));
 	else if (builtin == TYPE_CMD_PWD)
 		return (cmd_pwd(sh->envp, argv));
 	else if (builtin == TYPE_CMD_UNSET)
-		return (cmd_unset(sh->envp, argv));
+		return (cmd_unset(sh, argv));
 	return (0);
 }
 

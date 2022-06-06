@@ -43,7 +43,7 @@ char	*ft_getenv(char **envp, char *e)
 ///// 만일 환경변수는 있는데 값이 없을 떄는 어떻게 처리할 것인지 생각하기
 
 //이미 있는 환경변수 찾아서 값만 변경하는 함수 str -> NAME=VALUE 형태
-char	**change_envp(char **envp, char *str)
+int	change_envp(char ***envp, char *str)
 {
 	char	**ch_envp;
 	char	*s;			//str_name
@@ -51,29 +51,30 @@ char	**change_envp(char **envp, char *str)
 	int	i;
 
 	s = get_envp_name(str);
-	i = ft_envplen(envp);
-	if (ft_getenv(envp, s) == NULL)	//환경변수가 존재하지 않으면
-		return (envp);
-	ch_envp = malloc(sizeof(char *) * (i + 1));
+	i = ft_envplen(*envp);
+	if (ft_getenv(*envp, s) == NULL)	//환경변수가 존재하지 않으면
+		return (-1);
+	ch_envp = (char **)malloc(sizeof(char *) * (i + 1));
 	ch_envp[i] = NULL;
 	while (--i > -1)
 	{
-		e = get_envp_name(envp[i]);
+		e = get_envp_name((*envp)[i]);
 		if (ft_strncmp(e, s, ft_strlen(e), ft_strlen(s)) == 0)
 			ch_envp[i--] = ft_strdup(str);
-		ch_envp[i] = ft_strdup(envp[i]);
+		ch_envp[i] = ft_strdup((*envp)[i]);
 		free(e);
 	}
 	free(s);
-	return (ch_envp);
+	*envp = ch_envp;
+	return (0);
 }
 
-char	**ch_envp_with_name(char **envp, char *s1, char *s2)
+int	ch_envp_with_name(char ***envp, char *s1, char *s2)
 {
 	char	*str;
 
 	str = ft_strjoin(s1, s2);
-	envp = change_envp(envp, str);
+	change_envp(envp, str);
 	free(str);
-	return (envp);
+	return (0);
 }
