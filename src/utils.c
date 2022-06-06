@@ -29,3 +29,17 @@ void	ft_free_double(char **ptr)
 		free(ptr[i]);
 	free(ptr);
 }
+
+// export에서 argv가 값을 변경할 수 있는 조건을 갖췄는지 판별 (= 이하의 값을 가지고 있다.)
+// input : argv -> 판별하고자 하는 argv문자열
+// output : envp change가 가능하면 1, 불가능하면 0을 반환
+int	av_have_eq(char *argv)
+{
+	while (*argv)
+	{
+		if (*argv == '=')
+			return (1);
+		argv++;
+	}
+	return (0);
+}

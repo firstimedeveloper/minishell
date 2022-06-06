@@ -32,7 +32,7 @@ int	cmd_unset(t_minishell *sh, char **argv)
 
 	i = 0;
 	while (argv[++i])
-		if (check_argv(argv[i]) == 0 && ft_strchr(argv[i], '=') == NULL)	//오류있는 인자는 넘어가기
+		if (check_argv_name(argv[i]) == 0 && ft_strchr(argv[i], '=') == NULL)	//오류있는 인자는 넘어가기
 			unset_del(&(sh->envp), argv[i]);
 
 	i = 0;
