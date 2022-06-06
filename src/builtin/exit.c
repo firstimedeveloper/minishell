@@ -5,5 +5,7 @@ int	cmd_exit(char **argv)
 	(void)argv;
 	printf("cmd exit is called\n");
 
-	return (1);
+	printf("exit\n");
+	exit(0);
+	return (0);
 }

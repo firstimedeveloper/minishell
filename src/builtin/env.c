@@ -13,9 +13,6 @@ int	cmd_env(char **envp, char **argv)
 	}
 	i = 0;
 	while (envp[i])
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
+		printf("%s\n", envp[i++]);
 	return (0);
 }
