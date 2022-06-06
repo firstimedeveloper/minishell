@@ -1,21 +1,21 @@
 #include "minishell.h"
 
-char	**export_add(char **envp, char *str)	//세로줄을 하나 늘린 배열을 할당해서 복사하고 추가한다음에 새로 할당한 배열을 가리키도록 할 것
+int	export_add(char ***envp, char *str)	//세로줄을 하나 늘린 배열을 할당해서 복사하고 추가한다음에 새로 할당한 배열을 가리키도록 할 것
 {
 	int	i;
 	char	**new;
 
-	i = ft_envplen(envp) + 1;
-	new = malloc(sizeof(char *) * (i + 1));
-//	if (!new)
-//		return (1);
+	i = ft_envplen(*envp) + 1;
+	new = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!new)
+		return (1);
 	new[i--] = NULL;
 	new[i] = str;
 	while (--i > -1)
-		new[i] = ft_strdup(envp[i]);
-	ft_free_double(envp);
-	envp = new;
-	return (envp);
+		new[i] = ft_strdup((*envp)[i]);
+	ft_free_double(*envp);
+	*envp = new;
+	return (0);
 }
 
 char	**sort_envp(char **envp)
@@ -65,7 +65,7 @@ void	export_print(char **envp)
 	ft_free_double(tmp_tmp);	////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기 
 }
 
-int	cmd_export(char **envp, char **argv)
+int	cmd_export(t_minishell *sh, char **argv)
 {
 	printf("cmd export is called\n");
 
@@ -73,27 +73,27 @@ int	cmd_export(char **envp, char **argv)
 
 	i = 0;
 	if (!argv[1])	// 인자가 없으면 환경변수 출력
-		export_print(envp);
+		export_print(sh->envp);
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
 		while (argv[++i])
 		{
 			if (check_argv(argv[i]) != 0)	//오류있는 인자는 넘어가기
 				continue;
-			if (ft_getenv(envp, get_envp_name(argv[i])))
-				envp = change_envp(envp, argv[i]);//////////수정필요
+			if (ft_getenv(sh->envp, get_envp_name(argv[i])))
+				change_envp(&(sh->envp), argv[i]);
 			else
-				envp = export_add(envp, argv[i]);
+				export_add(&(sh->envp), argv[i]);
 		}
-/*
-		int	j;
-		j = 0;
-		while (envp[j])
-		{
-			printf("export %d	:	%s\n", j, envp[j]);
-			j++;
-		}
-*/
+
+		// int	j;
+		// j = 0;
+		// while (sh->envp[j])
+		// {
+		// 	printf("export %d	:	%s\n", j, sh->envp[j]);
+		// 	j++;
+		// }
+
 	}
 	return (0);
 }
@@ -142,6 +142,4 @@ cc=b
 
 
 
-
-
-////// export TEST='testing' 이런 경우 구현해야할 지
+////// export TEST='testing' 이런 경우 구현해야한다.
