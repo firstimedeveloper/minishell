@@ -95,6 +95,17 @@ char	**create_argv(t_cmd *cmd, int len)
 	return (argv);
 }
 
+void	execute_child(t_minishell *sh, t_cmd *cmd, t_cmd *next, char **argv)
+{
+	(void)cmd;
+	(void)next;
+	//dup2(next->fd[1], STDOUT_FILENO);
+	//close(next->fd[1]);
+	excecute_find(sh, argv);
+	ft_free_all(argv);
+	exit(0);
+}
+
 t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 {
 	t_cmd	*next;
@@ -103,7 +114,6 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 	int		arg_count;
 	pid_t	pid;
 	int		status;
-	//int		pipefd[2];
 
 	builtin_type = is_builtin(cmd, cmd->content);
 	next = cmd;
@@ -119,21 +129,21 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 		next = next->next;
 	}
 	argv = create_argv(cmd, arg_count);
-	if (builtin_type)
-		excecute_builtin(sh, argv, builtin_type);
+	if (next->type == TYPE_PIPE)
+	{
+		pipe(next->fd);
+	}
 	pid = fork();
 	if (pid == 0)
-	{
-		excecute_find(sh, argv);
-		ft_free_all(argv);
-		exit(0);
-	}
+		execute_child(sh, cmd, next, argv);
 	else if (pid < 0)
 	{
 		// error occurred
 	}
 	else // parent process
 	{
+		if (builtin_type)
+			excecute_builtin(sh, argv, builtin_type);
 		waitpid(pid, &status, 0);
 	}
 	return (next);

@@ -26,6 +26,8 @@ typedef struct s_cmd
 {
 	int				is_head;
 	int				type;
+	int				flag_pipe;
+	int				fd[2];
 	char			*content;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
