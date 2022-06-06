@@ -14,7 +14,10 @@ int	ft_envplen(char **envp)
 	return (len);
 }
 
-int	check_argv(char *str)	//환경변수 
+//환경변수이름이 조건에 맞게 입력되었는지 확인한다. 
+// input : str -> NAME=VALUE 꼴
+// output : 맞으면 0, invalid면 1을 반환한다. 
+int	check_argv_name(char *str)	//환경변수 
 {
 	int	i;
 
@@ -24,10 +27,10 @@ int	check_argv(char *str)	//환경변수
 		printf("export: `%s': not a valid identifier\n", str);
 		return (1);
 	}
-	while (str[i])
+	while (str[i] && str[i] != '=')
 	{
-		if ((str[i] > 47 && str[i] < 58) || (str[i] > 64 && str[i] < 91)
-			|| (str[i] > 96 && str[i] < 123) || str[i] == '=')
+		if ((str[i] > 47 && str[i] < 58) || (str[i] > 64 && str[i] < 91)	//환경변수이름이 숫자, 대문자, 소문자로만 이루어졌는지 확인한다. 
+			|| (str[i] > 96 && str[i] < 123))
 			i++;
 		else
 		{

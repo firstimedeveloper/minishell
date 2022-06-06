@@ -65,32 +65,35 @@ void	export_print(char **envp)
 	ft_free_double(tmp_tmp);	////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기
 }
 
-int	cmd_export(t_minishell *sh, char **argv)
+int	cmd_export(t_minishell *sh, char **av)
 {
 	printf("cmd export is called\n");
 
 	int i;
 
 	i = 0;
-	if (!argv[1])	// 인자가 없으면 환경변수 출력
+	if (!av[1])	// 인자가 없으면 환경변수 출력
 		export_print(sh->envp);
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
-		while (argv[++i])
+		while (av[++i])
 		{
-			if (check_argv(argv[i]) != 0)	//오류있는 인자는 넘어가기
+			if (check_argv_name(av[i]) != 0)	//환경변수 이름에 문제 있는 인자는 넘어가기
 				continue;
-			if (ft_getenv(sh->envp, get_envp_name(argv[i])))
-				change_envp(&(sh->envp), argv[i]);
+			if (ft_getenv(sh->envp, get_envp_name(av[i])))
+			{
+				if (av_have_eq(av[i]))	// 환경변수 목록에 있는데 인자로 들어온 문자열에 = 가 있으면 change 한다.
+					change_envp(&(sh->envp), av[i]);
+			}
 			else
-				export_add(&(sh->envp), argv[i]);
+				export_add(&(sh->envp), av[i]);
 		}
 
 		// int	j;
 		// j = 0;
-		// while (sh->sh->envp[j])
+		// while (sh->envp[j])
 		// {
-		// 	printf("export %d	:	%s\n", j, sh->sh->envp[j]);
+		// 	printf("export %d	:	%s\n", j, sh->envp[j]);
 		// 	j++;
 		// }
 
