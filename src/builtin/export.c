@@ -89,13 +89,13 @@ int	cmd_export(t_minishell *sh, char **av)
 				export_add(&(sh->envp), av[i]);
 		}
 
-		// int	j;
-		// j = 0;
-		// while (sh->envp[j])
-		// {
-		// 	printf("export %d	:	%s\n", j, sh->envp[j]);
-		// 	j++;
-		// }
+		int	j;
+		j = 0;
+		while (sh->envp[j])
+		{
+			printf("export %d	:	%s\n", j, sh->envp[j]);
+			j++;
+		}
 
 	}
 	return (0);
