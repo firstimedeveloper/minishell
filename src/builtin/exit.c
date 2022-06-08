@@ -12,5 +12,4 @@ void	cmd_exit(char **argv)
 	}
 	else
 		exit(0);
-	return (0);
 }
