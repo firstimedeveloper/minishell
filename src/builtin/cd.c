@@ -1,5 +1,4 @@
 #include "minishell.h"
-#define MAX 1024
 
 int	cd_no_argv(t_minishell *sh, char **envp)
 {
@@ -15,15 +14,17 @@ int	cd_no_argv(t_minishell *sh, char **envp)
 	}
 	else
 	{
-		chdir(home);
+		if (chdir(home) == -1)
+		{
+			printf("minishell: cd: %s\n", strerror(errno));
+			sh->e_status = errno;
+			free(home);
+			return (1);		
+		}
+		sh->e_status = 0;
 		free(home);
 		return (0);
 	}
-
-	// char path[MAX];//
-	// getcwd(path, MAX);//
-	// printf("pwd	: %s\n", path);	//
-	// printf("b2b2\n");//
 }
 
 void	cmd_cd(t_minishell *sh, char **argv)
@@ -40,9 +41,10 @@ void	cmd_cd(t_minishell *sh, char **argv)
 			sh->e_status = 1;
 			return ;
 		}
+		sh->e_status = 0;
 	}
 	else
-		if (cd_no_argv(sh, sh->envp) == -1)
+		if (cd_no_argv(sh, sh->envp) == 1)
 			return ;
 
 	ch_envp_with_name(&(sh->envp), "OLDPWD=", ft_getenv(sh->envp, "PWD"));	
