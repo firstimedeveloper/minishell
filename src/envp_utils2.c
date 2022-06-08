@@ -14,9 +14,7 @@ char	*get_envp_name(char *envp)
 		len++;
 	name = (char *)malloc(sizeof(char) * (len + 1));
 	if (!name)
-		{
-			//말록 에러처리
-		}
+		exit(1);	////////////말록 에러 좀 더 고민해보기 
 	name[len] = '\0';
 	while (--len > -1)
 		name[len] = envp[len];
@@ -64,6 +62,8 @@ int	change_envp(char ***envp, char *str)
 	if (ft_getenv(*envp, s) == NULL)	//환경변수가 존재하지 않으면
 		return (-1);
 	ch_envp = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!ch_envp)
+		exit (1);	
 	ch_envp[i] = NULL;
 	while (--i > -1)
 	{

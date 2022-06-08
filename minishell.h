@@ -8,6 +8,7 @@
 #include <string.h>
 #include <termios.h>
 #include <signal.h>
+#include <errno.h>
 
 #define TYPE_CMD_CD 1
 #define TYPE_CMD_ECHO 2
@@ -21,6 +22,8 @@
 #define TYPE_ARG 1
 #define TYPE_PIPE 2
 #define TYPE_REDIR 3
+
+#define MAX 1024
 
 typedef struct s_cmd
 {
@@ -36,6 +39,7 @@ typedef struct  s_minishell
 {
 	int		in;
 	int		out;
+	int		e_status;	//exit_status
 	char	**envp;
 	t_cmd   *cmd_list;
 
@@ -49,13 +53,13 @@ int	handle_cmd(t_minishell *sh);
 /*
 *	builtin functions
 */
-int cmd_cd(t_minishell *sh, char **argv);
-int cmd_echo(char **envp, char **argv);
-int cmd_env(char **envp, char **argv);
-int cmd_exit(char **argv);
-int cmd_export(t_minishell *sh, char **argv);
-int cmd_pwd(char **envp, char **argv);
-int cmd_unset(t_minishell *sh, char **argv);
+void	cmd_cd(t_minishell *sh, char **argv);
+void	cmd_echo(t_minishell *sh, char **argv);
+void	cmd_env(t_minishell *sh, char **argv);
+void	cmd_exit(char **argv);
+void	cmd_export(t_minishell *sh, char **argv);
+void	cmd_pwd(t_minishell *sh);
+void	cmd_unset(t_minishell *sh, char **argv);
 
 /*
 * util functions
@@ -83,14 +87,11 @@ int	av_have_eq(char *argv);
 * envp_utils.c
 */
 int		ft_envplen(char **envp);
-int		check_argv_name(char *str);
+int		check_argv_name(t_minishell *sh, char *str, char *cmd);
 char	**copy_envp(char **envp);
 char	*get_envp_name(char *envp);
 char	*ft_getenv(char **envp, char *envp_name);
 int		change_envp(char ***envp, char *str);
 int		ch_envp_with_name(char ***envp, char *s1, char *s2);
-
-
-
 
 #endif
