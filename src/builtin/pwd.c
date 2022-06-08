@@ -1,16 +1,20 @@
 #include "minishell.h"
 
-int	cmd_pwd(char **envp, char **argv)
+void	cmd_pwd(t_minishell *sh)
 {
 	printf("cmd pwd is called\n");
 	char	*path;
 
-	(void)argv;	
-	path = ft_getenv(envp, "PWD");
-	if (!path)
+	path = getcwd(NULL, 0);
+ 	if (path == NULL)
 	{
-		//에러처리
+		printf("minishell: pwd: %s", strerror(errno));
+		sh->e_status = errno;
 	}
-	printf("%s\n", path);
-	return (0);
+	else
+	{
+		printf("%s\n", path);
+		sh->e_status = 0;
+	}
+	free(path);
 }
