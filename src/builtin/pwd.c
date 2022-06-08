@@ -8,7 +8,7 @@ void	cmd_pwd(t_minishell *sh)
 	path = getcwd(NULL, 0);
  	if (path == NULL)
 	{
-		printf("minishell: pwd: %s", strerror(errno));
+		printf("minishell: pwd: %s\n", strerror(errno));
 		sh->e_status = errno;
 	}
 	else
