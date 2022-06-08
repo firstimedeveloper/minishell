@@ -82,12 +82,18 @@ char	**create_argv(t_cmd *cmd, int len)
 	int		i;
 
 	argv = malloc(sizeof(char *) * (len + 1));
+	if (!argv)
+		return (0);
 	argv_cpy = argv;
 	i = 0;
 	argv[len] = 0;
 	while (i < len)
 	{
 		*argv_cpy = ft_strdup(cmd->content);
+		if (!*argv_cpy)
+		{
+			return (ft_free_all(argv));
+		}
 		argv_cpy++;
 		i++;
 		cmd = cmd->next;
@@ -95,38 +101,36 @@ char	**create_argv(t_cmd *cmd, int len)
 	return (argv);
 }
 
-t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
+t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 {
-	t_cmd	*next;
-	char	**argv;
 	int		builtin_type;
-	int		arg_count;
 	pid_t	pid;
 	int		status;
-	//int		pipefd[2];
 
 	builtin_type = is_builtin(cmd, cmd->content);
-	next = cmd;
-	arg_count = 0;
-	while (next)
+	if (cmd->is_left_pipe)
 	{
-		if (next->type == TYPE_PIPE)
-		{
-			next = next->next;
-			break ;
-		}
-		arg_count++;
-		next = next->next;
+		pipe(cmd->fds);
 	}
-	argv = create_argv(cmd, arg_count);
-	if (builtin_type)
-		excecute_builtin(sh, argv, builtin_type);
 	pid = fork();
 	if (pid == 0)
 	{
-		excecute_find(sh, argv);
-		ft_free_all(argv);
-		exit(0);
+		if (cmd->is_right_pipe)
+		{
+			dup2(prev_fds[0], 0);
+			close(prev_fds[1]);
+			close(prev_fds[0]);
+		}
+		if (cmd->is_left_pipe)
+		{
+			close(cmd->fds[0]);
+			dup2(cmd->fds[1], 1);
+			close(cmd->fds[1]);
+		}
+		if (builtin_type)
+			excecute_builtin(sh, cmd->argv, builtin_type);
+		else
+			excecute_find(sh, cmd->argv);
 	}
 	else if (pid < 0)
 	{
@@ -134,23 +138,84 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd)
 	}
 	else // parent process
 	{
-		waitpid(pid, &status, 0);
+	 	waitpid(pid, &status, 0);
+		if (cmd->is_right_pipe)
+		{
+			close(prev_fds[1]);
+			close(prev_fds[0]);
+		}
 	}
-	return (next);
+	return (NULL);
+}
+
+void	get_arg_count(t_cmd *cmd)
+{
+	t_cmd	*next;
+
+	next = cmd;
+	cmd->arg_count = 0;
+	while (next)
+	{
+		if (next->type == TYPE_PIPE)
+		{
+			cmd->is_left_pipe = 1;
+			next = next->next;
+			if (next)
+				next->is_right_pipe = 1;
+			break ;
+		}
+		cmd->arg_count++;
+		//printf("count: %d\n", cmd->arg_count);
+		next = next->next;
+	}
 }
 
 int	handle_cmd(t_minishell *sh)
 {
 	t_cmd	*cur;
+	int		prev_fds[2];
+	//t_cmd	*next;
+	//pid_t	pid;
+	//int		status;
 
 	cur = sh->cmd_list;
-	while (cur)
-	{
-		if (cur->type == TYPE_CMD)
+	//pid = fork();
+	//if (pid == 0)
+	//{
+		while (cur)
 		{
-			cur = excecute_cmd(sh, cur);
+			if (cur->type == TYPE_CMD)
+			{
+				get_arg_count(cur);
+				//printf("count: %d\n", cur->arg_count);
+				cur->argv = create_argv(cur, cur->arg_count);
+				//for (int i=0; i< cur->arg_count; i++)
+				//	printf(": %s\n",  cur->argv[i]);
+				if (is_builtin(cur, cur->content) && !cur->is_left_pipe)
+				{
+					// for (int i=0; i< cur->arg_count; i++)
+					// 	printf("cnt: %d: %s\n", cur->arg_count, cur->argv[i]);
+					excecute_builtin(sh, cur->argv, is_builtin(cur, cur->content));
+				}
+				else
+					excecute_cmd(sh, cur, prev_fds);
+				if (cur->is_left_pipe)
+				{
+					prev_fds[0] = cur->fds[0];
+					prev_fds[1] = cur->fds[1];
+				}
+			}
+			cur = cur->next;
 		}
-	}
+		if (prev_fds[0])
+			close(prev_fds[0]);
+		if (prev_fds[1])
+			close(prev_fds[1]);
+	//}
+	// else
+	// {
+	// 	waitpid(pid, &status, 0);
+	// }
 	ft_lstclear(&sh->cmd_list, free);
 	return (1);
 }

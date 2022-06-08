@@ -22,11 +22,21 @@
 #define TYPE_PIPE 2
 #define TYPE_REDIR 3
 
+#define NO_PIPE 0
+#define PIPE_LEFT 1
+#define PIPE_RIGHT 2
+#define PIPE_BOTH 3
+
 typedef struct s_cmd
 {
 	int				is_head;
 	int				type;
+	int				fds[2];
+	int				is_left_pipe;
+	int				is_right_pipe;
+	int				arg_count;
 	char			*content;
+	char			**argv;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
