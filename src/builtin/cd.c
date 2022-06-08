@@ -37,7 +37,7 @@ void	cmd_cd(t_minishell *sh, char **argv)
 	{	
 		if (chdir(argv[1]) == -1)
 		{
-			printf("minishell: cd: %s: No such file or directory\n", argv[1]);
+			printf("minishell: cd: %s: %s\n", argv[1], strerror(errno));
 			sh->e_status = 1;
 			return ;
 		}
@@ -46,19 +46,9 @@ void	cmd_cd(t_minishell *sh, char **argv)
 	else
 		if (cd_no_argv(sh, sh->envp) == 1)
 			return ;
-
 	ch_envp_with_name(&(sh->envp), "OLDPWD=", ft_getenv(sh->envp, "PWD"));	
 	getcwd(path, MAX);
 	ch_envp_with_name(&(sh->envp), "PWD=", path);
-
-
-/* 	int i;
-	i = 0;
-	while (sh->envp[i])
-	{
-		printf("unset %d	:	%s\n", i, sh->envp[i]);
-		i++;
-	} */
 }
 
 
