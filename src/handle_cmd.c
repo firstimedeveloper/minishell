@@ -141,6 +141,9 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 		else
 			excecute_find(sh, cmd->argv);
 	}
+	pid = fork();
+	if (pid == 0)
+		execute_child(sh, cmd, next, argv);
 	else if (pid < 0)
 	{
 		// error occurred
