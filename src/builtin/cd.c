@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	cd_no_argv(t_minishell *sh, char **envp)
+int	cd_no_argv(char **envp)
 {
 	char *home;
 
@@ -8,7 +8,7 @@ int	cd_no_argv(t_minishell *sh, char **envp)
 	if (home == NULL)
 	{
 		printf("minishell: cd: HOME not set\n");
-		sh->e_status = 1;
+		g_e_status = 1;
 		free(home);
 		return (1);
 	}
@@ -17,11 +17,11 @@ int	cd_no_argv(t_minishell *sh, char **envp)
 		if (chdir(home) == -1)
 		{
 			printf("minishell: cd: %s\n", strerror(errno));
-			sh->e_status = errno;
+			g_e_status = errno;
 			free(home);
 			return (1);		
 		}
-		sh->e_status = 0;
+		g_e_status = 0;
 		free(home);
 		return (0);
 	}
@@ -38,13 +38,13 @@ void	cmd_cd(t_minishell *sh, char **argv)
 		if (chdir(argv[1]) == -1)
 		{
 			printf("minishell: cd: %s: %s\n", argv[1], strerror(errno));
-			sh->e_status = 1;
+			g_e_status = 1;
 			return ;
 		}
-		sh->e_status = 0;
+		g_e_status = 0;
 	}
 	else
-		if (cd_no_argv(sh, sh->envp) == 1)
+		if (cd_no_argv(sh->envp) == 1)
 			return ;
 	ch_envp_with_name(&(sh->envp), "OLDPWD=", ft_getenv(sh->envp, "PWD"));	
 	getcwd(path, MAX);

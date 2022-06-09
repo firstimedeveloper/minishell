@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	cmd_pwd(t_minishell *sh)
+void	cmd_pwd(void)
 {
 	printf("cmd pwd is called\n");
 	char	*path;
@@ -9,12 +9,12 @@ void	cmd_pwd(t_minishell *sh)
  	if (path == NULL)
 	{
 		printf("minishell: pwd: %s\n", strerror(errno));
-		sh->e_status = errno;
+		g_e_status = errno;
 	}
 	else
 	{
 		printf("%s\n", path);
-		sh->e_status = 0;
+		g_e_status = 0;
 	}
 	free(path);
 }

@@ -44,11 +44,11 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 	else if (builtin == TYPE_CMD_ENV)
 		cmd_env(sh, argv);
 	else if (builtin == TYPE_CMD_EXIT)
-		cmd_exit(sh, argv);
+		cmd_exit(argv);
 	else if (builtin == TYPE_CMD_EXPORT)
 		cmd_export(sh, argv);
 	else if (builtin == TYPE_CMD_PWD)
-		cmd_pwd(sh);
+		cmd_pwd();
 	else if (builtin == TYPE_CMD_UNSET)
 		cmd_unset(sh, argv);
 	return (0);

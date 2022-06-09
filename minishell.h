@@ -9,6 +9,7 @@
 #include <termios.h>
 #include <signal.h>
 #include <errno.h>
+#include <sys/wait.h>
 
 #define STDIN 0
 #define STDOUT 1
@@ -52,11 +53,13 @@ typedef struct  s_minishell
 {
 	int		in;
 	int		out;
-	int		e_status;	//exit_status
+//	int		e_status;	//exit_status
 	char	**envp;
 	t_cmd   *cmd_list;
 
 } t_minishell;
+
+int	g_e_status;
 
 int     parse(t_minishell *sh, char *line);
 void    read_line(char **line_read);
@@ -69,9 +72,9 @@ int	handle_cmd(t_minishell *sh);
 void	cmd_cd(t_minishell *sh, char **argv);
 void	cmd_echo(t_minishell *sh, char **argv);
 void	cmd_env(t_minishell *sh, char **argv);
-void	cmd_exit(t_minishell *sh, char **argv);
+void	cmd_exit(char **argv);
 void	cmd_export(t_minishell *sh, char **argv);
-void	cmd_pwd(t_minishell *sh);
+void	cmd_pwd();
 void	cmd_unset(t_minishell *sh, char **argv);
 
 /*
@@ -100,7 +103,7 @@ int	av_have_eq(char *argv);
 * envp_utils.c
 */
 int		ft_envplen(char **envp);
-int		check_argv_name(t_minishell *sh, char *str, char *cmd);
+int		check_argv_name(char *str, char *cmd);
 char	**copy_envp(char **envp);
 char	*get_envp_name(char *envp);
 char	*ft_getenv(char **envp, char *envp_name);
