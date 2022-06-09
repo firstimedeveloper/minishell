@@ -2,7 +2,6 @@
 
 void	handle_sigint( pid_t pid)
 {
-	char *line;
 	if (pid == -1)	//자식 프로세스가 구동 중 
 	{
 
