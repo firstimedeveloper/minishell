@@ -9,8 +9,8 @@ int	export_add(char ***envp, char *str)	//세로줄을 하나 늘린 배열을 �
 	new = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!new)
 		return (1);
-	new[i--] = NULL;
-	new[i] = str;
+	new[i] = NULL;
+	new[--i] = ft_strdup(str);
 	while (--i > -1)
 		new[i] = ft_strdup((*envp)[i]);
 	ft_free_double(*envp);
@@ -43,42 +43,43 @@ char	**sort_envp(char **envp)
 
 void	export_print(char **envp)
 {
-	char	**envp_tmp;
-	char	**tmp_tmp;
 	int		i;
 
-	envp_tmp = copy_envp(envp);
-	envp_tmp = sort_envp(envp_tmp);
-	tmp_tmp = envp_tmp;
-	while (*envp_tmp)
+	while (*envp)
 	{
 		i = 0;
 		printf("declare -x ");
-		while ((*envp_tmp)[i] != '=')
-			printf("%c", (*envp_tmp)[i++]);
+		while ((*envp)[i] && (*envp)[i] != '=')
+			printf("%c", (*envp)[i++]);
+		if ((*envp)[i] == '\0')
+		{
+			printf("\n");
+			envp++;
+			continue;
+		}
 		printf("=\"");
-		while ((*envp_tmp)[++i])
-			printf("%c", (*envp_tmp)[i]);
+		while ((*envp)[++i])
+			printf("%c", (*envp)[i]);
 		printf("\"\n");
-		envp_tmp++;
+		envp++;
 	}
-	ft_free_double(tmp_tmp);	////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기
+////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기
 }
 
-int	cmd_export(t_minishell *sh, char **av)
-{
-	printf("cmd export is called\n");
 
+void	cmd_export(t_minishell *sh, char **av)
+{
 	int i;
 
 	i = 0;
+	sh->e_status = 0;
 	if (!av[1])	// 인자가 없으면 환경변수 출력
-		export_print(sh->envp);
+		export_print(sort_envp(sh->envp));
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
 		while (av[++i])
 		{
-			if (check_argv_name(av[i]) != 0)	//환경변수 이름에 문제 있는 인자는 넘어가기
+			if (check_argv_name(sh, av[i], av[0]) != 0)	//환경변수 이름에 문제 있는 인자는 넘어가기
 				continue;
 			if (ft_getenv(sh->envp, get_envp_name(av[i])))
 			{
@@ -88,17 +89,7 @@ int	cmd_export(t_minishell *sh, char **av)
 			else
 				export_add(&(sh->envp), av[i]);
 		}
-
-		int	j;
-		j = 0;
-		while (sh->envp[j])
-		{
-			printf("export %d	:	%s\n", j, sh->envp[j]);
-			j++;
-		}
-
 	}
-	return (0);
 }
 
 

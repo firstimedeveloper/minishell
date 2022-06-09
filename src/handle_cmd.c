@@ -36,20 +36,21 @@ int	is_builtin(t_cmd *cmd, char *content)
 
 int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 {
+	printf("execute_builtin\n");
 	if (builtin == TYPE_CMD_CD)
-		return (cmd_cd(sh, argv));
+		cmd_cd(sh, argv);
 	else if (builtin == TYPE_CMD_ECHO)
-		return (cmd_echo(sh->envp, argv));
+		cmd_echo(sh, argv);
 	else if (builtin == TYPE_CMD_ENV)
-		return (cmd_env(sh->envp, argv));//환경변수를 읽어와야해서 변경 argv에서 envp로 파라미터 변경
+		cmd_env(sh, argv);
 	else if (builtin == TYPE_CMD_EXIT)
-		return (cmd_exit(argv));
+		cmd_exit(argv);
 	else if (builtin == TYPE_CMD_EXPORT)
-		return (cmd_export(sh, argv));
+		cmd_export(sh, argv);
 	else if (builtin == TYPE_CMD_PWD)
-		return (cmd_pwd(sh->envp, argv));
+		cmd_pwd(sh);
 	else if (builtin == TYPE_CMD_UNSET)
-		return (cmd_unset(sh, argv));
+		cmd_unset(sh, argv);
 	return (0);
 }
 
@@ -114,6 +115,17 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 	{
 		pipe(cmd->fds);
 	}
+<<<<<<< HEAD
+=======
+	argv = create_argv(cmd, arg_count);
+	if (builtin_type)
+		excecute_builtin(sh, argv, builtin_type);
+/* 	{
+		excecute_builtin(sh, argv, builtin_type);
+		exit(0);
+	} */
+	
+>>>>>>> f7dc8962c1f4daab90998f155cf94691184fb725
 	pid = fork();
 	if (pid == 0)
 	{

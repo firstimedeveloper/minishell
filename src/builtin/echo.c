@@ -14,40 +14,47 @@ int	check_op(char *str) // 옵션이면 0을 옵션 아니면 1을 출력한다.
 	return (0);
 }
 
-void	echo_print(char **envp, char *str)
+void	echo_print(t_minishell *sh, char *str)
 {
 	char	*envp_value;
 
 	if (*str == '$')
 	{
 		str++;
-		envp_value = ft_getenv(envp, str);
-		if (!envp_value)
-			printf("");
+		if (*str != '?')
+		{
+			envp_value = ft_getenv(sh->envp, str);
+			if (!envp_value)
+				printf("");
+			else
+			{
+				printf("%s", envp_value);
+				free(envp_value);
+			}
+		}
 		else
-			printf("%s", envp_value);
+			printf("%d", sh->e_status);
 	}
 	else
 		printf("%s", str);
 }
 
-int	cmd_echo(char **envp, char **argv)
+void	cmd_echo(t_minishell *sh, char **argv)
 {
-	printf("cmd echo is called\n");
 	int i;
 
 	i = 1;	
 	while (!check_op(argv[i]))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
-		i++;	
+		i++;
 	while (argv[i])
 	{
-		echo_print(envp, argv[i]);
+		echo_print(sh, argv[i]);
 		if (argv[++i])		//다음 단어가 있으면 띄어쓰기 출력 하고 인덱스++
 			printf(" ");
 	}
 	if (check_op(argv[1]))	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
 		printf("\n");
-	return (0);
+	sh->e_status = 0;
 }
 
 

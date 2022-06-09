@@ -1,11 +1,15 @@
 #include "minishell.h"
 
-int	cmd_exit(char **argv)
+void	cmd_exit(char **argv)
 {
-	(void)argv;
 	printf("cmd exit is called\n");
 
 	printf("exit\n");
-	exit(0);
-	return (0);
+	if (argv[1])
+	{
+		printf("minishell: exit: %s: numeric argument required\n", argv[1]);
+		exit(255);
+	}
+	else
+		exit(0);
 }
