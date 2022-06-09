@@ -56,7 +56,7 @@ int	handle_cmd(t_minishell *sh);
 void	cmd_cd(t_minishell *sh, char **argv);
 void	cmd_echo(t_minishell *sh, char **argv);
 void	cmd_env(t_minishell *sh, char **argv);
-void	cmd_exit(char **argv);
+void	cmd_exit(t_minishell *sh, char **argv);
 void	cmd_export(t_minishell *sh, char **argv);
 void	cmd_pwd(t_minishell *sh);
 void	cmd_unset(t_minishell *sh, char **argv);

@@ -44,7 +44,7 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 	else if (builtin == TYPE_CMD_ENV)
 		cmd_env(sh, argv);
 	else if (builtin == TYPE_CMD_EXIT)
-		cmd_exit(argv);
+		cmd_exit(sh, argv);
 	else if (builtin == TYPE_CMD_EXPORT)
 		cmd_export(sh, argv);
 	else if (builtin == TYPE_CMD_PWD)
