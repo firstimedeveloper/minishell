@@ -94,4 +94,9 @@ char	*ft_getenv(char **envp, char *envp_name);
 int		change_envp(char ***envp, char *str);
 int		ch_envp_with_name(char ***envp, char *s1, char *s2);
 
+/* 
+* signal.c
+*/
+void	ft_signal_handler(int signo);
+
 #endif
