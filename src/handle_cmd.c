@@ -115,17 +115,6 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 	{
 		pipe(cmd->fds);
 	}
-<<<<<<< HEAD
-=======
-	argv = create_argv(cmd, arg_count);
-	if (builtin_type)
-		excecute_builtin(sh, argv, builtin_type);
-/* 	{
-		excecute_builtin(sh, argv, builtin_type);
-		exit(0);
-	} */
-	
->>>>>>> f7dc8962c1f4daab90998f155cf94691184fb725
 	pid = fork();
 	if (pid == 0)
 	{
@@ -153,9 +142,6 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 		else
 			excecute_find(sh, cmd->argv);
 	}
-	pid = fork();
-	if (pid == 0)
-		execute_child(sh, cmd, next, argv);
 	else if (pid < 0)
 	{
 		// error occurred
