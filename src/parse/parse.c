@@ -39,19 +39,11 @@ int parse(t_minishell *sh, char *line)
 		tmp = ft_lstnew(*split, type, is_head);
 		if (!tmp)
 			return 1; //임시
+		tmp->is_left_pipe = 0;
+		tmp->is_right_pipe = 0;
 		ft_lstadd_back(&sh->cmd_list, tmp);
 		//printf("%s ", *split);
 		split++;
-		cur = cur->next;
-	}
-	//printf("\n");
-	cur = sh->cmd_list;
-	while (cur)
-	{
-		//if (cur->is_head)
-			//printf("HEAD");
-		//printf("\ttype:%d %s", cur->type, cur->content);
-		//printf("\n");
 		cur = cur->next;
 	}
 	return 0;
