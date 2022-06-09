@@ -9,6 +9,10 @@
 #include <termios.h>
 #include <signal.h>
 
+#define STDIN 0
+#define STDOUT 1
+#define STDERR 2
+
 #define TYPE_CMD_CD 1
 #define TYPE_CMD_ECHO 2
 #define TYPE_CMD_ENV 3
@@ -101,6 +105,8 @@ int		change_envp(char ***envp, char *str);
 int		ch_envp_with_name(char ***envp, char *s1, char *s2);
 
 
+void	ft_reset_fd(int *fd);
+void	ft_close(int fd);
 
 
 #endif

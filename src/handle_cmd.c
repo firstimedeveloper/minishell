@@ -72,6 +72,7 @@ int	excecute_find(t_minishell *sh, char **argv)
 		execve(exec_path, argv, sh->envp);
 		free(exec_path);
 	}
+	exit(1);
 	return (1);
 }
 
@@ -101,12 +102,13 @@ char	**create_argv(t_cmd *cmd, int len)
 	return (argv);
 }
 
-t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
+int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 {
 	int		builtin_type;
 	pid_t	pid;
 	int		status;
 
+	status = 0;
 	builtin_type = is_builtin(cmd, cmd->content);
 	if (cmd->is_left_pipe)
 	{
@@ -117,18 +119,25 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 	{
 		if (cmd->is_right_pipe)
 		{
+			//printf("child %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
 			dup2(prev_fds[0], 0);
-			close(prev_fds[1]);
-			close(prev_fds[0]);
+			ft_close(prev_fds[1]);
+			ft_close(prev_fds[0]);
+			ft_reset_fd(prev_fds);
 		}
 		if (cmd->is_left_pipe)
 		{
-			close(cmd->fds[0]);
+			//printf("child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
+			ft_close(cmd->fds[0]);
 			dup2(cmd->fds[1], 1);
-			close(cmd->fds[1]);
+			ft_close(cmd->fds[1]);
+			ft_reset_fd(cmd->fds);
 		}
-		if (builtin_type)
+		if (builtin_type && cmd->prev) // if builtin and not first command
+		{
+			printf("child\n");
 			excecute_builtin(sh, cmd->argv, builtin_type);
+		}
 		else
 			excecute_find(sh, cmd->argv);
 	}
@@ -136,16 +145,19 @@ t_cmd	*excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 	{
 		// error occurred
 	}
-	else // parent process
+	if (cmd->is_right_pipe)
 	{
-	 	waitpid(pid, &status, 0);
-		if (cmd->is_right_pipe)
-		{
-			close(prev_fds[1]);
-			close(prev_fds[0]);
-		}
+		//printf("parent %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
+		ft_close(prev_fds[1]);
+		ft_close(prev_fds[0]);
 	}
-	return (NULL);
+	if (builtin_type && !cmd->prev) // if builtin and first command
+	{
+		printf("parent\n");
+		excecute_builtin(sh, cmd->argv, builtin_type);
+	}
+	waitpid(pid, &status, 0);
+	return (status);
 }
 
 void	get_arg_count(t_cmd *cmd)
@@ -175,43 +187,54 @@ int	handle_cmd(t_minishell *sh)
 	t_cmd	*cur;
 	int		prev_fds[2];
 	//t_cmd	*next;
-	//pid_t	pid;
-	//int		status;
+	// pid_t	pid;
+	// int		status;
 
+	// status = 0;
 	cur = sh->cmd_list;
-	//pid = fork();
-	//if (pid == 0)
-	//{
+	// pid = fork();
+	// if (pid == 0)
+	// {
+		ft_reset_fd(prev_fds);
 		while (cur)
 		{
 			if (cur->type == TYPE_CMD)
 			{
 				get_arg_count(cur);
-				//printf("count: %d\n", cur->arg_count);
 				cur->argv = create_argv(cur, cur->arg_count);
 				//for (int i=0; i< cur->arg_count; i++)
 				//	printf(": %s\n",  cur->argv[i]);
-				if (is_builtin(cur, cur->content) && !cur->is_left_pipe)
-				{
-					// for (int i=0; i< cur->arg_count; i++)
-					// 	printf("cnt: %d: %s\n", cur->arg_count, cur->argv[i]);
-					excecute_builtin(sh, cur->argv, is_builtin(cur, cur->content));
-				}
-				else
-					excecute_cmd(sh, cur, prev_fds);
+				// if (is_builtin(cur, cur->content) && !cur->is_left_pipe)
+				// {
+				// 	// for (int i=0; i< cur->arg_count; i++)
+				// 	// 	printf("cnt: %d: %s\n", cur->arg_count, cur->argv[i]);
+				// 	excecute_builtin(sh, cur->argv, is_builtin(cur, cur->content));
+				// }
+				// else
+				// {
+				excecute_cmd(sh, cur, prev_fds);
 				if (cur->is_left_pipe)
 				{
 					prev_fds[0] = cur->fds[0];
 					prev_fds[1] = cur->fds[1];
+					//printf("parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
 				}
+				else if (!cur->is_left_pipe)
+				{
+					//printf("parent %d: cmd: %s cur_fds=[%d, %d]\n", 0, cur->argv[0], cur->fds[0], cur->fds[1]);
+					ft_close(cur->fds[0]);
+					ft_close(cur->fds[1]);
+					ft_reset_fd(cur->fds);
+				}
+				// }
 			}
 			cur = cur->next;
 		}
-		if (prev_fds[0])
-			close(prev_fds[0]);
-		if (prev_fds[1])
-			close(prev_fds[1]);
-	//}
+		//printf("parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
+		ft_close(prev_fds[0]);
+		ft_close(prev_fds[1]);
+		ft_reset_fd(prev_fds);
+	// }
 	// else
 	// {
 	// 	waitpid(pid, &status, 0);
