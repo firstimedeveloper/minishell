@@ -18,7 +18,7 @@ int	ft_envplen(char **envp)
 //    : 환경변수이름이 숫자, 대문자, 소문자로만 이루어진다.
 // input : str -> NAME=VALUE 꼴
 // output : 맞으면 0, invalid면 1을 반환한다. 
-int	check_argv_name(t_minishell *sh, char *str, char *cmd)
+int	check_argv_name(char *str, char *cmd)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ int	check_argv_name(t_minishell *sh, char *str, char *cmd)
 	if (*str == '=' || (*str >= '0' && *str <= '9'))	//첫문자가 =나 숫자로 시작하는지 확인
 	{
 		printf("minishell: %s: `%s': not a valid identifier\n", cmd, str);
-		sh->e_status = 1;
+		g_e_status = 1;
 		return (1);
 	}
 	while (str[i] && str[i] != '=')
@@ -37,7 +37,7 @@ int	check_argv_name(t_minishell *sh, char *str, char *cmd)
 		else
 		{
 			printf("minishell: %s: `%s': not a valid identifier\n", cmd, str);
-			sh->e_status = 1;
+			g_e_status = 1;
 			return (1);
 		}
 	}

@@ -31,17 +31,17 @@ void	cmd_unset(t_minishell *sh, char **argv)
 	int	i;
 
 	i = 0;
-	sh->e_status = 0;
+	g_e_status = 0;
 	while (argv[++i])
 	{
-		if (check_argv_name(sh, argv[i], argv[0]) == 0)
+		if (check_argv_name(argv[i], argv[0]) == 0)
 		{
 			if (ft_strchr(argv[i], '=') == NULL)
 				unset_del(&(sh->envp), argv[i]);
 			else
 			{
 				printf("minishell: unset: `%s': not a valid identifier\n", argv[i]);
-				sh->e_status = 1;
+				g_e_status = 1;
 			}
 		}
 	}

@@ -72,14 +72,14 @@ void	cmd_export(t_minishell *sh, char **av)
 	int i;
 
 	i = 0;
-	sh->e_status = 0;
+	g_e_status = 0;
 	if (!av[1])	// 인자가 없으면 환경변수 출력
 		export_print(sort_envp(sh->envp));
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
 		while (av[++i])
 		{
-			if (check_argv_name(sh, av[i], av[0]) != 0)	//환경변수 이름에 문제 있는 인자는 넘어가기
+			if (check_argv_name(av[i], av[0]) != 0)	//환경변수 이름에 문제 있는 인자는 넘어가기
 				continue;
 			if (ft_getenv(sh->envp, get_envp_name(av[i])))
 			{
