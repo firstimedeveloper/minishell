@@ -14,6 +14,11 @@ CC = gcc -Wall -Werror -Wextra
 LIB_PATH=libft
 SRC_PATH=./src/
 BUILD_PATH=./build/
+#READLINE_LIB 	= -lreadline -L/usr/local/opt/readline/lib
+#READLINE_INC	= -I/usr/local/opt/readline/includeBUILD_PATH=./build/
+
+READLINE_LIB	= -lreadline -L/opt/homebrew/opt/readline/lib
+READLINE_INC	= -I/opt/homebrew/opt/readline/include
 
 FILE_NAMES=minishell handle_line parse/parse handle_cmd lst_util1 lst_util2 utils envp_utils1 envp_utils2 \
 builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/pwd builtin/unset \
@@ -26,13 +31,13 @@ NAME=minishell
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB_PATH)/libft.a
-	$(CC) -lreadline $(LIB_PATH)/libft.a $(OBJ) -o $@
+	$(CC) $(READLINE_LIB) $(READLINE_INC) $(LIB_PATH)/libft.a $(OBJ) -o $@
 
 $(LIB_PATH)/libft.a:
 	make -C libft
 
 $(BUILD_PATH)%.o : $(SRC_PATH)%.c
-	$(CC) -I. -c $< -o $@
+	$(CC) -I. $(READLINE_INC) -c $< -o $@
 
 clean :
 	$(RM) $(OBJ)
