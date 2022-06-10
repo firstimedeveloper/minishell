@@ -201,6 +201,7 @@ int	handle_cmd(t_minishell *sh)
 		{
 			if (cur->type == TYPE_CMD)
 			{
+				redirection(cur);
 				get_arg_count(cur);
 				cur->argv = create_argv(cur, cur->arg_count);
 				//for (int i=0; i< cur->arg_count; i++)

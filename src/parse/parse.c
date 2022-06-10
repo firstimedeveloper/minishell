@@ -7,9 +7,17 @@ void	handle_cmd_type(char *s, int is_head, int *type)
 	else if (*s == '|')
 		*type = TYPE_PIPE;
 	else if (*s == '<')
-		*type = TYPE_REDIR;
+	{
+		*type = TYPE_REDIR_INPUT;
+		if (*(s+1) && *(s+1) == '<')
+			*type = TYPE_REDIR_APPEND;
+	}
 	else if (*s == '>')
-		*type = TYPE_REDIR;
+	{
+		*type = TYPE_REDIR_OUTPUT;
+		if (*(s+1) && *(s+1) == '>')
+			*type = TYPE_REDIR_APPEND;
+	}
 	else
 		*type = TYPE_ARG;
 }
@@ -36,6 +44,8 @@ int parse(t_minishell *sh, char *line)
 		else
 			is_head = 0;
 		handle_cmd_type(*split, is_head, &type);
+	printf("\n %s: handle_cmd_type %d\n", *split, type);
+
 		tmp = ft_lstnew(*split, type, is_head);
 		if (!tmp)
 			return 1; //임시
