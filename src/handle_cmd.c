@@ -80,28 +80,25 @@ int	excecute_find(t_minishell *sh, char **argv)
 char	**create_argv(t_cmd *cmd, int len)
 {
 	char	**argv;
-	char	**argv_cpy;
 	int		i;
 
 	argv = malloc(sizeof(char *) * (len + 1));
 	if (!argv)
 		return (0);
-	argv_cpy = argv;
-	i = 0;
+	argv[0] = cmd->content;
 	argv[len] = 0;
+	i = 1;
 	while (i < len)
 	{
-		// if (cmd->type == TYPE_ARG && cmd->prev->type != TYPE_REDIR)
-		// {
-			// fprintf(stderr,"");
-			*argv_cpy = ft_strdup(cmd->content);
-			if (!*argv_cpy)
+		if (cmd->type == TYPE_ARG && cmd->prev->type <= TYPE_ARG)
+		{
+			argv[i] = ft_strdup(cmd->content);
+			if (!argv[i])
 			{
 				return (ft_free_all(argv));
 			}
-			argv_cpy++;
 			i++;
-		// }
+		}
 		cmd = cmd->next;
 	}
 	return (argv);
@@ -112,7 +109,7 @@ void	get_arg_count(t_cmd *cmd)
 	t_cmd	*next;
 
 	next = cmd;
-	cmd->arg_count = 0;
+	cmd->arg_count = 1;
 	while (next)
 	{
 		if (next->type == TYPE_PIPE)
@@ -123,8 +120,12 @@ void	get_arg_count(t_cmd *cmd)
 				next->is_right_pipe = 1;
 			break ;
 		}
-		// if (cmd->type == TYPE_ARG && cmd->prev->type != TYPE_REDIR)
-		cmd->arg_count++;
+		if (next->type == TYPE_ARG && next->prev->type <= TYPE_ARG)
+		{
+			fprintf(stderr, "\t%s", next->content);
+			cmd->arg_count++;
+
+		}
 		//fprintf(stderr,"count: %d\n", cmd->arg_count);
 		next = next->next;
 	}
@@ -162,6 +163,12 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 				dup2(cmd->fds[1], 1);
 			ft_close(cmd->fds[1]);
 			ft_reset_fd(cmd->fds);
+		}
+		if (cmd->redir_out != -1)
+		{
+			dup2(cmd->redir_out, 1);
+			ft_close(cmd->redir_out);
+			cmd->redir_out = -1;
 		}
 		if (builtin_type) // if builtin and not first command
 		{
@@ -222,7 +229,8 @@ int	handle_cmd(t_minishell *sh)
 	cur = sh->cmd_list;
 	while (cur)
 	{
-		get_arg_count(cur);
+		if (cur->type == TYPE_CMD)
+			get_arg_count(cur);
 		cur = cur->next;
 	}
 	cur = sh->cmd_list;
@@ -232,6 +240,14 @@ int	handle_cmd(t_minishell *sh)
 		{
 			redirection(cur);
 			cur->argv = create_argv(cur, cur->arg_count);
+			int i=0;
+
+			fprintf(stderr, "argcount %d\n", cur->arg_count);
+			while (cur->argv[i])
+			{
+				fprintf(stderr, "arg %d: %s\n", i, cur->argv[i]);
+				i++;
+			}
 			excecute_cmd(sh, cur, prev_fds);
 			if (cur->is_left_pipe)
 			{
@@ -241,7 +257,7 @@ int	handle_cmd(t_minishell *sh)
 			}
 			else if (!cur->is_left_pipe)
 			{
-				//printf("parent %d: cmd: %s cur_fds=[%d, %d]\n", 0, cur->argv[0], cur->fds[0], cur->fds[1]);
+				//fprintf(stderr, parent %d: cmd: %s cur_fds=[%d, %d]\n", 0, cur->argv[0], cur->fds[0], cur->fds[1]);
 				ft_close(cur->fds[0]);
 				ft_close(cur->fds[1]);
 				ft_reset_fd(cur->fds);

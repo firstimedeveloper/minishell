@@ -37,7 +37,7 @@ int main(int argc, char **argv, char **envp)
 		handle_cmd(&sh);
 		while ((pid = waitpid(0, &status, 0)) > 0)
 		{
-			printf("%d child completed\n", pid);
+			fprintf(stderr, "%d child completed\n", pid);
 			if (WIFEXITED(status))
 				if (pid == sh.pid)
 					g_e_status = WEXITSTATUS(status);
