@@ -39,6 +39,7 @@ typedef struct s_cmd
 	int				is_head;
 	int				type;
 	int				fds[2];
+	int				is_first;
 	int				is_left_pipe;
 	int				is_right_pipe;
 	int				arg_count;
@@ -51,6 +52,7 @@ typedef struct s_cmd
 
 typedef struct  s_minishell
 {
+	pid_t			pid;
 	int		in;
 	int		out;
 //	int		e_status;	//exit_status
@@ -110,7 +112,7 @@ char	*ft_getenv(char **envp, char *envp_name);
 int		change_envp(char ***envp, char *str);
 int		ch_envp_with_name(char ***envp, char *s1, char *s2);
 
-/* 
+/*
 * signal.c
 */
 void	ft_signal_handler(int signo);
