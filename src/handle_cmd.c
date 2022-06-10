@@ -4,7 +4,7 @@ int	is_builtin(t_cmd *cmd, char *content)
 {
 	(void)cmd;
 	int	i;
-	const char	*builtin[7] = {
+	const char	*builtin[BUILTIN_COUNT] = {
 		"cd",
 		"echo",
 		"env",
@@ -13,7 +13,7 @@ int	is_builtin(t_cmd *cmd, char *content)
 		"pwd",
 		"unset"
 	};
-	const size_t	builtin_len[7] = {
+	const size_t	builtin_len[BUILTIN_COUNT] = {
 		2,
 		4,
 		3,
@@ -24,7 +24,7 @@ int	is_builtin(t_cmd *cmd, char *content)
 	};
 
 	i = 0;
-	while (i < 7)
+	while (i < BUILTIN_COUNT)
 	{
 		if (!ft_strncmp(builtin[i], content, ft_strlen(content), builtin_len[i]))
 			return (i+1);

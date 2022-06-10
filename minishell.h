@@ -17,6 +17,8 @@
 #define STDOUT 1
 #define STDERR 2
 
+#define BUILTIN_COUNT 7
+
 #define TYPE_CMD_CD 1
 #define TYPE_CMD_ECHO 2
 #define TYPE_CMD_ENV 3
@@ -124,7 +126,7 @@ int		ch_envp_with_name(char ***envp, char *s1, char *s2);
 */
 void	ft_signal_handler(int signo);
 
-/* 
+/*
 redirection
  */
 t_cmd	*redirection(t_cmd *cmd);
