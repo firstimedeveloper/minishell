@@ -41,6 +41,8 @@ t_cmd	*ft_lstnew(void *content, int type, int is_head)
 	ret->is_right_pipe = 0;
 	ret->next = 0;
 	ret->prev = 0;
+	ret->redir_in = -1;
+	ret->redir_out = -1;
 	return (ret);
 }
 
