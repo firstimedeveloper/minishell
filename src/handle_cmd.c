@@ -230,17 +230,8 @@ int	handle_cmd(t_minishell *sh)
 	{
 		if (cur->type == TYPE_CMD)
 		{
+			redirection(cur);
 			cur->argv = create_argv(cur, cur->arg_count);
-			//for (int i=0; i< cur->arg_count; i++)
-			//	fprintf(stderr,": %s\n",  cur->argv[i]);
-			// if (is_builtin(cur, cur->content) && !cur->is_left_pipe)
-			// {
-			// 	// for (int i=0; i< cur->arg_count; i++)
-			// 	// 	fprintf(stderr,"cnt: %d: %s\n", cur->arg_count, cur->argv[i]);
-			// 	excecute_builtin(sh, cur->argv, is_builtin(cur, cur->content));
-			// }
-			// else
-			// {
 			excecute_cmd(sh, cur, prev_fds);
 			if (cur->is_left_pipe)
 			{
@@ -250,36 +241,11 @@ int	handle_cmd(t_minishell *sh)
 			}
 			else if (!cur->is_left_pipe)
 			{
-				redirection(cur);
-				get_arg_count(cur);
-				cur->argv = create_argv(cur, cur->arg_count);
-				//for (int i=0; i< cur->arg_count; i++)
-				//	printf(": %s\n",  cur->argv[i]);
-				// if (is_builtin(cur, cur->content) && !cur->is_left_pipe)
-				// {
-				// 	// for (int i=0; i< cur->arg_count; i++)
-				// 	// 	printf("cnt: %d: %s\n", cur->arg_count, cur->argv[i]);
-				// 	excecute_builtin(sh, cur->argv, is_builtin(cur, cur->content));
-				// }
-				// else
-				// {
-				excecute_cmd(sh, cur, prev_fds);
-				if (cur->is_left_pipe)
-				{
-					prev_fds[0] = cur->fds[0];
-					prev_fds[1] = cur->fds[1];
-					//printf("parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
-				}
-				else if (!cur->is_left_pipe)
-				{
-					//printf("parent %d: cmd: %s cur_fds=[%d, %d]\n", 0, cur->argv[0], cur->fds[0], cur->fds[1]);
-					ft_close(cur->fds[0]);
-					ft_close(cur->fds[1]);
-					ft_reset_fd(cur->fds);
-				}
-				// }
+				//printf("parent %d: cmd: %s cur_fds=[%d, %d]\n", 0, cur->argv[0], cur->fds[0], cur->fds[1]);
+				ft_close(cur->fds[0]);
+				ft_close(cur->fds[1]);
+				ft_reset_fd(cur->fds);
 			}
-			// }
 		}
 		cur = cur->next;
 	}
@@ -287,11 +253,6 @@ int	handle_cmd(t_minishell *sh)
 	ft_close(prev_fds[0]);
 	ft_close(prev_fds[1]);
 	ft_reset_fd(prev_fds);
-	// }
-	// else
-	// {
-	// 	waitpid(pid, &status, 0);
-	// }
 	ft_lstclear(&sh->cmd_list, free);
 	return (1);
 }
