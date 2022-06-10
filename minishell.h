@@ -10,6 +10,8 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <fcntl.h> // open
+
 
 #define STDIN 0
 #define STDOUT 1
@@ -26,7 +28,10 @@
 #define TYPE_CMD 0
 #define TYPE_ARG 1
 #define TYPE_PIPE 2
-#define TYPE_REDIR 3
+#define TYPE_REDIR_INPUT 3
+#define TYPE_REDIR_OUTPUT 4
+#define TYPE_REDIR_APPEND 5
+#define TYPE_REDIR_HEREDOC 6
 
 #define NO_PIPE 0
 #define PIPE_LEFT 1
@@ -39,7 +44,12 @@ typedef struct s_cmd
 	int				is_head;
 	int				type;
 	int				fds[2];
+<<<<<<< HEAD
 	int				is_first;
+=======
+	int				redir_in;
+	int				redir_out;
+>>>>>>> san
 	int				is_left_pipe;
 	int				is_right_pipe;
 	int				arg_count;
@@ -116,6 +126,13 @@ int		ch_envp_with_name(char ***envp, char *s1, char *s2);
 * signal.c
 */
 void	ft_signal_handler(int signo);
+
+/* 
+redirection
+ */
+t_cmd	*redirection(t_cmd *cmd);
+
+
 
 
 void	ft_reset_fd(int *fd);
