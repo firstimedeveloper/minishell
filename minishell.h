@@ -44,12 +44,9 @@ typedef struct s_cmd
 	int				is_head;
 	int				type;
 	int				fds[2];
-<<<<<<< HEAD
 	int				is_first;
-=======
 	int				redir_in;
 	int				redir_out;
->>>>>>> san
 	int				is_left_pipe;
 	int				is_right_pipe;
 	int				arg_count;
