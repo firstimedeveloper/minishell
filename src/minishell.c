@@ -20,6 +20,8 @@ int main(int argc, char **argv, char **envp)
 	t_minishell sh;
 //	struct termios term;
 	char		*line;
+	pid_t		pid;
+	int			status;
 
 //	set_signal(&term);
 	sh.envp = copy_envp(envp);
@@ -34,7 +36,15 @@ int main(int argc, char **argv, char **envp)
 		if (parse(&sh, line) == 1)
 			continue ;
 		handle_cmd(&sh);
+		while ((pid = waitpid(0, &status, 0)) > 0)
+		{
+			printf("%d child completed\n", pid);
+			if (WIFEXITED(status))
+				if (pid == sh.pid)
+					g_e_status = WEXITSTATUS(status);
+		}
 	}
 
 	return (0);
+
 }
