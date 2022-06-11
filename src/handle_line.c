@@ -16,7 +16,7 @@ void	read_line(char **line_read)
 		printf("\033[11C"); // 커서를 10만큼 앞으로 전진시킨다.
 		printf("exit\n");
 		free(*line_read);
-		exit(127);
+		exit(0);
 	}
 }
 

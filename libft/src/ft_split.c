@@ -87,9 +87,12 @@ char	**ft_free_all(char **arr)
 	int	i;
 
 	i = 0;
+	if (!arr)
+		return (0);
 	while (arr[i])
 		free(arr[i++]);
-	free(arr);
+	if (arr)
+		free(arr);
 	return (0);
 }
 
