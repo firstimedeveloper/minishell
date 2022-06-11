@@ -11,7 +11,8 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <fcntl.h> // open
-
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define STDIN 0
 #define STDOUT 1
@@ -34,6 +35,8 @@
 #define TYPE_REDIR_OUTPUT 4
 #define TYPE_REDIR_APPEND 5
 #define TYPE_REDIR_HEREDOC 6
+
+#define ERR_CMD_NOT_FOUND 127
 
 #define NO_PIPE 0
 #define PIPE_LEFT 1
@@ -72,8 +75,14 @@ typedef struct  s_minishell
 
 int	g_e_status;
 
-int     parse(t_minishell *sh, char *line);
-void    read_line(char **line_read);
+/*
+*
+*/
+
+char	**create_argv(t_cmd *cmd, int len);
+void	get_arg_count(t_cmd *cmd);
+int		parse(t_minishell *sh, char *line);
+void	read_line(char **line_read);
 
 int	handle_cmd(t_minishell *sh);
 
@@ -100,7 +109,7 @@ void	ft_lstiter(t_cmd *lst, void (*f)(void *));
 
 t_cmd	*ft_lstlast(t_cmd *lst);
 t_cmd	*ft_lstmap(t_cmd *lst, void *(*f)(void *), void (*del)(void *));
-t_cmd	*ft_lstnew(void *content, int type, int is_head);
+t_cmd	*ft_lstnew(void *content, int type, int is_head, int is_first);
 int	ft_lstsize(t_cmd *lst);
 
 /*

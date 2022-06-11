@@ -22,21 +22,15 @@ void	handle_cmd_type(char *s, int is_head, int *type)
 		*type = TYPE_ARG;
 }
 
-int parse(t_minishell *sh, char *line)
+int	init_cmd_list(t_minishell *sh, char **split)
 {
 	t_cmd	*cur;
 	t_cmd	*tmp;
-	char	**split;
 	int		is_head;
 	int		type;
 
 	is_head = 1;
-	split = ft_split(line, ' ');
-	if (!split || !*split)
-		return (1);
-	//fprintf(stderr, "%s ", *split);
-	cur = ft_lstnew(*split++, TYPE_CMD, is_head);
-	cur->is_first = 1;
+	cur = ft_lstnew(*split++, TYPE_CMD, is_head, 1);
 	sh->cmd_list = cur;
 	while (*split)
 	{
@@ -45,24 +39,24 @@ int parse(t_minishell *sh, char *line)
 		else
 			is_head = 0;
 		handle_cmd_type(*split, is_head, &type);
-//	fprintf(stderr, "\n %s: handle_cmd_type %d\n", *split, type);
-
-		tmp = ft_lstnew(*split, type, is_head);
+		tmp = ft_lstnew(*split, type, is_head, 0);
 		if (!tmp)
 			return 1; //임시
 		ft_lstadd_back(&sh->cmd_list, tmp);
-		//fprintf(stderr, "%s ", *split);
 		split++;
 		cur = cur->next;
 	}
-	// cur = sh->cmd_list;
-	// while (cur)
-	// {
-	// 	fprintf(stderr, "\ttype:%d %s", cur->type, cur->content);
-	// 	if (cur->is_head)
-	// 		fprintf(stderr, "HEAD");
-	// 	fprintf(stderr, "\n");
-	// 	cur = cur->next;
-	// }
-	return 0;
+	return (0);
+}
+
+int parse(t_minishell *sh, char *line)
+{
+	char	**split;
+
+	split = ft_split(line, ' ');
+	if (!split || !*split)
+		return (1);
+	if (init_cmd_list(sh, split))
+		return (1);
+	return (0);
 }

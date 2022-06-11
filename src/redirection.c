@@ -16,7 +16,7 @@ void	redirection_input(t_cmd *cmd, t_cmd *redir)
 		fprintf(stderr, "error\n");
 		ft_close(cmd->redir_in);
 		cmd->redir_in = -1;
-		return ;
+		exit(0);
 	}
 	if (cmd->redir_in > 0)
 		ft_close(cmd->redir_in);
@@ -93,8 +93,8 @@ void	redirection_heredoc(t_cmd *cmd, t_cmd *redir)
 			printf("its end word\n");
 			exit(0);
 		}
-		
-		
+
+
 	}
 
 
