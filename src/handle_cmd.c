@@ -165,7 +165,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 			ft_close(cmd->fds[1]);
 			ft_reset_fd(cmd->fds);
 		}
-		
+
 		// if (cmd->redir_out != -1)
 		// {
 		// 	dup2(cmd->redir_out, 1);
@@ -219,14 +219,12 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 		if (builtin_type && cmd->is_first) // if builtin and first command
 		{
 			// fprintf(stderr,"parent builtin\n");
+			sh->out = dup(1);
 			if (cmd->is_left_pipe)
 			{
-				sh->out = dup(1);
 				// fprintf(stderr,"left pipe\n");
 				// fprintf(stderr,"parent %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
-				dup2(cmd->fds[1], 1);		
-		
-
+				dup2(cmd->fds[1], 1);
 				// ft_reset_fd(cmd->fds);
 				redirection(cmd);
 				excecute_builtin(sh, cmd->argv, builtin_type);
@@ -234,8 +232,10 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 				close(sh->out);
 				return ;
 			}
-
+			redirection(cmd);
 			excecute_builtin(sh, cmd->argv, builtin_type);
+			dup2(sh->out, 1);
+			close(sh->out);
 		}
 	}
 
@@ -267,7 +267,7 @@ int	handle_cmd(t_minishell *sh)
 		if (cur->type == TYPE_CMD)
 		{
 			excecute_cmd(sh, cur, prev_fds);
-			fprintf(stderr, "%p", cur->argv);
+			// fprintf(stderr, "%p", cur->argv);
 			// ft_free_all(cur->argv);
 			// for (int i=0; i<cur->arg_count; i++)
 			// 	free(cur->argv[i]);
