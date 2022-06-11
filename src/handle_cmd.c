@@ -36,7 +36,7 @@ int	is_builtin(t_cmd *cmd, char *content)
 
 int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 {
-	fprintf(stderr,"execute_builtin\n");
+	// fprintf(stderr,"execute_builtin\n");
 	if (builtin == TYPE_CMD_CD)
 		cmd_cd(sh, argv);
 	else if (builtin == TYPE_CMD_ECHO)
@@ -122,7 +122,7 @@ void	get_arg_count(t_cmd *cmd)
 		}
 		if (next->type == TYPE_ARG && next->prev->type <= TYPE_ARG)
 		{
-			fprintf(stderr, "\t%s", next->content);
+			// fprintf(stderr, "\t%s", next->content);
 			cmd->arg_count++;
 
 		}
@@ -131,13 +131,11 @@ void	get_arg_count(t_cmd *cmd)
 	}
 }
 
-int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
+void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 {
 	int		builtin_type;
 	pid_t	pid;
-	int		status;
 
-	status = 0;
 	builtin_type = is_builtin(cmd, cmd->content);
 	if (cmd->is_left_pipe)
 	{
@@ -148,7 +146,7 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 	{
 		if (cmd->is_right_pipe)
 		{
-			//fprintf(stderr,"child %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
+			// fprintf(stderr,"child %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
 			dup2(prev_fds[0], 0);
 			ft_close(prev_fds[1]);
 			ft_close(prev_fds[0]);
@@ -157,24 +155,21 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 		if (cmd->is_left_pipe)
 		// if (cmd->is_left_pipe && !(builtin_type && cmd->is_first))
 		{
-			//fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
+			// fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
 			ft_close(cmd->fds[0]);
-			//if (!(builtin_type && cmd->is_first))
+			if (!(builtin_type && cmd->is_first))
+			{
+				// fprintf(stderr, "child dup2\n");
 				dup2(cmd->fds[1], 1);
+			}
 			ft_close(cmd->fds[1]);
 			ft_reset_fd(cmd->fds);
-		}
-		if (cmd->redir_out != -1)
-		{
-			dup2(cmd->redir_out, 1);
-			ft_close(cmd->redir_out);
-			cmd->redir_out = -1;
 		}
 		if (builtin_type) // if builtin and not first command
 		{
 			if (!cmd->is_first)
 			{
-				fprintf(stderr,"child\n");
+				// fprintf(stderr,"child\n");
 				excecute_builtin(sh, cmd->argv, builtin_type);
 			}
 		}
@@ -203,27 +198,26 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 		}
 		if (builtin_type && cmd->is_first) // if builtin and first command
 		{
+			// fprintf(stderr,"parent builtin\n");
 			if (cmd->is_left_pipe)
 			{
-				fprintf(stderr,"parent builtin\n");
-				//fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
+				sh->out = dup(1);
+				// fprintf(stderr,"left pipe\n");
+				// fprintf(stderr,"parent %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
 				dup2(cmd->fds[1], 1);
-				ft_close(cmd->fds[0]);
-				ft_close(cmd->fds[1]);
-				ft_reset_fd(cmd->fds);
+				// ft_reset_fd(cmd->fds);
+				excecute_builtin(sh, cmd->argv, builtin_type);
+				dup2(sh->out, 1);
+				close(sh->out);
+				return ;
 			}
-			if (cmd->redir_out != -1)
-			{
-				dup2(cmd->redir_out, 1);
-				ft_close(cmd->redir_out);
-				cmd->redir_out = -1;
-			}
+
 			excecute_builtin(sh, cmd->argv, builtin_type);
 		}
 	}
 
-	fprintf(stderr,"pid: %d\n", pid);
-	return (status);
+	// fprintf(stderr,"pid: %d\n", pid);
+	return ;
 }
 
 int	handle_cmd(t_minishell *sh)
@@ -236,7 +230,12 @@ int	handle_cmd(t_minishell *sh)
 	while (cur)
 	{
 		if (cur->type == TYPE_CMD)
+		{
 			get_arg_count(cur);
+			cur->argv = create_argv(cur, cur->arg_count);
+			if (!cur->argv)
+				return (0);
+		}
 		cur = cur->next;
 	}
 	cur = sh->cmd_list;
@@ -244,22 +243,17 @@ int	handle_cmd(t_minishell *sh)
 	{
 		if (cur->type == TYPE_CMD)
 		{
-			redirection(cur);
-			cur->argv = create_argv(cur, cur->arg_count);
-			int i=0;
-
-			fprintf(stderr, "argcount %d\n", cur->arg_count);
-			while (cur->argv[i])
-			{
-				fprintf(stderr, "arg %d: %s\n", i, cur->argv[i]);
-				i++;
-			}
 			excecute_cmd(sh, cur, prev_fds);
+			fprintf(stderr, "%p", cur->argv);
+			// ft_free_all(cur->argv);
+			// for (int i=0; i<cur->arg_count; i++)
+			// 	free(cur->argv[i]);
+			// free(cur->argv);
 			if (cur->is_left_pipe)
 			{
 				prev_fds[0] = cur->fds[0];
 				prev_fds[1] = cur->fds[1];
-				//fprintf(stderr,"parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
+				// fprintf(stderr,"parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
 			}
 			else if (!cur->is_left_pipe)
 			{

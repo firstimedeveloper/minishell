@@ -44,7 +44,8 @@ void	ft_lstclear(t_cmd **lst, void (*del)(void *))
 
 void	ft_lstdelone(t_cmd *lst, void (*del)(void *))
 {
-	del(lst->content);
+	if (lst->content)
+		del(lst->content);
 	free(lst);
 }
 

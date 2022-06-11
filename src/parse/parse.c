@@ -50,11 +50,19 @@ int parse(t_minishell *sh, char *line)
 		tmp = ft_lstnew(*split, type, is_head);
 		if (!tmp)
 			return 1; //임시
-		tmp->is_first = 0;
 		ft_lstadd_back(&sh->cmd_list, tmp);
 		//fprintf(stderr, "%s ", *split);
 		split++;
 		cur = cur->next;
 	}
+	// cur = sh->cmd_list;
+	// while (cur)
+	// {
+	// 	fprintf(stderr, "\ttype:%d %s", cur->type, cur->content);
+	// 	if (cur->is_head)
+	// 		fprintf(stderr, "HEAD");
+	// 	fprintf(stderr, "\n");
+	// 	cur = cur->next;
+	// }
 	return 0;
 }

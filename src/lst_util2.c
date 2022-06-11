@@ -35,6 +35,8 @@ t_cmd	*ft_lstnew(void *content, int type, int is_head)
 	if (!ret)
 		return (0);
 	ret->content = content;
+	ret->arg_count = 0;
+	ret->argv = NULL;
 	ret->type = type;
 	ret->is_head = is_head;
 	ret->is_left_pipe = 0;
