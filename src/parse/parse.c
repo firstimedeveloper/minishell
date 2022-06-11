@@ -36,6 +36,7 @@ int parse(t_minishell *sh, char *line)
 		return (1);
 	//fprintf(stderr, "%s ", *split);
 	cur = ft_lstnew(*split++, TYPE_CMD, is_head);
+	cur->is_first = 1;
 	sh->cmd_list = cur;
 	while (*split)
 	{
