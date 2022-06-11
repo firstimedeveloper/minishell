@@ -170,6 +170,12 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 			ft_close(cmd->redir_out);
 			cmd->redir_out = -1;
 		}
+		if (cmd->redir_in != -1)
+		{
+			dup2(cmd->redir_in, 0);
+			ft_close(cmd->redir_in);
+			cmd->redir_in = -1;
+		}
 		if (builtin_type) // if builtin and not first command
 		{
 			if (!cmd->is_first)

@@ -10,7 +10,7 @@ void	handle_cmd_type(char *s, int is_head, int *type)
 	{
 		*type = TYPE_REDIR_INPUT;
 		if (*(s+1) && *(s+1) == '<')
-			*type = TYPE_REDIR_APPEND;
+			*type = TYPE_REDIR_HEREDOC;
 	}
 	else if (*s == '>')
 	{
