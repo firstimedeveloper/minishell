@@ -81,6 +81,8 @@ t_cmd	*redirection(t_cmd *cmd)
 	tmp = cmd;
 	while (tmp)
 	{
+		if (tmp->type == TYPE_PIPE)
+			break ;
 		if (tmp->type == TYPE_REDIR_INPUT)
 			redirection_input(cmd, tmp);
 		else if (tmp->type == TYPE_REDIR_OUTPUT)

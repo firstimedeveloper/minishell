@@ -218,6 +218,12 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 				ft_close(cmd->fds[1]);
 				ft_reset_fd(cmd->fds);
 			}
+			if (cmd->redir_out != -1)
+			{
+				dup2(cmd->redir_out, 1);
+				ft_close(cmd->redir_out);
+				cmd->redir_out = -1;
+			}
 			excecute_builtin(sh, cmd->argv, builtin_type);
 		}
 	}
