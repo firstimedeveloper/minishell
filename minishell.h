@@ -137,6 +137,7 @@ t_cmd	*redirection(t_cmd *cmd);
 void	ft_reset_fd(int *fd);
 void	ft_close(int fd);
 
+void	read_line_heredoc(char **line_read);
 
 
 #endif

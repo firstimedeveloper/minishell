@@ -122,7 +122,7 @@ void	get_arg_count(t_cmd *cmd)
 		}
 		if (next->type == TYPE_ARG && next->prev->type <= TYPE_ARG)
 		{
-			fprintf(stderr, "\t%s", next->content);
+//			fprintf(stderr, "\t%s", next->content);
 			cmd->arg_count++;
 
 		}
@@ -164,23 +164,27 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 			ft_close(cmd->fds[1]);
 			ft_reset_fd(cmd->fds);
 		}
-		if (cmd->redir_out != -1)
-		{
-			dup2(cmd->redir_out, 1);
-			ft_close(cmd->redir_out);
-			cmd->redir_out = -1;
-		}
-		if (cmd->redir_in != -1)
-		{
-			dup2(cmd->redir_in, 0);
-			ft_close(cmd->redir_in);
-			cmd->redir_in = -1;
-		}
+		
+		// if (cmd->redir_out != -1)
+		// {
+		// 	dup2(cmd->redir_out, 1);
+		// 	ft_close(cmd->redir_out);
+		// 	cmd->redir_out = -1;
+		// }
+		// if (cmd->redir_in != -1)
+		// {
+		// 	dup2(cmd->redir_in, 0);
+		// 	ft_close(cmd->redir_in);
+		// 	cmd->redir_in = -1;
+		// }
+
 		if (builtin_type) // if builtin and not first command
 		{
 			if (!cmd->is_first)
 			{
 				fprintf(stderr,"child\n");
+						printf("before redirection\n");
+				redirection(cmd);
 				excecute_builtin(sh, cmd->argv, builtin_type);
 			}
 		}
@@ -190,8 +194,12 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 			// for(int i=0; i<cmd->arg_count; i++)
 				// fprintf(stderr,"%s ", cmd->argv[i]);
 			// fprintf(stderr,"\n");
+					printf("before redirection\n");
+			redirection(cmd);
 			excecute_find(sh, cmd->argv);
+//			printf("after excecute_find\n");
 		}
+//		printf("before child exit\n");
 		exit(0);
 	}
 	else if (pid < 0)
@@ -218,12 +226,20 @@ int	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 				ft_close(cmd->fds[1]);
 				ft_reset_fd(cmd->fds);
 			}
-			if (cmd->redir_out != -1)
-			{
-				dup2(cmd->redir_out, 1);
-				ft_close(cmd->redir_out);
-				cmd->redir_out = -1;
-			}
+			// if (cmd->redir_out != -1)
+			// {
+			// 	dup2(cmd->redir_out, 1);
+			// 	ft_close(cmd->redir_out);
+			// 	cmd->redir_out = -1;
+			// }
+			// if (cmd->redir_in != -1)
+			// {
+			// 	dup2(cmd->redir_in, 0);
+			// 	ft_close(cmd->redir_in);
+			// 	cmd->redir_in = -1;
+			// }
+
+			redirection(cmd);
 			excecute_builtin(sh, cmd->argv, builtin_type);
 		}
 	}
@@ -250,16 +266,16 @@ int	handle_cmd(t_minishell *sh)
 	{
 		if (cur->type == TYPE_CMD)
 		{
-			redirection(cur);
+//			redirection(cur);
 			cur->argv = create_argv(cur, cur->arg_count);
-			int i=0;
+//			int i=0;
 
-			fprintf(stderr, "argcount %d\n", cur->arg_count);
-			while (cur->argv[i])
-			{
-				fprintf(stderr, "arg %d: %s\n", i, cur->argv[i]);
-				i++;
-			}
+//			fprintf(stderr, "argcount %d\n", cur->arg_count);
+//			while (cur->argv[i])
+//			{
+//				fprintf(stderr, "arg %d: %s\n", i, cur->argv[i]);
+//				i++;
+//			}
 			excecute_cmd(sh, cur, prev_fds);
 			if (cur->is_left_pipe)
 			{
