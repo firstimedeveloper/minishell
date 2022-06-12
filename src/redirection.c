@@ -9,7 +9,7 @@ void	redirection_input(t_cmd *cmd, t_cmd *redir)
 
 	open_file = redir->next->content;
 	temp_fd = open(open_file, O_RDONLY);
-	printf("open for read redirinput_fd : %d\n", temp_fd);
+	// printf("open for read redirinput_fd : %d\n", temp_fd);
 
 	if (temp_fd == -1)
 	{
@@ -85,7 +85,7 @@ void	redirection_heredoc(t_cmd *cmd, t_cmd *redir)
 	end = redir->next->content;
 	temp_fd = open("heredoc_tempfile", O_WRONLY | O_CREAT | O_EXCL, 0600);
 
-	printf("open for write fd : %d\n", temp_fd);
+	fprintf(stderr, "open for write fd : %d\n", temp_fd);
 
 	if (temp_fd == -1)
 	{
@@ -94,20 +94,30 @@ void	redirection_heredoc(t_cmd *cmd, t_cmd *redir)
 
 	while (1)
 	{
+		fprintf(stderr,"in while\n");
+		
 		read_line_heredoc(&line);
+				fprintf(stderr,"after read_line_here\n");
+
 		if (ft_strncmp(line, end, ft_strlen(line), ft_strlen(end)))
 		{
+			fprintf(stderr,"befroe puendl_Fd\n");
+
 			ft_putendl_fd(line, temp_fd);
 		//	free(line);
 		}
 		else
 			break;
-
-
 	}
+
+	fprintf(stderr,"before close temp_fd\n");
+
 	ft_close(temp_fd);
+	fprintf(stderr,"after close temp_fd\n");
 
 	temp_fd1 = open("heredoc_tempfile", O_RDONLY);
+	fprintf(stderr, "read(redirin, stdin) for write fd : %d\n", temp_fd1);
+
 	if (temp_fd1 == -1)
 	{
 		//open error exit하게 해야함
@@ -131,7 +141,7 @@ t_cmd	*redirection(t_cmd *cmd)
 	t_cmd	*is_redir;
 
 	is_redir = cmd;
-	printf("%s is in redirection\n", cmd->content);
+	fprintf(stderr,"%s is in redirection\n", cmd->content);
 	while (is_redir)
 	{
 		if (is_redir->type == TYPE_PIPE)

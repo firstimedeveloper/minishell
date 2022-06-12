@@ -104,7 +104,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 	{
 		if (cmd->is_right_pipe)
 		{
-			// fprintf(stderr,"child %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
+			fprintf(stderr,"child %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
 			dup2(prev_fds[0], 0);
 			ft_close(prev_fds[1]);
 			ft_close(prev_fds[0]);
@@ -113,22 +113,26 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 		if (cmd->is_left_pipe)
 		// if (cmd->is_left_pipe && !(builtin_type && cmd->is_first))
 		{
-			// fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
+			fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
 			ft_close(cmd->fds[0]);
 			if (!(builtin_type && cmd->is_first))
 			{
-				// fprintf(stderr, "child dup2\n");
+				fprintf(stderr, "%s child dup21\n", cmd->content);
 				dup2(cmd->fds[1], 1);
 			}
+							fprintf(stderr, "%s child dup22\n", cmd->content);
+
 			ft_close(cmd->fds[1]);
+							fprintf(stderr, "%s child dup23\n", cmd->content);
+
 			ft_reset_fd(cmd->fds);
 		}
 		if (builtin_type) // if builtin and not first command
 		{
 			if (!cmd->is_first)
 			{
-				// fprintf(stderr,"child\n");
-				printf("before redirection builtin\n");
+				fprintf(stderr,"child\n");
+				// printf("before redirection builtin\n");
 				redirection(cmd);
 				excecute_builtin(sh, cmd->argv, builtin_type);
 			}
@@ -139,8 +143,13 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 			// for(int i=0; i<cmd->arg_count; i++)
 				// fprintf(stderr,"%s ", cmd->argv[i]);
 			// fprintf(stderr,"\n");
-			printf("before redirection bin fuc\n");
+			// printf("before redirection bin fuc\n");
+			
+			fprintf(stderr, "%s child dup24\n", cmd->content);
+
 			redirection(cmd);
+			fprintf(stderr, "%s after redirection\n", cmd->content);
+
 			if (path == NULL)
 			{
 				ft_error(sh, cmd->argv[0], "command not found", ERR_CMD_NOT_FOUND);

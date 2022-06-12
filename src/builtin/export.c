@@ -77,7 +77,7 @@ void	cmd_export(t_minishell *sh, char **av)
 		export_print(sort_envp(copy_envp(sh->envp)));
 	else	// 인자 있으면 환경변수 추가, 수정
 	{
-		if (ft_strncmp(av[i], "_", ft_strlen(av[i]), 1))
+		if (ft_strncmp(av[i], "_", ft_strlen(av[i]), 1) == 0)
 			return ;
 		while (av[++i])
 		{

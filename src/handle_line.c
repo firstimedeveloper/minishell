@@ -27,7 +27,10 @@ void	read_line_heredoc(char **line_read)
 	// 	free(*line_read);
 	// 	*line_read = (char *)NULL;
 	// }
+	fprintf(stderr, "before readline\n");
 	*line_read = readline("> ");
+		fprintf(stderr, "after readline\n");
+
 	if (*line_read == NULL)
 	{
 		//입력받은거 출력하기 
