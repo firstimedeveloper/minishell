@@ -36,7 +36,6 @@ int	is_builtin(t_cmd *cmd, char *content)
 
 int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 {
-	// fprintf(stderr,"execute_builtin\n");
 	if (builtin == TYPE_CMD_CD)
 		cmd_cd(sh, argv);
 	else if (builtin == TYPE_CMD_ECHO)
@@ -56,7 +55,7 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 
 char	*find_path(char *command)
 {
-	struct stat	s;
+	struct 		stat	s;
 	char		**paths;
 	char		*path;
 	char		*exec_path;
@@ -65,7 +64,7 @@ char	*find_path(char *command)
 	if (stat(command, &s) == 0)
 		return (ft_strdup(command));
 	path = getenv("PATH");
-	paths = ft_split(path, ':'); // will not work if path has ' or "
+	paths = ft_split(path, ':');
 	//fprintf(stderr,"unknown cmd path:\n");
 	while (*paths)
 	{
@@ -80,14 +79,7 @@ char	*find_path(char *command)
 
 }
 
-void	ft_error(t_minishell *sh, char *command, char *err_msg, int err_code)
-{
-	(void)sh;
-	(void)err_code;
-	printf("minishell: %s: %s\n", command, err_msg);
-	// if (err_code != 0)
-		//g_e_status = err_code;
-}
+
 
 void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 {
@@ -145,7 +137,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 
 			if (path == NULL)
 			{
-				ft_error(sh, cmd->argv[0], "command not found", ERR_CMD_NOT_FOUND);
+				ft_error(cmd->argv[0], NULL, "command not found", ERR_CMD_NOT_FOUND);
 				exit(ERR_CMD_NOT_FOUND);
 			}
 			execve(path, cmd->argv, sh->envp);
