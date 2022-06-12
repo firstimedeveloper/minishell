@@ -44,7 +44,8 @@ void	cmd_echo(t_minishell *sh, char **argv)
 	int i;
 
 	i = 1;	
-	while (!check_op(argv[i]))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
+//	printf("cmd_echo is called\n");
+	while (argv[i] && !check_op(argv[i]))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
 		i++;
 	while (argv[i])
 	{
@@ -52,7 +53,7 @@ void	cmd_echo(t_minishell *sh, char **argv)
 		if (argv[++i])		//다음 단어가 있으면 띄어쓰기 출력 하고 인덱스++
 			printf(" ");
 	}
-	if (check_op(argv[1]))	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
+	if ((argv[1] && check_op(argv[1])) || argv[1] == NULL)	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
 		printf("\n");
 	g_e_status = 0;
 }

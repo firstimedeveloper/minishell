@@ -7,12 +7,15 @@ void	cmd_env(t_minishell *sh, char **argv)
 
 	if (argv[1])
 	{
-		printf("minishell: env: minishell env don't need argv.\n");
-		g_e_status = 1;
+		printf("env: %s:  No such file or directory.\n", argv[1]);
+		g_e_status = 127;
 		return ;
 	}
-	i = 0;
-	while (sh->envp[i])
-		printf("%s\n", sh->envp[i++]);
+	i = -1;
+	while (sh->envp[++i])
+	{
+		if (ft_strchr(sh->envp[i], '='))
+			printf("%s\n", sh->envp[i]);
+	}
 	g_e_status = 0;
 }

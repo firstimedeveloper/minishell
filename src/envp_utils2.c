@@ -70,7 +70,8 @@ int	change_envp(char ***envp, char *str)
 		e = get_envp_name((*envp)[i]);
 		if (ft_strncmp(e, s, ft_strlen(e), ft_strlen(s)) == 0)
 			ch_envp[i--] = ft_strdup(str);
-		ch_envp[i] = ft_strdup((*envp)[i]);
+		else
+			ch_envp[i] = ft_strdup((*envp)[i]);
 		free(e);
 	}
 	free(s);
