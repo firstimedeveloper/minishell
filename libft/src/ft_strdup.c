@@ -12,6 +12,18 @@
 
 #include "libft.h"
 
+char	*ft_strldup(const char *s1, size_t len)
+{
+	char	*ret;
+
+	ret = malloc(sizeof(char) * (len + 1));
+	if (!ret)
+		return (0);
+	ft_memcpy(ret, s1, len);
+	ret[len] = '\0';
+	return (ret);
+}
+
 char	*ft_strdup(const char *s1)
 {
 	size_t	len;

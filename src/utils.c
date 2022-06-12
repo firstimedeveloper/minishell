@@ -87,7 +87,7 @@ long long	ft_atoll(const char *str)
 			neg = -1;
 		str++;
 	}
-	//여기에 longlong넘는지 확인 neg같이 받는다. 
+	//여기에 longlong넘는지 확인 neg같이 받는다.
 	while (*str && (*str  >= '0' && *str <= '9'))
 	{
 		val *= 10;
@@ -100,4 +100,13 @@ long long	ft_atoll(const char *str)
 		//숫자가 아니다.
 	}
 	return (val);
+}
+
+void	ft_error(t_minishell *sh, char *command, char *err_msg, int err_code)
+{
+	(void)sh;
+	printf("minishell: %s: %s\n", command, err_msg);
+	// if (err_code != 0)
+		//g_e_status = err_code;
+	exit(err_code);
 }

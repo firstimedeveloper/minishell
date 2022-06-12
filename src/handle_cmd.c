@@ -80,15 +80,6 @@ char	*find_path(char *command)
 
 }
 
-void	ft_error(t_minishell *sh, char *command, char *err_msg, int err_code)
-{
-	(void)sh;
-	(void)err_code;
-	printf("minishell: %s: %s\n", command, err_msg);
-	// if (err_code != 0)
-		//g_e_status = err_code;
-}
-
 void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 {
 	int		builtin_type;
@@ -144,7 +135,6 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 			if (path == NULL)
 			{
 				ft_error(sh, cmd->argv[0], "command not found", ERR_CMD_NOT_FOUND);
-				exit(ERR_CMD_NOT_FOUND);
 			}
 				execve(path, cmd->argv, sh->envp);
 //			printf("after execute_bin\n");

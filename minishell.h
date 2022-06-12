@@ -44,6 +44,16 @@
 #define PIPE_BOTH 3
 #define MAX 1024
 
+#define CHAR_NO_QUOTE 0
+#define CHAR_SINGLE_QUOTE 1
+#define CHAR_DOUBLE_QUOTE 2
+
+typedef struct s_stack
+{
+	int	top;
+	int	items[MAX];
+}	t_stack;
+
 typedef struct s_cmd
 {
 	int				is_head;
@@ -76,11 +86,12 @@ typedef struct  s_minishell
 int	g_e_status;
 
 /*
-*
+*	parse functions
 */
 
 char	**create_argv(t_cmd *cmd, int len);
 void	get_arg_count(t_cmd *cmd);
+char	*handle_expansion(t_minishell *sh, char *str);
 int		parse(t_minishell *sh, char *line);
 void	read_line(char **line_read);
 
@@ -98,7 +109,7 @@ void	cmd_pwd();
 void	cmd_unset(t_minishell *sh, char **argv);
 
 /*
-* util functions
+* list util functions
 */
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void	ft_lstadd_front(t_cmd **lst, t_cmd *new);
@@ -113,14 +124,24 @@ t_cmd	*ft_lstnew(void *content, int type, int is_head, int is_first);
 int	ft_lstsize(t_cmd *lst);
 
 /*
-* utils.c
+*	utils
 */
 int		ch_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_free_double(char **ptr);
-int	av_have_eq(char *argv);
+int		av_have_eq(char *argv);
+void	ft_error(t_minishell *sh, char *command, char *err_msg, int err_code);
 
 /*
-* envp_utils.c
+*	stack util functions
+*/
+void init_stack(t_stack *s);
+int	is_empty(t_stack *s);
+int	is_full(t_stack *s);
+int	pop(t_stack *s);
+int	push(t_stack *s, int value);
+
+/*
+*	envp_util functions
 */
 int		ft_envplen(char **envp);
 int		check_argv_name(char *str, char *cmd);
