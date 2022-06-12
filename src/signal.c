@@ -12,7 +12,7 @@ void	handle_sigint(pid_t pid)
 	}
 	else					//자식 프로세스가 구동 중
 	{
-		printf("^C\n");
+		printf("\n");
 		g_e_status = 130;
 	}
 }
@@ -21,7 +21,7 @@ void	handle_sigquit(pid_t pid)
 {
 	if (pid != -1)			//자식 프로세스가 구동 중
 	{
-		printf("^\\Quit: 3\n");
+		printf("Quit: 3\n");
 		rl_replace_line("", 1);
 		g_e_status = 131;
 	}
