@@ -27,7 +27,7 @@ t_cmd	*ft_lstlast(t_cmd *lst)
 // 	return (new_lst);
 // }
 
-t_cmd	*ft_lstnew(void *content, int type, int is_head)
+t_cmd	*ft_lstnew(void *content, int type, int is_head, int is_first)
 {
 	t_cmd	*ret;
 
@@ -41,7 +41,7 @@ t_cmd	*ft_lstnew(void *content, int type, int is_head)
 	ret->is_head = is_head;
 	ret->is_left_pipe = 0;
 	ret->is_right_pipe = 0;
-	ret->is_first = 0;
+	ret->is_first = is_first;
 	ret->next = 0;
 	ret->prev = 0;
 	ret->redir_in = -1;

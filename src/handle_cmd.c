@@ -54,84 +54,42 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 	return (0);
 }
 
-int	excecute_find(t_minishell *sh, char **argv)
+char	*find_path(char *command)
 {
-	(void)sh;
-	char	**paths;
-	char	*path;
-	char	*exec_path;
+	struct stat	s;
+	char		**paths;
+	char		*path;
+	char		*exec_path;
 
-	execve(*argv, argv, sh->envp);
+
+	if (stat(command, &s) == 0)
+		return (ft_strdup(command));
 	path = getenv("PATH");
 	paths = ft_split(path, ':'); // will not work if path has ' or "
 	//fprintf(stderr,"unknown cmd path:\n");
 	while (*paths)
 	{
-		exec_path = ft_strdirjoin(*paths, *argv);
+		exec_path = ft_strdirjoin(*paths, command);
 		//fprintf(stderr,"exec path: %s\n", exec_path);
 		paths++;
-		execve(exec_path, argv, sh->envp);
+		if (stat(exec_path, &s) == 0)
+			return (exec_path);
 		free(exec_path);
 	}
-	exit(1);
-	return (1);
+	return (NULL);
+
 }
 
-char	**create_argv(t_cmd *cmd, int len)
+void	ft_error(t_minishell *sh, char *command, char *err_msg, int err_code)
 {
-	char	**argv;
-	int		i;
-
-	argv = malloc(sizeof(char *) * (len + 1));
-	if (!argv)
-		return (0);
-	argv[0] = cmd->content;
-	argv[len] = 0;
-	i = 1;
-	while (i < len)
-	{
-		if (cmd->type == TYPE_ARG && cmd->prev->type <= TYPE_ARG)
-		{
-			argv[i] = ft_strdup(cmd->content);
-			if (!argv[i])
-			{
-				return (ft_free_all(argv));
-			}
-			i++;
-		}
-		cmd = cmd->next;
-	}
-	return (argv);
+	(void)sh;
+	(void)err_code;
+	printf("minishell: %s: %s\n", command, err_msg);
+	// if (err_code != 0)
+		//g_e_status = err_code;
 }
 
-void	get_arg_count(t_cmd *cmd)
-{
-	t_cmd	*next;
-
-	next = cmd;
-	cmd->arg_count = 1;
-	while (next)
-	{
-		if (next->type == TYPE_PIPE)
-		{
-			cmd->is_left_pipe = 1;
-			next = next->next;
-			if (next)
-				next->is_right_pipe = 1;
-			break ;
-		}
-		if (next->type == TYPE_ARG && next->prev->type <= TYPE_ARG)
-		{
-			// fprintf(stderr, "\t%s", next->content);
-			cmd->arg_count++;
-
-		}
-		//fprintf(stderr,"count: %d\n", cmd->arg_count);
-		next = next->next;
-	}
-}
-
-void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
+void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 {
 	int		builtin_type;
 	pid_t	pid;
@@ -165,20 +123,6 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 			ft_close(cmd->fds[1]);
 			ft_reset_fd(cmd->fds);
 		}
-
-		// if (cmd->redir_out != -1)
-		// {
-		// 	dup2(cmd->redir_out, 1);
-		// 	ft_close(cmd->redir_out);
-		// 	cmd->redir_out = -1;
-		// }
-		// if (cmd->redir_in != -1)
-		// {
-		// 	dup2(cmd->redir_in, 0);
-		// 	ft_close(cmd->redir_in);
-		// 	cmd->redir_in = -1;
-		// }
-
 		if (builtin_type) // if builtin and not first command
 		{
 			if (!cmd->is_first)
@@ -197,8 +141,13 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 			// fprintf(stderr,"\n");
 			printf("before redirection bin fuc\n");
 			redirection(cmd);
-			excecute_find(sh, cmd->argv);
-//			printf("after excecute_find\n");
+			if (path == NULL)
+			{
+				ft_error(sh, cmd->argv[0], "command not found", ERR_CMD_NOT_FOUND);
+				exit(ERR_CMD_NOT_FOUND);
+			}
+				execve(path, cmd->argv, sh->envp);
+//			printf("after execute_bin\n");
 		}
 //		printf("before child exit\n");
 		exit(0);
@@ -219,6 +168,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 		if (builtin_type && cmd->is_first) // if builtin and first command
 		{
 			// fprintf(stderr,"parent builtin\n");
+			sh->out = dup(0);
 			sh->out = dup(1);
 			if (cmd->is_left_pipe)
 			{
@@ -228,6 +178,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 				// ft_reset_fd(cmd->fds);
 				redirection(cmd);
 				excecute_builtin(sh, cmd->argv, builtin_type);
+				dup2(sh->out, 0);
 				dup2(sh->out, 1);
 				close(sh->out);
 				return ;
@@ -246,6 +197,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds)
 int	handle_cmd(t_minishell *sh)
 {
 	t_cmd	*cur;
+	char	*path;
 	int		prev_fds[2];
 
 	ft_reset_fd(prev_fds);
@@ -266,12 +218,10 @@ int	handle_cmd(t_minishell *sh)
 	{
 		if (cur->type == TYPE_CMD)
 		{
-			excecute_cmd(sh, cur, prev_fds);
-			// fprintf(stderr, "%p", cur->argv);
-			// ft_free_all(cur->argv);
-			// for (int i=0; i<cur->arg_count; i++)
-			// 	free(cur->argv[i]);
-			// free(cur->argv);
+			path = find_path(cur->argv[0]);
+			if (path == NULL)
+				printf("errno: %d\n", errno);
+			excecute_cmd(sh, cur, prev_fds, path);
 			if (cur->is_left_pipe)
 			{
 				prev_fds[0] = cur->fds[0];

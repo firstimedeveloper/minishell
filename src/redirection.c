@@ -102,6 +102,8 @@ void	redirection_heredoc(t_cmd *cmd, t_cmd *redir)
 		}
 		else
 			break;
+
+
 	}
 	ft_close(temp_fd);
 
