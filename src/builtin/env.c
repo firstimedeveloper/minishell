@@ -2,13 +2,11 @@
 
 void	cmd_env(t_minishell *sh, char **argv)
 {
-	printf("cmd env is called\n");
 	int	i;
 
 	if (argv[1])
 	{
-		printf("env: %s:  No such file or directory.\n", argv[1]);
-		g_e_status = 127;
+		ft_error(argv[0], argv[1], "No such file or directory", 127);
 		return ;
 	}
 	i = -1;

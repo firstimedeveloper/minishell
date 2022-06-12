@@ -22,7 +22,7 @@ READLINE_INC	= -I/opt/homebrew/opt/readline/include
 
 FILE_NAMES=minishell handle_line parse/parse parse/init_argv handle_cmd lst_util1 lst_util2 utils envp_utils1 envp_utils2 signal \
 builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/pwd builtin/unset \
-execute redirection utils/stack_util1 parse/expansion
+execute redirection utils/stack_util1 parse/expansion free ft_error
 
 SRC=$(addprefix $(SRC_PATH), $(addsuffix .c, $(FILE_NAMES)))
 OBJ=$(SRC:$(SRC_PATH)%.c=$(BUILD_PATH)%.o)

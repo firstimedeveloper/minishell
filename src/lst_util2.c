@@ -33,7 +33,7 @@ t_cmd	*ft_lstnew(void *content, int type, int is_head, int is_first)
 
 	ret = malloc(sizeof(t_cmd));
 	if (!ret)
-		return (0);
+		exit(errno);
 	ret->content = content;
 	ret->arg_count = 0;
 	ret->argv = NULL;

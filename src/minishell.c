@@ -29,6 +29,8 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, ft_signal_handler);	// ctrl "\"
 	//sh.envp = envp;	minishell만의 환경변수리스트를 만들어야한다고 생각해서 위의 코드 살림
 	line = NULL;
+	sh.in = dup(0);
+	sh.out = dup(1);
 	while (1)
 	{
 		read_line(&line);

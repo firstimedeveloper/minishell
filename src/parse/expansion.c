@@ -70,10 +70,8 @@ char	*handle_expansion(t_minishell *sh, char *str) {
 						{
 							ft_strlcat(ret, env, 100);
 							free(temp);
-							i += len;
 						}
-						else
-							i++;
+						i += len;
 					}
 					else
 					{
