@@ -17,9 +17,7 @@ char	**create_argv(t_cmd *cmd, int len)
 		{
 			argv[i] = ft_strdup(cmd->content);
 			if (!argv[i])
-			{
 				return (ft_free_all(argv));
-			}
 			i++;
 		}
 		cmd = cmd->next;

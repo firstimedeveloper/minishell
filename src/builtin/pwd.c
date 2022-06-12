@@ -2,15 +2,11 @@
 
 void	cmd_pwd(void)
 {
-	printf("cmd pwd is called\n");
 	char	*path;
 
 	path = getcwd(NULL, 0);
  	if (path == NULL)
-	{
-		printf("minishell: pwd: %s\n", strerror(errno));
-		g_e_status = errno;
-	}
+		ft_error("pwd", NULL, strerror(errno), errno);
 	else
 	{
 		printf("%s\n", path);

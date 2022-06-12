@@ -29,16 +29,13 @@ int	cd_no_argv(char **envp)
 
 void	cmd_cd(t_minishell *sh, char **argv)
 {
-	fprintf(stderr, "cmd cd is called\n");
-
 	char path[MAX];
 
 	if (argv[1])
 	{
 		if (chdir(argv[1]) == -1)
 		{
-			printf("minishell: cd: %s: %s\n", argv[1], strerror(errno));
-			g_e_status = 1;
+			ft_error(argv[0], argv[1], strerror(errno), 1);
 			return ;
 		}
 		g_e_status = 0;
@@ -50,10 +47,3 @@ void	cmd_cd(t_minishell *sh, char **argv)
 	getcwd(path, MAX);
 	ch_envp_with_name(&(sh->envp), "PWD=", path);
 }
-
-
-/*
-cd에서 발생할 수 있는 에러
-No such file or directory
-HOME not set
-*/

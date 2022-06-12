@@ -41,7 +41,7 @@ int	init_cmd_list(t_minishell *sh, char **split)
 		handle_cmd_type(*split, is_head, &type);
 		tmp = ft_lstnew(*split, type, is_head, 0);
 		if (!tmp)
-			return 1; //임시
+			return 1; //임시///////
 		ft_lstadd_back(&sh->cmd_list, tmp);
 		split++;
 		cur = cur->next;

@@ -11,11 +11,12 @@ void	redirection_input(t_cmd *cmd, t_cmd *redir)
 	temp_fd = open(open_file, O_RDONLY);
 	if (temp_fd == -1)
 	{
-		printf("minishell: %s\n", strerror(errno));
-		ft_close(cmd->redir_in);
-		cmd->redir_in = -1;
-		g_e_status = 1;
-		//원래 cur->argv, content. free하는 곳 찾기
+		ft_error_redir(strerror(errno), 1, cmd->redir_in);
+		// printf("minishell: %s\n", strerror(errno));
+		// ft_close(cmd->redir_in);
+		// cmd->redir_in = -1;
+		// g_e_status = 1;
+		//원래 cur->argv, content. free하는 곳 찾기		
 		exit(1);
 	}
 	if (cmd->redir_in > 0)
@@ -35,10 +36,11 @@ void	redirection_output(t_cmd *cmd, t_cmd *redir)
 	temp_fd = open(new_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (temp_fd == -1)
 	{
-		printf("minishell: %s\n", strerror(errno));
-		ft_close(cmd->redir_out);
-		cmd->redir_out = -1;
-		g_e_status = 1;
+		ft_error_redir(strerror(errno), 1, cmd->redir_out);
+		// printf("minishell: %s\n", strerror(errno));
+		// ft_close(cmd->redir_out);
+		// cmd->redir_out = -1;
+		// g_e_status = 1;
 		//원래 cur->argv, content. free하는 곳 찾기
 		exit(1);
 	}
@@ -59,10 +61,12 @@ void	redirection_append(t_cmd *cmd, t_cmd *redir)
 	temp_fd = open(new_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (temp_fd == -1)
 	{
-		printf("minishell: %s\n", strerror(errno));
-		ft_close(cmd->redir_out);
-		cmd->redir_out = -1;
-		g_e_status = 1;
+		ft_error_redir(strerror(errno), 1, cmd->redir_out);
+
+		// printf("minishell: %s\n", strerror(errno));
+		// ft_close(cmd->redir_out);
+		// cmd->redir_out = -1;
+		// g_e_status = 1;
 		//원래 cur->argv, content. free하는 곳 찾기
 		exit(1);
 	}
@@ -82,9 +86,6 @@ void	redirection_heredoc(t_minishell *sh, t_cmd *cmd, t_cmd *redir)
 
 	end = redir->next->content;
 	temp_fd = open("heredoc_tempfile", O_WRONLY | O_CREAT | O_EXCL, 0600);
-
-	// fprintf(stderr, "open for write fd : %d\n", temp_fd);
-
 	if (temp_fd == -1)
 	{
 		//open error
@@ -97,18 +98,13 @@ void	redirection_heredoc(t_minishell *sh, t_cmd *cmd, t_cmd *redir)
 		if (ft_strncmp(line, end, ft_strlen(line), ft_strlen(end)))
 		{
 			ft_putendl_fd(line, temp_fd);
-		//	free(line);
+			free(line);
 		}
 		else
 			break;
 	}
-
-	// fprintf(stderr,"before close temp_fd\n");
 	ft_close(temp_fd);
-	// fprintf(stderr,"after close temp_fd\n");
-
 	temp_fd = open("heredoc_tempfile", O_RDONLY);
-	// fprintf(stderr, "read(redirin, stdin) for write fd : %d\n", temp_fd1);
 	if (temp_fd == -1)
 	{
 		//open error exit하게 해야함
@@ -122,9 +118,7 @@ void	redirection_heredoc(t_minishell *sh, t_cmd *cmd, t_cmd *redir)
 	cmd->redir_in = -1;
 	
 	if (unlink("heredoc_tempfile") == -1)
-	{
-		//unlink error
-	}
+		ft_error_open(strerror(errno), errno);
 }
 
 // 일단 커맨드가 가장 처음에 들어온다고 가정하고 작성

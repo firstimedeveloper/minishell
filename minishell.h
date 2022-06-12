@@ -67,7 +67,6 @@ typedef struct  s_minishell
 	pid_t			pid;
 	int		in;
 	int		out;
-//	int		e_status;	//exit_status
 	char	**envp;
 	t_cmd   *cmd_list;
 
@@ -116,7 +115,6 @@ int	ft_lstsize(t_cmd *lst);
 * utils.c
 */
 int		ch_strncmp(const char *s1, const char *s2, size_t n);
-void	ft_free_double(char **ptr);
 int	av_have_eq(char *argv);
 long long	ft_atoll(const char *str);
 
@@ -128,7 +126,7 @@ int		check_argv_name(char *str, char *cmd);
 char	**copy_envp(char **envp);
 char	*get_envp_name(char *envp);
 char	*ft_getenv(char **envp, char *envp_name);
-int		change_envp(char ***envp, char *str);
+void	change_envp(char ***envp, char *str);
 int		ch_envp_with_name(char ***envp, char *s1, char *s2);
 
 /*
@@ -140,6 +138,22 @@ void	ft_signal_handler(int signo);
 redirection
  */
 t_cmd	*redirection(t_minishell *sh, t_cmd *cmd);
+
+
+/* 
+free.c
+ */
+void	ft_free_double(char **ptr);
+void	ft_free_cmd_list(t_minishell *sh);
+void	ft_exit(t_minishell *sh, int exit_code);
+
+/* 
+ft_error.c
+ */
+void	ft_error(char *command, char *argv, char *err_msg, int err_code);
+void	ft_error_2(char *command, char *argv, int err_code);
+void	ft_error_redir(char *err_msg, int err_code, int fd);
+void	ft_error_open(char *err_msg, int err_code);
 
 
 

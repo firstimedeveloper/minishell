@@ -44,26 +44,29 @@ char	**sort_envp(char **envp)
 void	export_print(char **envp)
 {
 	int		i;
+	char	**tmp;
 
-	while (*envp)
+	tmp = copy_envp(envp);
+	tmp = sort_envp(tmp);
+	while (*tmp)
 	{
 		i = 0;
 		printf("declare -x ");
-		while ((*envp)[i] && (*envp)[i] != '=')
-			printf("%c", (*envp)[i++]);
-		if ((*envp)[i] == '\0')
+		while ((*tmp)[i] && (*tmp)[i] != '=')
+			printf("%c", (*tmp)[i++]);
+		if ((*tmp)[i] == '\0')
 		{
 			printf("\n");
-			envp++;
+			tmp++;
 			continue;
 		}
 		printf("=\"");
-		while ((*envp)[++i])
-			printf("%c", (*envp)[i]);
+		while ((*tmp)[++i])
+			printf("%c", (*tmp)[i]);
 		printf("\"\n");
-		envp++;
+		tmp++;
 	}
-////////////아래서 세번째 행은 bash shell에서 출력되지 않음 뭔지 확인하고 출력할지말지 결정하기
+	//free(tmp);
 }
 
 
@@ -73,19 +76,20 @@ void	cmd_export(t_minishell *sh, char **av)
 
 	i = 0;
 	g_e_status = 0;
-	if (!av[1])	// 인자가 없으면 환경변수 출력
-		export_print(sort_envp(copy_envp(sh->envp)));
-	else	// 인자 있으면 환경변수 추가, 수정
+	if (!av[1])
+		export_print(sh->envp);
+//		export_print(sort_envp(copy_envp(sh->envp)));
+	else
 	{
 		if (ft_strncmp(av[i], "_", ft_strlen(av[i]), 1) == 0)
 			return ;
 		while (av[++i])
 		{
-			if (check_argv_name(av[i], av[0]) != 0)	//환경변수 이름에 문제 있는 인자는 넘어가기
+			if (check_argv_name(av[i], av[0]) != 0)
 				continue;
-			if (ft_getenv(sh->envp, get_envp_name(av[i])))
+			if (ft_getenv(sh->envp, get_envp_name(av[i])))////////////여기 ft_getenv어떻게 free
 			{
-				if (av_have_eq(av[i]))	// 환경변수 목록에 있는데 인자로 들어온 문자열에 = 가 있으면 change 한다.
+				if (av_have_eq(av[i]))
 					change_envp(&(sh->envp), av[i]);
 			}
 			else
@@ -93,49 +97,3 @@ void	cmd_export(t_minishell *sh, char **av)
 		}
 	}
 }
-
-
-/*
-export : 환경변수 추가, 수정
-
-bash-3.2$ export WATER="a"
-WATER=a
-
-bash-3.2$ export WATER=bb
-WATER=bb
-
-bash-3.2$ export WATER = bb
-bash: export: `=': not a valid identifier
-
-bash-3.2$ export WATER =bb
-bash: export: `=bb': not a valid identifier
-
-bash-3.2$ export WATER= bb
-WATER=
-
-bash-3.2$ export WATER=bb aa //aa도 환경변수로 등록은 됨 env로 나오진 않음
-WATER=bb
-
-bash-3.2$ export hello
-내 노트북에서는 이렇게 작성하면 환경변수는 설정되는데 env로 했을때 출력되지는 않음
-
-bash-3.2$ export WATER==aa
-WATER==aa
->>>>처음 등호빼고 그 후로 다 값
-
-bash-3.2$ export
-이렇게하면 환경변수의 목록을 출력
-ex)
-declare -x aa
-declare -x bb
-declare -x hello
-declare -x WATER="======aa"
-
-bash-3.2$ export WATER====aa cc=b
-WATER====aa
-cc=b
-*/
-
-
-////// export TEST='testing' 이런 경우 구현해야한다.
-
