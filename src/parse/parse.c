@@ -52,7 +52,7 @@ int	init_cmd_list(t_minishell *sh, char **split)
 	cur = sh->cmd_list;
 	while (cur)
 	{
-		fprintf(stderr, "parsing: %s\n", cur->content);
+		fprintf(stderr, "%s\n", cur->content);
 		cur = cur->next;
 	}
 	return (0);
