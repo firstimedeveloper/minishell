@@ -7,8 +7,9 @@
 // argv가 음수면 256에서 argv 한만큼 나온다. (-2 이면 256 -2 = 254 이므로 exit 254 로 실행)
 void	valid_exit_argv_num(char **argv)
 {
-	int	status;
+	long long	status;
 
+	g_e_status = 0;
 	if (argv[2])
 	{
 		printf("minishell: exit: too many arguments\n");
@@ -16,7 +17,9 @@ void	valid_exit_argv_num(char **argv)
 	}
 	else
 	{
-		status = ft_atoi(argv[1]);
+		status = ft_atoll(argv[1]);
+		if (g_e_status == 255)
+			exit(g_e_status);
 		if (status > 255)
 			status = status % 256;
 		else if (status < 0)
@@ -37,6 +40,7 @@ int	valid_exit_argv(char *str)
 		else
 			return (1);
 	}
+	
 	return (0);
 }
 

@@ -44,35 +44,46 @@ int	av_have_eq(char *argv)
 	return (0);
 }
 
-// void	overflow_exit(char *str, int neg)
-// {
-// 	char	*longlong;
-// 	int		i;
 
-// 	longlong = "9223372036854775807";
-// 	i = -1;
 
-// 	if (ft_strlen(str) > 20)
-// 	{
-// 		//
-// 	}
+unsigned long long	ft_atoull(char *str)
+{
+	unsigned long long	val;
 
-// 	if ((*str == '+' && ft_strlen(str) < 21dfkgjds;lk) || (*str  >= '0' && *str <= '9'))
-// 	{
-// 		while (++i < 20)	//양수로 longlong보다 더 큰지 확인
-// 		{
-// 			if (str[i] > longlong[i] && ft_strlen(str) == 20)
-// 			{
-// 				//숫자 넘어가는 exit error
-// 			}
-// 		}
-// 	}
-// 	else if (*str == '-')
-// 	{
-// 		++i;
-// //		while (++i < 20)
-// 	}
-// }
+	val = 0;
+	while (*str && (*str  >= '0' && *str <= '9'))
+	{
+		val *= 10;
+		val += *str - '0';
+		str++;
+	}
+	return (val);
+}
+
+
+int	overflow_exit(char *str, int neg)
+{
+	unsigned long long	value;
+
+	value = ft_atoull(str);
+	if (neg < 0)	//음수
+	{
+		if (value > 9223372036854775808U)
+		{
+			g_e_status = 255;
+			return (1);
+		}
+	}
+	else	// 양수
+	{
+		if (value > 9223372036854775807U)
+		{
+			g_e_status = 255;
+			return (1);
+		}
+	}
+	return (0);
+}
 
 long long	ft_atoll(const char *str)
 {
@@ -87,17 +98,16 @@ long long	ft_atoll(const char *str)
 			neg = -1;
 		str++;
 	}
-	//여기에 longlong넘는지 확인 neg같이 받는다. 
+	if (overflow_exit((char *)str, neg) == 1)
+	{
+		printf("bash: exit: %s: numeric argument required\n", str);
+		return (0);
+	}
 	while (*str && (*str  >= '0' && *str <= '9'))
 	{
-		val *= 10;
-		val += *str - '0';
+		val = val * 10 + *str - '0';
 		str++;
 	}
 	val *= neg;
-	if (*str)
-	{
-		//숫자가 아니다.
-	}
 	return (val);
 }

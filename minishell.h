@@ -118,6 +118,7 @@ int	ft_lstsize(t_cmd *lst);
 int		ch_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_free_double(char **ptr);
 int	av_have_eq(char *argv);
+long long	ft_atoll(const char *str);
 
 /*
 * envp_utils.c
