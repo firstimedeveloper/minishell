@@ -95,70 +95,64 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 	pid_t	pid;
 
 	builtin_type = is_builtin(cmd, cmd->content);
-	if (cmd->is_left_pipe)
+	// fprintf(stderr, "%s builintype : %d\n", cmd->content, builtin_type);
+	if (cmd->is_left_pipe)	// 명령어 기준 오른쪽에 파이프가 있으면 
 	{
-		pipe(cmd->fds);
+		pipe(cmd->fds);		// pipe() 실행
 	}
-	pid = fork();
-	if (pid == 0)
+	pid = fork();			// 포크한다.
+	if (pid == 0)			// child 일 때 
 	{
-		if (cmd->is_right_pipe)
+		if (cmd->is_right_pipe)	// cmd 기준 왼쪽에 파이프가 있으면
 		{
-			fprintf(stderr,"child %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
-			dup2(prev_fds[0], 0);
-			ft_close(prev_fds[1]);
+			// fprintf(stderr,"child %d: cmd: %s prev_fds=[%d, %d]\n", pid, cmd->argv[0], prev_fds[0], prev_fds[1]);
+			dup2(prev_fds[0], 0);		// 지금 STDIN의 fds에 이전 커맨드의 fds, 즉 왼쪽 파이프의 fds를 dup2
+			ft_close(prev_fds[1]);		// fds 닫기
 			ft_close(prev_fds[0]);
 			ft_reset_fd(prev_fds);
 		}
-		if (cmd->is_left_pipe)
+		if (cmd->is_left_pipe)		// cmd 기준 오른쪽에 파이프가 있으면 
 		// if (cmd->is_left_pipe && !(builtin_type && cmd->is_first))
 		{
-			fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
-			ft_close(cmd->fds[0]);
+			// fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
+			//ft_close(cmd->fds[0]);		// 파이프 다음으로 올 명령어가 인풋을 받아야하므로 fds를 살려둔다. 
 			if (!(builtin_type && cmd->is_first))
 			{
-				fprintf(stderr, "%s child dup21\n", cmd->content);
-				dup2(cmd->fds[1], 1);
+				dup2(cmd->fds[1], 1);	// cmd가 처음오는 builtin 명령어가 아니라면 stdout이 파이프로 가도록 dup2
 			}
-							fprintf(stderr, "%s child dup22\n", cmd->content);
+			// fprintf(stderr, "%s child dup22\n", cmd->content);
 
-			ft_close(cmd->fds[1]);
-							fprintf(stderr, "%s child dup23\n", cmd->content);
-
-			ft_reset_fd(cmd->fds);
+				// output에 다한 fds를 앞으로 쓸일이 없으므로 close
+			// fprintf(stderr, "%s child dup23\n", cmd->content);
+			//ft_reset_fd(cmd->fds);
 		}
+
+//////////////여기 주석 달아야함 
 		if (builtin_type) // if builtin and not first command
 		{
 			if (!cmd->is_first)
 			{
-				fprintf(stderr,"child\n");
-				// printf("before redirection builtin\n");
-				redirection(cmd);
+				// fprintf(stderr,"child builtin and is not first cmd\n\n");
+				redirection(sh, cmd);
 				excecute_builtin(sh, cmd->argv, builtin_type);
 			}
 		}
-		else
-		{
-			// fprintf(stderr,"hello\n");
-			// for(int i=0; i<cmd->arg_count; i++)
-				// fprintf(stderr,"%s ", cmd->argv[i]);
-			// fprintf(stderr,"\n");
-			// printf("before redirection bin fuc\n");
-			
-			fprintf(stderr, "%s child dup24\n", cmd->content);
-
-			redirection(cmd);
-			fprintf(stderr, "%s after redirection\n", cmd->content);
+		else	// bin 함수이면 이쪽으로 온다. 
+		{			
+			// fprintf(stderr, "%s child dup24\n", cmd->content);
+			redirection(sh, cmd);
+			// fprintf(stderr, "%s after redirection\n", cmd->content);
 
 			if (path == NULL)
 			{
 				ft_error(sh, cmd->argv[0], "command not found", ERR_CMD_NOT_FOUND);
 				exit(ERR_CMD_NOT_FOUND);
 			}
-				execve(path, cmd->argv, sh->envp);
+			execve(path, cmd->argv, sh->envp);
 //			printf("after execute_bin\n");
 		}
 //		printf("before child exit\n");
+		ft_close(cmd->fds[1]);
 		exit(0);
 	}
 	else if (pid < 0)
@@ -185,14 +179,14 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 				// fprintf(stderr,"parent %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
 				dup2(cmd->fds[1], 1);
 				// ft_reset_fd(cmd->fds);
-				redirection(cmd);
+				redirection(sh, cmd);
 				excecute_builtin(sh, cmd->argv, builtin_type);
 				dup2(sh->out, 0);
 				dup2(sh->out, 1);
 				close(sh->out);
 				return ;
 			}
-			redirection(cmd);
+			redirection(sh, cmd);
 			excecute_builtin(sh, cmd->argv, builtin_type);
 			dup2(sh->out, 1);
 			close(sh->out);
@@ -219,21 +213,28 @@ int	handle_cmd(t_minishell *sh)
 			cur->argv = create_argv(cur, cur->arg_count);
 			if (!cur->argv)
 				return (0);
+			// fprintf(stderr, "%s is left pipe : %d\n", cur->content, cur->is_left_pipe);
+			// fprintf(stderr, "%s is right pipe : %d\n\n", cur->content, cur->is_right_pipe);
 		}
 		cur = cur->next;
 	}
-	cur = sh->cmd_list;
+	cur = sh->cmd_list;	//다시 처음으로 돌아가서 
 	while (cur)
 	{
-		if (cur->type == TYPE_CMD)
+		if (cur->type == TYPE_CMD)	// 지금 노드가 명령어면 
 		{
-			path = find_path(cur->argv[0]);
-			if (path == NULL)
+			path = find_path(cur->argv[0]);	// 명령어의 위치를 찾고 
+			if (path == NULL)				//없으면 에러 메세지 ////////////////빌트인일 떄는?
 				printf("errno: %d\n", errno);
-			excecute_cmd(sh, cur, prev_fds, path);
-			if (cur->is_left_pipe)
+
+			// fprintf(stderr,"handle_cmd : cmd: %s prev_fds=[%d, %d]\n\n", cur->content, prev_fds[0], prev_fds[1]);
+
+			excecute_cmd(sh, cur, prev_fds, path);	// 명령어 수행하는 데로 간다. 
+
+			// 명령어 수행하고 나서 
+			if (cur->is_left_pipe)			// 명령어 기준 오른쪽에 파이프 있으면 
 			{
-				prev_fds[0] = cur->fds[0];
+				prev_fds[0] = cur->fds[0];	// prev fds 에 현재 cmd의 오른쪽 에 있는 파이프 fds값을 저장한다. 
 				prev_fds[1] = cur->fds[1];
 				// fprintf(stderr,"parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
 			}

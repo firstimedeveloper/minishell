@@ -138,7 +138,7 @@ void	ft_signal_handler(int signo);
 /*
 redirection
  */
-t_cmd	*redirection(t_cmd *cmd);
+t_cmd	*redirection(t_minishell *sh, t_cmd *cmd);
 
 
 
