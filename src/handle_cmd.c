@@ -153,7 +153,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 		}
 //		printf("before child exit\n");
 		ft_close(cmd->fds[1]);
-		exit(0);
+		exit(g_e_status);
 	}
 	else if (pid < 0)
 	{
@@ -213,8 +213,6 @@ int	handle_cmd(t_minishell *sh)
 			cur->argv = create_argv(cur, cur->arg_count);
 			if (!cur->argv)
 				return (0);
-			// fprintf(stderr, "%s is left pipe : %d\n", cur->content, cur->is_left_pipe);
-			// fprintf(stderr, "%s is right pipe : %d\n\n", cur->content, cur->is_right_pipe);
 		}
 		cur = cur->next;
 	}
