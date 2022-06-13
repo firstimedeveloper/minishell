@@ -1,27 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 02:26:23 by san               #+#    #+#             */
+/*   Updated: 2022/06/14 02:26:43 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	unset_del(char ***envp, char *str)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	**new;
 
-	i = ft_envplen(*envp) - 1;	//new의 개수
-	j = i;					//envp 값이 들어있는 마지막 인덱스
+	i = ft_envplen(*envp) - 1;
+	j = i;
 	new = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!new)
 		exit (1);
 	new[i] = NULL;
 	while (--i > -1)
 	{
-		if (ch_strncmp(str, get_envp_name((*envp)[j]), ft_strlen(get_envp_name((*envp)[j]))) == 0)
+		if (ch_strncmp(str, get_envp_name((*envp)[j]),
+			ft_strlen(get_envp_name((*envp)[j]))) == 0)
 			j--;
 		new[i] = ft_strdup((*envp)[j]);
 		j--;
 	}
 	ft_free_double(*envp);
 	*envp = new;
-	return (0);	
+	return (0);
 }
 
 void	cmd_unset(t_minishell *sh, char **argv)

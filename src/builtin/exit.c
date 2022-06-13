@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 02:14:06 by san               #+#    #+#             */
+/*   Updated: 2022/06/14 02:14:20 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	valid_exit_argv_num(char **argv)
@@ -21,7 +33,7 @@ void	valid_exit_argv_num(char **argv)
 	}
 }
 
-int	valid_exit_argv(char *str) 
+int	valid_exit_argv(char *str)
 {
 	if (*str == '-' || *str == '+')
 		str++;

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 02:06:40 by san               #+#    #+#             */
+/*   Updated: 2022/06/14 02:08:49 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	cd_no_argv(char **envp)
 {
-	char *home;
+	char	*home;
 
 	home = ft_getenv(envp, "HOME");
 	if (home == NULL)
@@ -29,7 +41,7 @@ int	cd_no_argv(char **envp)
 
 void	cmd_cd(t_minishell *sh, char **argv)
 {
-	char path[MAX];
+	char	path[MAX];
 
 	if (argv[1])
 	{
