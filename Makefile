@@ -6,11 +6,11 @@
 #    By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/15 15:47:16 by juhan             #+#    #+#              #
-#    Updated: 2022/06/13 14:55:52 by juhan            ###   ########.fr        #
+#    Updated: 2022/06/13 15:35:55 by juhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc -Wall -Werror -Wextra
+CC = gcc -Wall -Werror -Wextra -g
 LIB_PATH=libft
 SRC_PATH=./src/
 BUILD_PATH=./build/
