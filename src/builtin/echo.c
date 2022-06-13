@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 02:09:48 by san               #+#    #+#             */
+/*   Updated: 2022/06/14 02:12:57 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	check_op(char *str) // 옵션이면 0을 옵션 아니면 1을 출력한다.
+int	check_op(char *str)
 {
-	if (ch_strncmp(str, "-n", 2))	//옵션 아니면 return 1
+	if (ch_strncmp(str, "-n", 2))
 		return (1);
 	str = str + 2;
 	while (*str)
@@ -16,31 +28,19 @@ int	check_op(char *str) // 옵션이면 0을 옵션 아니면 1을 출력한다.
 
 void	cmd_echo(t_minishell *sh, char **argv)
 {
-	(void)sh;
-	int i;
+	int	i;
 
+	(void)sh;
 	i = 1;
-//	printf("cmd_echo is called\n");
-	while (argv[i] && !check_op(argv[i]))	//	같으면(0) -> 0! // 옵션 있으므로 다음 단어부터 출력
+	while (argv[i] && !check_op(argv[i]))
 		i++;
 	while (argv[i])
 	{
 		printf("%s", argv[i]);
-		if (argv[++i])		//다음 단어가 있으면 띄어쓰기 출력 하고 인덱스++
+		if (argv[++i])
 			printf(" ");
 	}
-	if ((argv[1] && check_op(argv[1])) || argv[1] == NULL)	// 값이 있으면(1이상) 옵션 없으므로 개행 넣기
+	if ((argv[1] && check_op(argv[1])) || argv[1] == NULL)
 		printf("\n");
 	g_e_status = 0;
 }
-
-
-//옵션 -n
-//echo는 기본적으로 개행이 붙어서 나오고 n옵션이 붙으면 개행없이 출력된다.
-/*
-echo -nnnnnn도 동작한다.
-echo -n-n-n은 문자열로 인식한다.
-echo -n -n -n 도 옵션으로 인식한다.
-*/
-
-//////확인해봐야하는 부분 : echo -n -n -c -n dfs 에서 마지막 -n 나오는지

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 02:15:41 by san               #+#    #+#             */
+/*   Updated: 2022/06/14 02:24:08 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	export_add(char ***envp, char *str)	//세로줄을 하나 늘린 배열을 할당해서 복사하고 추가한다음에 새로 할당한 배열을 가리키도록 할 것
+int	export_add(char ***envp, char *str)
 {
-	int	i;
+	int		i;
 	char	**new;
 
 	i = ft_envplen(*envp) + 1;
@@ -13,7 +25,13 @@ int	export_add(char ***envp, char *str)	//세로줄을 하나 늘린 배열을 �
 	new[--i] = ft_strdup(str);
 	while (--i > -1)
 		new[i] = ft_strdup((*envp)[i]);
-	ft_free_double(*envp);
+	i = -1;
+	while ((*envp)[++i])
+	{
+		if ((*envp)[i])
+			free((*envp)[i]);
+	}
+	free((*envp));
 	*envp = new;
 	return (0);
 }
@@ -58,7 +76,7 @@ void	export_print(char **envp)
 		{
 			printf("\n");
 			tmp++;
-			continue;
+			continue ;
 		}
 		printf("=\"");
 		while ((*tmp)[++i])
@@ -66,19 +84,17 @@ void	export_print(char **envp)
 		printf("\"\n");
 		tmp++;
 	}
-	//free(tmp);
+	free(tmp);
 }
-
 
 void	cmd_export(t_minishell *sh, char **av)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	g_e_status = 0;
 	if (!av[1])
 		export_print(sh->envp);
-//		export_print(sort_envp(copy_envp(sh->envp)));
 	else
 	{
 		if (ft_strncmp(av[i], "_", ft_strlen(av[i]), 1) == 0)
@@ -86,8 +102,8 @@ void	cmd_export(t_minishell *sh, char **av)
 		while (av[++i])
 		{
 			if (check_argv_name(av[i], av[0]) != 0)
-				continue;
-			if (ft_getenv(sh->envp, get_envp_name(av[i])))////////////여기 ft_getenv어떻게 free
+				continue ;
+			if (ft_getenv(sh->envp, get_envp_name(av[i])))
 			{
 				if (av_have_eq(av[i]))
 					change_envp(&(sh->envp), av[i]);
