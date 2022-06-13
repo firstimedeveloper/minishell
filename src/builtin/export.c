@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:15:41 by san               #+#    #+#             */
-/*   Updated: 2022/06/14 04:05:19 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/14 04:21:40 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,7 @@ int	export_add(char ***envp, char *str)
 	new[--i] = ft_strdup(str);
 	while (--i > -1)
 		new[i] = ft_strdup((*envp)[i]);
-	i = -1;
-	while ((*envp)[++i])
-	{
-		if ((*envp)[i])
-			free((*envp)[i]);
-	}
-	free((*envp));
+	// ft_free_all(*envp);
 	*envp = new;
 	return (0);
 }
@@ -91,6 +85,8 @@ void	export_print(char **envp)
 void	cmd_export(t_minishell *sh, char **av)
 {
 	int		i;
+	char	*env_val;
+	char	*env_name;
 
 	i = 0;
 	g_e_status = 0;
@@ -104,7 +100,9 @@ void	cmd_export(t_minishell *sh, char **av)
 		{
 			if (check_argv_name(av[i], av[0]) != 0)
 				continue ;
-			if (ft_getenv(sh->envp, get_envp_name(av[i])))
+			env_name = get_envp_name(av[i]);
+			env_val = ft_getenv(sh->envp, env_name);
+			if (env_val)
 			{
 				if (av_have_eq(av[i]))
 					change_envp(&(sh->envp), av[i]);

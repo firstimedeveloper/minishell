@@ -64,6 +64,12 @@ int parse(t_minishell *sh, char *line)
 	split = ft_split(line, ' ');
 	if (!split || !*split)
 		return (1);
+	int i = 0;
+	while (split[i])
+	{
+		fprintf(stderr, "program:\tsplit: {%s}\n", split[i]);
+		i++;
+	}
 	if (init_cmd_list(sh, split))
 		return (1);
 	t_cmd *cur = sh->cmd_list;

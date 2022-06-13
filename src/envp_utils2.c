@@ -27,12 +27,12 @@ char	*ft_getenv(char **envp, char *e)
 		name = get_envp_name(*envp);
 		if (ft_strncmp(name, e, ft_strlen(name), ft_strlen(e)) == 0)
 			break ;
-		free(name);
+		ft_free(name);
 		envp++;
 	}
-	free(name);
 	if (!(*envp))
 		return (NULL);
+	ft_free(name);
 	name = *envp;
 	while (*name != '=')
 		name++;

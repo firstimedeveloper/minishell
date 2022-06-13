@@ -90,7 +90,6 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 	pid_t	pid;
 
 	builtin_type = is_builtin(cmd, cmd->content);
-	fprintf(stderr, "program:\t%s builintype : %d %s\n", cmd->content, builtin_type, cmd->argv[0]);
 	if (cmd->is_left_pipe)	// 명령어 기준 오른쪽에 파이프가 있으면
 	{
 		pipe(cmd->fds);		// pipe() 실행
@@ -140,7 +139,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 
 			if (path == NULL)
 			{
-				ft_error(cmd->argv[0], NULL, "command not found", ERR_CMD_NOT_FOUND);
+				ft_error(cmd->content, NULL, "command not found", ERR_CMD_NOT_FOUND);
 				exit(ERR_CMD_NOT_FOUND);
 			}
 			execve(path, cmd->argv, sh->envp);
@@ -206,10 +205,12 @@ int	handle_cmd(t_minishell *sh)
 	{
 		if (cur->type == TYPE_CMD)	// 지금 노드가 명령어면
 		{
+			fprintf(stderr, "program:\thello\n");
 			if (!is_builtin(cur, cur->content))
 				path = find_path(sh->envp, cur->content);	// 명령어의 위치를 찾고
 			if (path != NULL || is_builtin(cur, cur->content))				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
 				init_argv(sh, cur);
+			fprintf(stderr, "program:\thello%s\n", path);
 			excecute_cmd(sh, cur, prev_fds, path);	// 명령어 수행하는 데로 간다.
 
 			// 명령어 수행하고 나서

@@ -62,18 +62,18 @@ char	*handle_expansion(t_minishell *sh, char *str)
 				else
 				{
 					len = 0;
-					while (str[i + len] && str[i + len] != '"' && str[i + len] != '\'')
+					while (str[i + len] && str[i + len] != ' ' && str[i + len] != '"' && str[i + len] != '\'')
 						len++;
 					if (len > 1)
 					{
 						temp = ft_strldup(&str[i + 1], len-1);
 						env = ft_getenv(sh->envp, temp);
-						fprintf(stderr, "ret=%s, %s, %s, %s, %d, %d\n", ret, &str[i + 1], temp, env, len, i);
+						fprintf(stderr, "program:\tret=%s, %s, %s, %s, %d, %d\n", ret, &str[i + 1], temp, env, len, i);
 						if (env)
 						{
 							ft_strlcat(ret, env, MAX);
-							free(temp);
-							free(env);
+							ft_free(temp);
+							ft_free(env);
 						}
 						i += len;
 					}
