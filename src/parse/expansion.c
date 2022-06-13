@@ -72,9 +72,9 @@ char	*handle_expansion(t_minishell *sh, char *str)
 						if (env)
 						{
 							ft_strlcat(ret, env, MAX);
-							ft_free(temp);
 							ft_free(env);
 						}
+						ft_free(temp);
 						i += len;
 					}
 					else
