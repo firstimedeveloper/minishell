@@ -160,6 +160,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 		}
 		if (builtin_type && cmd->is_first) // if builtin and first command
 		{
+			sh->pid = -1;
 			// fprintf(stderr,"parent builtin\n");
 			sh->out = dup(0);
 			sh->out = dup(1);

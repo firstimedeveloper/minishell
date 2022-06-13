@@ -37,12 +37,17 @@ int main(int argc, char **argv, char **envp)
 		if (parse(&sh, line) == 1)
 			continue ;
 		handle_cmd(&sh);
+
 		while ((pid = waitpid(0, &status, 0)) > 0)
 		{
 			// fprintf(stderr, "%d child completed\n", pid);
 			if (WIFEXITED(status))
-				if (pid == sh.pid)
+
+				if (pid == sh.pid && sh.pid != -1)
 					g_e_status = WEXITSTATUS(status);
+
+			// if (sh.pid == -1)
+			// 	fprintf(stderr, "hihi\n"); 
 		}
 	}
 
