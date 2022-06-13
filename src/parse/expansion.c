@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-char	*handle_expansion(t_minishell *sh, char *str) {
+char	*handle_expansion(t_minishell *sh, char *str)
+{
 	(void)sh;
 	char	ret[100];
 	char	*temp;
@@ -12,6 +13,7 @@ char	*handle_expansion(t_minishell *sh, char *str) {
 
 	single_flag = 0;
 	double_flag = 0;
+	ft_bzero(ret, 100);
 	i = 0;
 	while (str[i])
 	{
