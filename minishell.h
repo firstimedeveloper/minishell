@@ -37,6 +37,7 @@
 #define TYPE_REDIR_HEREDOC 6
 
 #define ERR_CMD_NOT_FOUND 127
+#define ERR_MALLOC 1
 
 #define NO_PIPE 0
 #define PIPE_LEFT 1
@@ -88,6 +89,7 @@ int	g_e_status;
 *	parse functions
 */
 
+void	init_argv(t_minishell *sh, t_cmd *cur);
 char	**create_argv(t_cmd *cmd, int len);
 void	get_arg_count(t_cmd *cmd);
 char	*handle_expansion(t_minishell *sh, char *str);
@@ -156,9 +158,11 @@ t_cmd	*redirection(t_minishell *sh, t_cmd *cmd);
 /*
 free.c
  */
+void	ft_free(char *str);
 void	ft_free_double(char **ptr);
 void	ft_free_cmd_list(t_minishell *sh);
-void	ft_exit(t_minishell *sh, int exit_code);
+void	ft_exit(int exit_code);
+void	ft_free_cmd_lst(t_minishell *sh);
 
 /*
 ft_error.c

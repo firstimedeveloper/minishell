@@ -52,8 +52,37 @@ i = 0;
 	}
 }
 
-void	ft_exit(t_minishell *sh, int exit_code)
+void	ft_exit(int exit_code)
 {
-	ft_free_cmd_list(sh);
+	ft_error_open("malloc error", exit_code);
 	exit(exit_code);
+}
+
+void	ft_free(char *str)
+{
+	if (str)
+		free(str);
+}
+
+void	ft_free_cmd_lst(t_minishell *sh)
+{
+	t_cmd	*cur;
+	t_cmd	*next;
+
+	cur = sh->cmd_list;
+	// if (cur)
+	// {
+		while (cur)
+		{
+			next = cur->next;
+			fprintf(stderr, "program:\tfreeing %s\n", cur->content);
+			free(cur->content);
+			if (cur->argv)
+				free(cur->argv);
+			free(cur);
+			cur = next;
+		}
+		// free(sh->cmd_list);
+		sh->cmd_list = NULL;
+	// }
 }

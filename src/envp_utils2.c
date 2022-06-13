@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 char	*get_envp_name(char *envp)
@@ -22,23 +21,23 @@ char	*ft_getenv(char **envp, char *e)
 {
 	char	*value;
 	char	*name;
-	char	**temp;
 
-	temp = copy_envp(envp);
-	while (*temp)
+	while (*envp)
 	{
-		name = get_envp_name(*temp);
+		name = get_envp_name(*envp);
 		if (ft_strncmp(name, e, ft_strlen(name), ft_strlen(e)) == 0)
 			break ;
-		temp++;
+		free(name);
+		envp++;
 	}
-	if (!(*temp))
-		return (NULL);
-	while (**temp != '=')
-		(*temp)++;
-	(*temp)++;
-	value = ft_strdup(*temp);
 	free(name);
+	if (!(*envp))
+		return (NULL);
+	name = *envp;
+	while (*name != '=')
+		name++;
+	name++;
+	value = ft_strdup(name);
 	return (value);
 }
 
@@ -75,15 +74,6 @@ int	ch_envp_with_name(char ***envp, char *s1, char *s2)
 
 	str = ft_strjoin(s1, s2);
 	change_envp(envp, str);
-
-// int	i;
-// i = 0;
-// 	while (i < ft_envplen(*envp))
-// 	{
-// 		printf("cd : %s\n", (*envp)[i]);
-// 		i++;
-// 	}
-
 	free(str);
 	return (0);
 }

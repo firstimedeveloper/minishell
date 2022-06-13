@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 20:47:06 by juhan             #+#    #+#             */
-/*   Updated: 2022/03/23 15:20:02 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/14 00:36:21 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
-void				ft_putnbr_fd(int n, int fd);
+void				ft_putnbr_fd(long long n, int fd);
 #endif

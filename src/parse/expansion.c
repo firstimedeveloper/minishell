@@ -2,8 +2,7 @@
 
 char	*handle_expansion(t_minishell *sh, char *str)
 {
-	(void)sh;
-	char	ret[100];
+	char	ret[MAX];
 	char	*temp;
 	char	*env;
 	int		i;
@@ -13,7 +12,7 @@ char	*handle_expansion(t_minishell *sh, char *str)
 
 	single_flag = 0;
 	double_flag = 0;
-	ft_bzero(ret, 100);
+	ft_bzero(ret, MAX);
 	i = 0;
 	while (str[i])
 	{
@@ -21,7 +20,7 @@ char	*handle_expansion(t_minishell *sh, char *str)
 		{
 			if (single_flag)
 			{
-				ft_strlcat(ret, "\"", 100);
+				ft_strlcat(ret, "\"", MAX);
 				i++;
 			}
 			else
@@ -37,7 +36,7 @@ char	*handle_expansion(t_minishell *sh, char *str)
 		{
 			if (double_flag)
 			{
-				ft_strlcat(ret, "'", 100);
+				ft_strlcat(ret, "'", MAX);
 				i++;
 			}
 			else
@@ -55,7 +54,9 @@ char	*handle_expansion(t_minishell *sh, char *str)
 			{
 				if (str[i + 1] == '?')
 				{
-					ft_strlcat(ret, ft_itoa(g_e_status), 100);
+					temp = ft_itoa(g_e_status);
+					ft_strlcat(ret, temp, MAX);
+					free(temp);
 					i += 2;
 				}
 				else
@@ -63,28 +64,29 @@ char	*handle_expansion(t_minishell *sh, char *str)
 					len = 0;
 					while (str[i + len] && str[i + len] != '"' && str[i + len] != '\'')
 						len++;
-					if (len > 0)
+					if (len > 1)
 					{
 						temp = ft_strldup(&str[i + 1], len-1);
-						env = getenv(temp);
-						// fprintf(stderr, "ret=%s, %s, %s, %s, %d, %d\n", ret, &str[i + 1], temp, env, len, i);
+						env = ft_getenv(sh->envp, temp);
+						fprintf(stderr, "ret=%s, %s, %s, %s, %d, %d\n", ret, &str[i + 1], temp, env, len, i);
 						if (env)
 						{
-							ft_strlcat(ret, env, 100);
+							ft_strlcat(ret, env, MAX);
 							free(temp);
+							free(env);
 						}
 						i += len;
 					}
 					else
 					{
-						ft_strlcat(ret, "$", 100);
+						ft_strlcat(ret, "$", MAX);
 						i += 2;
 					}
 				}
 			}
 			else
 			{
-				ft_strlcat(ret, "$", 100);
+				ft_strlcat(ret, "$", MAX);
 				i++;
 			}
 		}
@@ -98,7 +100,7 @@ char	*handle_expansion(t_minishell *sh, char *str)
 			if (len > 0)
 			{
 				temp = ft_strldup(&str[i], len);
-				ft_strlcat(ret, temp, 100);
+				ft_strlcat(ret, temp, MAX);
 				free(temp);
 				i += len;
 			}

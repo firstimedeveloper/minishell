@@ -53,28 +53,33 @@ int	excecute_builtin(t_minishell *sh, char **argv, int builtin)
 	return (0);
 }
 
-char	*find_path(char *command)
+char	*find_path(char **envp, char *command)
 {
 	struct 		stat	s;
 	char		**paths;
+	char		**paths_cpy;
 	char		*path;
 	char		*exec_path;
 
 
 	if (stat(command, &s) == 0)
 		return (ft_strdup(command));
-	path = getenv("PATH");
+	path = ft_getenv(envp, "PATH");
 	paths = ft_split(path, ':');
-	//fprintf(stderr,"unknown cmd path:\n");
+	free(path);
+	paths_cpy = paths;
 	while (*paths)
 	{
 		exec_path = ft_strdirjoin(*paths, command);
-		//fprintf(stderr,"exec path: %s\n", exec_path);
 		paths++;
 		if (stat(exec_path, &s) == 0)
+		{
+			ft_free_all(paths_cpy);
 			return (exec_path);
+		}
 		free(exec_path);
 	}
+	ft_free_all(paths_cpy);
 	return (NULL);
 
 }
@@ -85,7 +90,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 	pid_t	pid;
 
 	builtin_type = is_builtin(cmd, cmd->content);
-	// fprintf(stderr, "%s builintype : %d\n", cmd->content, builtin_type);
+	fprintf(stderr, "program:\t%s builintype : %d %s\n", cmd->content, builtin_type, cmd->argv[0]);
 	if (cmd->is_left_pipe)	// 명령어 기준 오른쪽에 파이프가 있으면
 	{
 		pipe(cmd->fds);		// pipe() 실행
@@ -195,29 +200,16 @@ int	handle_cmd(t_minishell *sh)
 	int		prev_fds[2];
 
 	ft_reset_fd(prev_fds);
-	cur = sh->cmd_list;
-	while (cur)
-	{
-		if (cur->type == TYPE_CMD)	// 커맨드에 딸린 인자들을 커맨드 노드에 저장한다. 
-		{
-			get_arg_count(cur);
-			cur->argv = create_argv(cur, cur->arg_count);
-			if (!cur->argv)
-				return (0);
-		}
-		cur = cur->next;
-	}
 	cur = sh->cmd_list;	//다시 처음으로 돌아가서
+	path = NULL;
 	while (cur)
 	{
 		if (cur->type == TYPE_CMD)	// 지금 노드가 명령어면
 		{
-			path = find_path(cur->argv[0]);	// 명령어의 위치를 찾고
-			if (path == NULL)				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
-				printf("errno: %d\n", errno);
-
-			// fprintf(stderr,"handle_cmd : cmd: %s prev_fds=[%d, %d]\n\n", cur->content, prev_fds[0], prev_fds[1]);
-
+			if (!is_builtin(cur, cur->content))
+				path = find_path(sh->envp, cur->content);	// 명령어의 위치를 찾고
+			if (path != NULL || is_builtin(cur, cur->content))				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
+				init_argv(sh, cur);
 			excecute_cmd(sh, cur, prev_fds, path);	// 명령어 수행하는 데로 간다.
 
 			// 명령어 수행하고 나서
@@ -234,6 +226,8 @@ int	handle_cmd(t_minishell *sh)
 				ft_close(cur->fds[1]);
 				ft_reset_fd(cur->fds);
 			}
+			
+			ft_free(path);
 		}
 		cur = cur->next;
 	}
@@ -241,6 +235,5 @@ int	handle_cmd(t_minishell *sh)
 	ft_close(prev_fds[0]);
 	ft_close(prev_fds[1]);
 	ft_reset_fd(prev_fds);
-	ft_lstclear(&sh->cmd_list, free);
-	return (1);
+	return (0);
 }
