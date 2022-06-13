@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_argv.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 03:13:24 by san               #+#    #+#             */
+/*   Updated: 2022/06/14 03:13:26 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	**create_argv(t_cmd *cmd, int len)
@@ -46,12 +58,7 @@ void	get_arg_count(t_cmd *cmd)
 			break ;
 		}
 		if (next->type == TYPE_ARG && next->prev->type <= TYPE_ARG)
-		{
-			// fprintf(stderr, "\t%s", next->content);
 			cmd->arg_count++;
-
-		}
-		//fprintf(stderr,"count: %d\n", cmd->arg_count);
 		next = next->next;
 	}
 }
@@ -61,7 +68,7 @@ void	init_argv(t_minishell *sh, t_cmd *cur)
 	cur = sh->cmd_list;
 	while (cur)
 	{
-		if (cur->type == TYPE_CMD)	// 커맨드에 딸린 인자들을 커맨드 노드에 저장한다. 
+		if (cur->type == TYPE_CMD)
 		{
 			get_arg_count(cur);
 			cur->argv = create_argv(cur, cur->arg_count);
