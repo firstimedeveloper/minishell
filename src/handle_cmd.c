@@ -105,7 +105,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 		// if (cmd->is_left_pipe && !(builtin_type && cmd->is_first))
 		{
 			// fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
-			//ft_close(cmd->fds[0]);		// 파이프 다음으로 올 명령어가 인풋을 받아야하므로 fds를 살려둔다.
+			//ft_close(cmd->fds[0]);		// 파이프 다음으로 올 명령어가 인풋( 파이프의 출력)을 받아야하므로 fds를 살려둔다.
 			if (!(builtin_type && cmd->is_first))
 			{
 				dup2(cmd->fds[1], 1);	// cmd가 처음오는 builtin 명령어가 아니라면 stdout이 파이프로 가도록 dup2
