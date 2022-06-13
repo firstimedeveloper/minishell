@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:15:41 by san               #+#    #+#             */
-/*   Updated: 2022/06/14 03:29:59 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/14 04:05:19 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,9 @@ void	export_print(char **envp)
 	int		i;
 	char	**tmp_envp;
 	char	**tmp;
-	char	**tmp_copy;
 
 	tmp_envp = copy_envp(envp);
 	tmp = sort_envp(tmp_envp);
-	tmp_copy = tmp;
 	while (*tmp)
 	{
 		i = 0;
@@ -87,7 +85,6 @@ void	export_print(char **envp)
 		printf("\"\n");
 		tmp++;
 	}
-	ft_free_all(tmp_copy);
 	ft_free_all(tmp_envp);
 }
 
