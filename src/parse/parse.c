@@ -49,12 +49,12 @@ int	init_cmd_list(t_minishell *sh, char **split)
 		split++;
 		cur = cur->next;
 	}
-	cur = sh->cmd_list;
-	while (cur)
-	{
-		fprintf(stderr, "parse: %s\n", cur->content);
-		cur = cur->next;
-	}
+	// cur = sh->cmd_list;
+	// while (cur)
+	// {
+	// 	fprintf(stderr, "parse: %s\n", cur->content);
+	// 	cur = cur->next;
+	// }
 	return (0);
 }
 

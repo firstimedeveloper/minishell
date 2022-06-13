@@ -25,6 +25,7 @@ char	**create_argv(t_cmd *cmd, int len)
 	return (argv);
 }
 
+//양옆에 파이프가 있는지 확인하고 이 커멘드 뒤로의 argv 개수를 센다 . 
 void	get_arg_count(t_cmd *cmd)
 {
 	t_cmd	*next;

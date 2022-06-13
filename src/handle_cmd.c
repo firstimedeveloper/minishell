@@ -198,7 +198,7 @@ int	handle_cmd(t_minishell *sh)
 	cur = sh->cmd_list;
 	while (cur)
 	{
-		if (cur->type == TYPE_CMD)
+		if (cur->type == TYPE_CMD)	// 커맨드에 딸린 인자들을 커맨드 노드에 저장한다. 
 		{
 			get_arg_count(cur);
 			cur->argv = create_argv(cur, cur->arg_count);
@@ -213,7 +213,7 @@ int	handle_cmd(t_minishell *sh)
 		if (cur->type == TYPE_CMD)	// 지금 노드가 명령어면
 		{
 			path = find_path(cur->argv[0]);	// 명령어의 위치를 찾고
-			if (path == NULL)				//없으면 에러 메세지 ////////////////빌트인일 떄는?
+			if (path == NULL)				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
 				printf("errno: %d\n", errno);
 
 			// fprintf(stderr,"handle_cmd : cmd: %s prev_fds=[%d, %d]\n\n", cur->content, prev_fds[0], prev_fds[1]);
