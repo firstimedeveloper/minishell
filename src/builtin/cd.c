@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:06:40 by san               #+#    #+#             */
-/*   Updated: 2022/06/14 02:08:49 by san              ###   ########.fr       */
+/*   Updated: 2022/06/14 03:30:35 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	cd_no_argv(char **envp)
 	{
 		printf("minishell: cd: HOME not set\n");
 		g_e_status = 1;
-		free(home);
 		return (1);
 	}
 	else
@@ -42,6 +41,7 @@ int	cd_no_argv(char **envp)
 void	cmd_cd(t_minishell *sh, char **argv)
 {
 	char	path[MAX];
+	char	*str;
 
 	if (argv[1])
 	{
@@ -55,7 +55,9 @@ void	cmd_cd(t_minishell *sh, char **argv)
 	else
 		if (cd_no_argv(sh->envp) == 1)
 			return ;
-	ch_envp_with_name(&(sh->envp), "OLDPWD=", ft_getenv(sh->envp, "PWD"));
+	str = ft_getenv(sh->envp, "PWD");
+	ch_envp_with_name(&(sh->envp), "OLDPWD=", str);
 	getcwd(path, MAX);
 	ch_envp_with_name(&(sh->envp), "PWD=", path);
+	free(str);
 }

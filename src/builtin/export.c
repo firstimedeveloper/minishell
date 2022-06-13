@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:15:41 by san               #+#    #+#             */
-/*   Updated: 2022/06/14 02:24:08 by san              ###   ########.fr       */
+/*   Updated: 2022/06/14 03:29:59 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,13 @@ char	**sort_envp(char **envp)
 void	export_print(char **envp)
 {
 	int		i;
+	char	**tmp_envp;
 	char	**tmp;
+	char	**tmp_copy;
 
-	tmp = copy_envp(envp);
-	tmp = sort_envp(tmp);
+	tmp_envp = copy_envp(envp);
+	tmp = sort_envp(tmp_envp);
+	tmp_copy = tmp;
 	while (*tmp)
 	{
 		i = 0;
@@ -84,12 +87,13 @@ void	export_print(char **envp)
 		printf("\"\n");
 		tmp++;
 	}
-	free(tmp);
+	ft_free_all(tmp_copy);
+	ft_free_all(tmp_envp);
 }
 
 void	cmd_export(t_minishell *sh, char **av)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	g_e_status = 0;

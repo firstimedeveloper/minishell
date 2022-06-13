@@ -46,15 +46,18 @@ void	change_envp(char ***envp, char *str)
 	char	**ch_envp;
 	char	*s;
 	char	*e;
+	char	*temp;
 	int	i;
 
 	s = get_envp_name(str);
 	i = ft_envplen(*envp);
-	if (ft_getenv(*envp, s) == NULL)
+	temp = ft_getenv(*envp, s);
+	if (temp == NULL)
 		return ;
+	free(temp);
 	ch_envp = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!ch_envp)
-		exit (1);	
+		ft_exit(1);	
 	ch_envp[i] = NULL;
 	while (--i > -1)
 	{
@@ -65,6 +68,7 @@ void	change_envp(char ***envp, char *str)
 		free(e);
 	}
 	free(s);
+	ft_free_all(*envp);
 	*envp = ch_envp;
 }
 
