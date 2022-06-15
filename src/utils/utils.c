@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/15 18:15:36 by juhan             #+#    #+#             */
+/*   Updated: 2022/06/15 18:15:41 by juhan            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ch_strncmp(const char *s1, const char *s2, size_t n)
@@ -36,7 +48,7 @@ unsigned long long	ft_atoull(char *str)
 	unsigned long long	val;
 
 	val = 0;
-	while (*str && (*str  >= '0' && *str <= '9'))
+	while (*str && (*str >= '0' && *str <= '9'))
 	{
 		val *= 10;
 		val += *str - '0';
@@ -87,7 +99,7 @@ long long	ft_atoll(const char *str)
 		printf("bash: exit: %s: numeric argument required\n", str);
 		return (0);
 	}
-	while (*str && (*str  >= '0' && *str <= '9'))
+	while (*str && (*str >= '0' && *str <= '9'))
 	{
 		val = val * 10 + *str - '0';
 		str++;
