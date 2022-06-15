@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   envp_utils2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/15 18:15:36 by juhan             #+#    #+#             */
+/*   Updated: 2022/06/15 18:15:41 by juhan            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
 char	*get_envp_name(char *envp)
 {
 	char	*name;
-	int	len;
+	int		len;
 
 	len = 0;
 	while (envp[len] && envp[len] != '=')
@@ -46,20 +57,20 @@ char	*ft_getenv(char **envp, char *e)
 		return (NULL);
 	ft_free(name);
 	return (get_env_value(*envp));
-}		// 이 함수를 쓸 때 리턴받은 값을 프리해줘야한다. 
+}
 
-void	change_envp(char ***envp, char *str, char *env_name) 
+void	change_envp(char ***envp, char *str, char *env_name)
 {
 	char	**ch_envp;
 	char	*e;
-	int	i;
+	int		i;
 
 	if (str == NULL)
 		return ;
-	i = ft_envplen(*envp);	
+	i = ft_envplen(*envp);
 	ch_envp = malloc(sizeof(char *) * (i + 1));
 	if (!ch_envp)
-		ft_exit(errno);	
+		ft_exit(errno);
 	ch_envp[i] = NULL;
 	while (--i > -1)
 	{

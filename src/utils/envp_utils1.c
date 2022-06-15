@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   envp_utils1.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/15 18:15:36 by juhan             #+#    #+#             */
+/*   Updated: 2022/06/15 18:15:41 by juhan            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
 int	ft_envplen(char **envp)
@@ -39,7 +50,7 @@ int	check_argv_name(char *str, char *cmd)
 
 char	**copy_envp(char **envp)
 {
-	 char	**ret;
+	char	**ret;
 	int		count;
 	int		i;
 
