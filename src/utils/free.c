@@ -22,7 +22,7 @@ void	ft_free_double(char **ptr)
 		if (ptr[i])
 			free(ptr[i]);
 	}
-	ft_free(*ptr);
+	free(ptr);
 }
 
 void	ft_exit(int exit_code)
