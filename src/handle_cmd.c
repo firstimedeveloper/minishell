@@ -166,7 +166,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 		{
 			sh->pid = -1;
 			// fprintf(stderr,"parent builtin\n");
-			sh->out = dup(0);
+			sh->in = dup(0);
 			sh->out = dup(1);
 			if (cmd->is_left_pipe)
 			{
@@ -176,9 +176,9 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 				// ft_reset_fd(cmd->fds);
 				redirection(sh, cmd);
 				excecute_builtin(sh, cmd->argv, builtin_type);
-				dup2(sh->out, 0);
+				dup2(sh->in, 0);
 				dup2(sh->out, 1);
-				close(sh->out);
+				// close(sh->out);
 				return ;
 			}
 			redirection(sh, cmd);
