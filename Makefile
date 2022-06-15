@@ -20,8 +20,8 @@ BUILD_PATH=./build/
 READLINE_LIB	= -lreadline -L/opt/homebrew/opt/readline/lib
 READLINE_INC	= -I/opt/homebrew/opt/readline/include
 
-# READLINE_LIB = -lreadline -L/Users/juhan/.brew/opt/readline/lib
-# READLINE_INC = -I/Users/juhan/.brew/opt/readline/include
+# READLINE_LIB = -lreadline -L/Users/san/.brew/opt/readline/lib
+# READLINE_INC = -I/Users/san/.brew/opt/readline/include
 
 # primary
 FILE_NAMES+=minishell handle_line handle_cmd redirection signal \
