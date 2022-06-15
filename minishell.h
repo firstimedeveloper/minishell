@@ -103,6 +103,8 @@ void		init_argv(t_minishell *sh, t_cmd *cur);
 char		**create_argv(t_cmd *cmd, int len);
 void		get_arg_count(t_cmd *cmd);
 char		*handle_expansion(t_minishell *sh, char *str);
+void		append_and_increment(char *ret, char *str, int *i, int inc);
+void		set_flag_and_increment(int *flag, int *i);
 int			parse(t_minishell *sh, char *line);
 void		read_line(char **line_read);
 int			handle_cmd(t_minishell *sh);
