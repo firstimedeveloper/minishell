@@ -17,15 +17,20 @@ BUILD_PATH=./build/
 #READLINE_LIB 	= -lreadline -L/usr/local/opt/readline/lib
 #READLINE_INC	= -I/usr/local/opt/readline/includeBUILD_PATH=./build/
 
-# READLINE_LIB	= -lreadline -L/opt/homebrew/opt/readline/lib
-# READLINE_INC	= -I/opt/homebrew/opt/readline/include
+READLINE_LIB	= -lreadline -L/opt/homebrew/opt/readline/lib
+READLINE_INC	= -I/opt/homebrew/opt/readline/include
 
-READLINE_LIB = -lreadline -L/Users/juhan/.brew/opt/readline/lib 
-READLINE_INC = -I/Users/juhan/.brew/opt/readline/include 
+# READLINE_LIB = -lreadline -L/Users/juhan/.brew/opt/readline/lib
+# READLINE_INC = -I/Users/juhan/.brew/opt/readline/include
 
-FILE_NAMES=minishell handle_line parse/parse parse/init_argv handle_cmd lst_util1 lst_util2 utils envp_utils1 envp_utils2 signal \
-builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/pwd builtin/unset \
-execute redirection utils/stack_util1 parse/expansion free ft_error
+# primary
+FILE_NAMES+=minishell handle_line handle_cmd redirection signal \
+# builtin commands
+FILE_NAMES+=builtin/cd builtin/echo builtin/env builtin/exit builtin/export builtin/pwd builtin/unset \
+# parse
+FILE_NAMES+=parse/parse parse/init_argv parse/expansion1 parse/expansion2 \
+# utils
+FILE_NAMES+=utils/fd utils/free utils/ft_error utils/lst_util1 utils/lst_util2 utils/utils utils/envp_utils1 utils/envp_utils2
 
 SRC=$(addprefix $(SRC_PATH), $(addsuffix .c, $(FILE_NAMES)))
 OBJ=$(SRC:$(SRC_PATH)%.c=$(BUILD_PATH)%.o)
