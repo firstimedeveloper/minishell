@@ -34,12 +34,41 @@ void	handle_cmd_type(char *s, int is_head, int *type)
 		*type = TYPE_ARG;
 }
 
-void	init_cmd_list_while(t_minishell *sh, char *expanded_str, int is_head, char **split)
+// void	init_cmd_list_while(t_minishell *sh, char *expanded_str, int is_head, char **split)
+// {
+// 	int		type;
+// 	t_cmd	*cur;
+// 	t_cmd	*tmp;
+
+// 	while (*split)
+// 	{
+// 		if (cur->type == TYPE_PIPE)
+// 			is_head = 1;
+// 		else
+// 			is_head = 0;
+// 		expanded_str = handle_expansion(sh, *split);
+// 		handle_cmd_type(expanded_str, is_head, &type);
+// 		tmp = ft_lstnew(expanded_str, type, is_head, 0);
+// 		if (!tmp)
+// 			exit (1);
+// 		ft_lstadd_back(&sh->cmd_list, tmp);
+// 		split++;
+// 		cur = cur->next;
+// 	}
+// }
+
+int	init_cmd_list(t_minishell *sh, char **split)
 {
-	int		type;
 	t_cmd	*cur;
 	t_cmd	*tmp;
+	char	*expanded_str;
+	int		is_head;
+	int		type;
 
+	is_head = 1;
+	expanded_str = handle_expansion(sh, *split++);
+	cur = ft_lstnew(expanded_str, TYPE_CMD, is_head, 1);
+	sh->cmd_list = cur;
 	while (*split)
 	{
 		if (cur->type == TYPE_PIPE)
@@ -50,41 +79,11 @@ void	init_cmd_list_while(t_minishell *sh, char *expanded_str, int is_head, char 
 		handle_cmd_type(expanded_str, is_head, &type);
 		tmp = ft_lstnew(expanded_str, type, is_head, 0);
 		if (!tmp)
-			exit (1);
+			return (1);
 		ft_lstadd_back(&sh->cmd_list, tmp);
 		split++;
 		cur = cur->next;
 	}
-}
-
-int	init_cmd_list(t_minishell *sh, char **split)
-{
-	t_cmd	*cur;
-	// t_cmd	*tmp;
-	char	*expanded_str;
-	int		is_head;
-//	int		type;
-
-	is_head = 1;
-	expanded_str = handle_expansion(sh, *split++);
-	cur = ft_lstnew(expanded_str, TYPE_CMD, is_head, 1);
-	sh->cmd_list = cur;
-	// while (*split)
-	// {
-	// 	if (cur->type == TYPE_PIPE)
-	// 		is_head = 1;
-	// 	else
-	// 		is_head = 0;
-	// 	expanded_str = handle_expansion(sh, *split);
-	// 	handle_cmd_type(expanded_str, is_head, &type);
-	// 	tmp = ft_lstnew(expanded_str, type, is_head, 0);
-	// 	if (!tmp)
-	// 		return (1);
-	// 	ft_lstadd_back(&sh->cmd_list, tmp);
-	// 	split++;
-	// 	cur = cur->next;
-	// }
-	init_cmd_list_while(sh, expanded_str, is_head, split);
 	return (0);
 }
 

@@ -25,7 +25,7 @@ int	export_add(char ***envp, char *str)
 	new[--i] = ft_strdup(str);
 	while (--i > -1)
 		new[i] = ft_strdup((*envp)[i]);
-	// ft_free_all(*envp);
+	ft_free_all(*envp);
 	*envp = new;
 	return (0);
 }
@@ -103,12 +103,11 @@ void	cmd_export(t_minishell *sh, char **av)
 			env_name = get_envp_name(av[i]);
 			env_val = ft_getenv(sh->envp, env_name);
 			if (env_val)
-			{
-				if (av_have_eq(av[i]))
-					change_envp(&(sh->envp), av[i]);
-			}
+				change_envp(&(sh->envp), av_have_eq(av[i]), env_name);
 			else
 				export_add(&(sh->envp), av[i]);
+			free(env_val);
+			free(env_name);
 		}
 	}
 }

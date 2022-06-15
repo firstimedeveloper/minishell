@@ -17,9 +17,21 @@ char	*get_envp_name(char *envp)
 	return (name);
 }
 
-char	*ft_getenv(char **envp, char *e)
+char	*get_env_value(char *env)
 {
 	char	*value;
+	int		i;
+
+	i = 0;
+	while (env[i] != '=')
+		i++;
+	i++;
+	value = ft_strdup(&env[i]);
+	return (value);
+}
+
+char	*ft_getenv(char **envp, char *e)
+{
 	char	*name;
 
 	while (*envp)
@@ -33,41 +45,30 @@ char	*ft_getenv(char **envp, char *e)
 	if (!(*envp))
 		return (NULL);
 	ft_free(name);
-	name = *envp;
-	while (*name != '=')
-		name++;
-	name++;
-	value = ft_strdup(name);
-	return (value);
-}
+	return (get_env_value(*envp));
+}		// 이 함수를 쓸 때 리턴받은 값을 프리해줘야한다. 
 
-void	change_envp(char ***envp, char *str)
+void	change_envp(char ***envp, char *str, char *env_name) 
 {
 	char	**ch_envp;
-	char	*s;
 	char	*e;
-	char	*temp;
 	int	i;
 
-	s = get_envp_name(str);
-	i = ft_envplen(*envp);
-	temp = ft_getenv(*envp, s);
-	if (temp == NULL)
+	if (str == NULL)
 		return ;
-	free(temp);
-	ch_envp = (char **)malloc(sizeof(char *) * (i + 1));
+	i = ft_envplen(*envp);	
+	ch_envp = malloc(sizeof(char *) * (i + 1));
 	if (!ch_envp)
-		ft_exit(1);	
+		ft_exit(errno);	
 	ch_envp[i] = NULL;
 	while (--i > -1)
 	{
 		e = get_envp_name((*envp)[i]);
-		if (ft_strncmp(e, s, ft_strlen(e), ft_strlen(s)) == 0)
-			ch_envp[i--] = ft_strdup(str);
+		if (ft_strncmp(e, env_name, ft_strlen(e), ft_strlen(env_name)) == 0)
+			ch_envp[i--] = ft_strjoin(env_name, str);
 		ch_envp[i] = ft_strdup((*envp)[i]);
-		free(e);
+		ft_free(e);
 	}
-	free(s);
 	ft_free_all(*envp);
 	*envp = ch_envp;
 }
@@ -76,8 +77,8 @@ int	ch_envp_with_name(char ***envp, char *s1, char *s2)
 {
 	char	*str;
 
-	str = ft_strjoin(s1, s2);
-	change_envp(envp, str);
-	free(str);
+	str = ft_strjoin("=", s2);
+	change_envp(envp, str, s1);
+	ft_free(str);
 	return (0);
 }

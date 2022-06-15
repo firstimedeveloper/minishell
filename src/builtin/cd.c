@@ -40,7 +40,7 @@ int	cd_no_argv(char **envp)
 
 void	cmd_cd(t_minishell *sh, char **argv)
 {
-	char	path[MAX];
+	char	*path;
 	char	*str;
 
 	if (argv[1])
@@ -56,8 +56,9 @@ void	cmd_cd(t_minishell *sh, char **argv)
 		if (cd_no_argv(sh->envp) == 1)
 			return ;
 	str = ft_getenv(sh->envp, "PWD");
-	ch_envp_with_name(&(sh->envp), "OLDPWD=", str);
-	getcwd(path, MAX);
-	ch_envp_with_name(&(sh->envp), "PWD=", path);
+	ch_envp_with_name(&(sh->envp), "OLDPWD", str);
+	path = getcwd(NULL, 0);
+	ch_envp_with_name(&(sh->envp), "PWD", path);
 	free(str);
+	free(path);
 }

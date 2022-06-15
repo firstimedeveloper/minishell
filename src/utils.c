@@ -20,15 +20,15 @@ int	ch_strncmp(const char *s1, const char *s2, size_t n)
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-int	av_have_eq(char *argv)
+char	*av_have_eq(char *argv)
 {
 	while (*argv)
 	{
 		if (*argv == '=')
-			return (1);
+			return (argv);
 		argv++;
 	}
-	return (0);
+	return (NULL);
 }
 
 unsigned long long	ft_atoull(char *str)

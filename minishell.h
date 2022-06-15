@@ -136,8 +136,7 @@ int			ft_lstsize(t_cmd *lst);
 */
 int			ch_strncmp(const char *s1, const char *s2, size_t n);
 void		ft_free_double(char **ptr);
-int			av_have_eq(char *argv);
-int			av_have_eq(char *argv);
+char		*av_have_eq(char *argv);
 long long	ft_atoll(const char *str);
 
 /*
@@ -148,7 +147,7 @@ int			check_argv_name(char *str, char *cmd);
 char		**copy_envp(char **envp);
 char		*get_envp_name(char *envp);
 char		*ft_getenv(char **envp, char *envp_name);
-void		change_envp(char ***envp, char *str);
+void		change_envp(char ***envp, char *str, char *env_name);
 int			ch_envp_with_name(char ***envp, char *s1, char *s2);
 
 /*
