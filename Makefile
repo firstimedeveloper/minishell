@@ -45,7 +45,7 @@ $(NAME): $(OBJ) $(LIB_PATH)/libft.a
 $(LIB_PATH)/libft.a:
 	make -C libft
 
-$(BUILD_PATH)%.o : $(SRC_PATH)%.c
+$(BUILD_PATH)%.o : $(SRC_PATH)%.c | $(BUILD_PATH)
 	$(CC) -I. $(READLINE_INC) -c $< -o $@
 
 clean :

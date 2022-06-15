@@ -6,4 +6,5 @@ test*.c
 test*
 text
 text
+.DS_Store
 .vscode
