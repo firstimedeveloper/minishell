@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 18:15:36 by juhan             #+#    #+#             */
-/*   Updated: 2022/06/15 18:15:41 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/16 13:14:22 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_free_double(char **ptr)
 		if (ptr[i])
 			free(ptr[i]);
 	}
-	ft_free(*ptr);
+	free(ptr);
 }
 
 void	ft_exit(int exit_code)
@@ -46,7 +46,6 @@ void	ft_free_cmd_lst(t_minishell *sh)
 	while (cur)
 	{
 		next = cur->next;
-		fprintf(stderr, "program:\tfreeing %s\n", cur->content);
 		free(cur->content);
 		if (cur->argv)
 			free(cur->argv);

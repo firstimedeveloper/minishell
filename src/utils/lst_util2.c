@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 18:15:36 by juhan             #+#    #+#             */
-/*   Updated: 2022/06/15 18:15:41 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/16 13:08:14 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,6 @@ t_cmd	*ft_lstlast(t_cmd *lst)
 	return (lst);
 }
 
-// t_cmd	*ft_lstmap(t_cmd *lst, void *(*f)(void *), void (*del)(void *))
-// {
-// 	t_cmd	*new_lst;
-// 	t_cmd	*temp;
-
-// 	new_lst = 0;
-// 	while (lst)
-// 	{
-// 		temp = ft_lstnew(f(lst->content));
-// 		if (!temp)
-// 		{
-// 			ft_lstclear(&new_lst, del);
-// 			return (0);
-// 		}
-// 		ft_lstadd_back(&new_lst, temp);
-// 		lst = lst->next;
-// 	}
-// 	return (new_lst);
-// }
-
 t_cmd	*ft_lstnew(void *content, int type, int is_head, int is_first)
 {
 	t_cmd	*ret;
@@ -49,6 +29,7 @@ t_cmd	*ft_lstnew(void *content, int type, int is_head, int is_first)
 	ret->content = content;
 	ret->arg_count = 0;
 	ret->argv = NULL;
+	ret->path = NULL;
 	ret->type = type;
 	ret->is_head = is_head;
 	ret->is_left_pipe = 0;

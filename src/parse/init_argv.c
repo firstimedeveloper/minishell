@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_argv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 03:13:24 by san               #+#    #+#             */
-/*   Updated: 2022/06/14 03:13:26 by san              ###   ########.fr       */
+/*   Updated: 2022/06/16 13:10:53 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,15 @@ void	get_arg_count(t_cmd *cmd)
 
 void	init_argv(t_minishell *sh, t_cmd *cur)
 {
-	cur = sh->cmd_list;
-	while (cur)
+	// fprintf(stderr, "program:\thello\n");
+	if (!is_builtin(cur, cur->content))
+		cur->path = find_path(sh->envp, cur->content);	// 명령어의 위치를 찾고
+
+	if (cur->path != NULL || is_builtin(cur, cur->content))				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
 	{
-		if (cur->type == TYPE_CMD)
-		{
-			get_arg_count(cur);
-			cur->argv = create_argv(cur, cur->arg_count);
-			if (!cur->argv)
-				ft_exit(ERR_MALLOC);
-		}
-		cur = cur->next;
+		get_arg_count(cur);
+		cur->argv = create_argv(cur, cur->arg_count);
+		if (!cur->argv)
+			ft_exit(ERR_MALLOC);
 	}
 }
