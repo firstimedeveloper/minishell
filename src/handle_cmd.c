@@ -109,11 +109,12 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 		// if (cmd->is_left_pipe && !(builtin_type && cmd->is_first))
 		{
 			// fprintf(stderr,"child %d: cmd: %s cmd_fds=[%d, %d]\n", pid, cmd->argv[0], cmd->fds[0], cmd->fds[1]);
-			//ft_close(cmd->fds[0]);		// 파이프 다음으로 올 명령어가 인풋( 파이프의 출력)을 받아야하므로 fds를 살려둔다.
 			if (!(builtin_type && cmd->is_first))
 			{
 				dup2(cmd->fds[1], 1);	// cmd가 처음오는 builtin 명령어가 아니라면 stdout이 파이프로 가도록 dup2
 			}
+			// ft_close(cmd->fds[0]);		// 파이프 다음으로 올 명령어가 인풋( 파이프의 출력)을 받아야하므로 fds를 살려둔다.
+			// ft_close(cmd->fds[1]);		// 파이프 다음으로 올 명령어가 인풋( 파이프의 출력)을 받아야하므로 fds를 살려둔다.
 			// fprintf(stderr, "%s child dup22\n", cmd->content);
 
 				// output에 다한 fds를 앞으로 쓸일이 없으므로 close
@@ -195,46 +196,32 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 int	handle_cmd(t_minishell *sh)
 {
 	t_cmd	*cur;
-	char	*path;
 	int		prev_fds[2];
 
 	ft_reset_fd(prev_fds);
 	cur = sh->cmd_list;	//다시 처음으로 돌아가서
-	path = NULL;
 	while (cur)
 	{
 		if (cur->type == TYPE_CMD)	// 지금 노드가 명령어면
 		{
-			fprintf(stderr, "program:\thello\n");
-			if (!is_builtin(cur, cur->content))
-				path = find_path(sh->envp, cur->content);	// 명령어의 위치를 찾고
-			if (path != NULL || is_builtin(cur, cur->content))				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
-				init_argv(sh, cur);
-			fprintf(stderr, "program:\thello%s\n", path);
-			excecute_cmd(sh, cur, prev_fds, path);	// 명령어 수행하는 데로 간다.
-
-			// 명령어 수행하고 나서
+			init_argv(sh, cur);
+			excecute_cmd(sh, cur, prev_fds, cur->path);	// 명령어 수행하는 데로 간다.
 			if (cur->is_left_pipe)			// 명령어 기준 오른쪽에 파이프 있으면
 			{
 				prev_fds[0] = cur->fds[0];	// prev fds 에 현재 cmd의 오른쪽 에 있는 파이프 fds값을 저장한다.
 				prev_fds[1] = cur->fds[1];
-				// fprintf(stderr,"parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
 			}
 			else if (!cur->is_left_pipe)
 			{
-				//fprintf(stderr, parent %d: cmd: %s cur_fds=[%d, %d]\n", 0, cur->argv[0], cur->fds[0], cur->fds[1]);
 				ft_close(cur->fds[0]);
 				ft_close(cur->fds[1]);
 				ft_reset_fd(cur->fds);
 			}
 			
-			ft_free(path);
+			if (!is_builtin(cur, cur->content))
+				ft_free(cur->path);
 		}
 		cur = cur->next;
 	}
-	//fprintf(stderr,"parent %d: cmd: %s prev_fds=[%d, %d]\n", 0, cur->argv[0], prev_fds[0], prev_fds[1]);
-	ft_close(prev_fds[0]);
-	ft_close(prev_fds[1]);
-	ft_reset_fd(prev_fds);
 	return (0);
 }

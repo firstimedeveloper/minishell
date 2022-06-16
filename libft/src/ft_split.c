@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 16:44:04 by juhan             #+#    #+#             */
-/*   Updated: 2022/06/14 02:08:42 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/16 13:10:50 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	**ft_free_all(char **arr)
 		{
 			if (arr[i])
 			{
-				fprintf(stderr, "program:\t(split) freeing %s\n", arr[i]);
+				// fprintf(stderr, "program:\t(split) freeing %s\n", arr[i]);
 				free(arr[i]);
 			}
 			i++;

@@ -6,7 +6,7 @@
 #    By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/15 15:47:16 by juhan             #+#    #+#              #
-#    Updated: 2022/06/13 15:35:55 by juhan            ###   ########.fr        #
+#    Updated: 2022/06/16 12:05:19 by juhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,11 @@ BUILD_PATH=./build/
 #READLINE_LIB 	= -lreadline -L/usr/local/opt/readline/lib
 #READLINE_INC	= -I/usr/local/opt/readline/includeBUILD_PATH=./build/
 
-READLINE_LIB	= -lreadline -L/opt/homebrew/opt/readline/lib
-READLINE_INC	= -I/opt/homebrew/opt/readline/include
+# READLINE_LIB	= -lreadline -L/opt/homebrew/opt/readline/lib
+# READLINE_INC	= -I/opt/homebrew/opt/readline/include
 
-# READLINE_LIB = -lreadline -L/Users/san/.brew/opt/readline/lib
-# READLINE_INC = -I/Users/san/.brew/opt/readline/include
+READLINE_LIB = -lreadline -L/Users/juhan/.brew/opt/readline/lib
+READLINE_INC = -I/Users/juhan/.brew/opt/readline/include
 
 # primary
 FILE_NAMES+=minishell handle_line handle_cmd redirection signal \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 04:08:20 by san               #+#    #+#             */
-/*   Updated: 2022/06/14 04:08:23 by san              ###   ########.fr       */
+/*   Updated: 2022/06/16 13:05:53 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_cmd
 	int				is_right_pipe;
 	int				arg_count;
 	char			*content;
+	char			*path;
 	char			**argv;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
@@ -108,6 +109,8 @@ void		set_flag_and_increment(int *flag, int *i);
 int			parse(t_minishell *sh, char *line);
 void		read_line(char **line_read);
 int			handle_cmd(t_minishell *sh);
+char		*find_path(char **envp, char *command);
+int			is_builtin(t_cmd *cmd, char *content);
 
 /*
 *	builtin functions
