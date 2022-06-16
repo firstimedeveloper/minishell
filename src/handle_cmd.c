@@ -65,6 +65,8 @@ char	*find_path(char **envp, char *command)
 	if (stat(command, &s) == 0)
 		return (ft_strdup(command));
 	path = ft_getenv(envp, "PATH");
+	if (!path)
+		return (NULL);
 	paths = ft_split(path, ':');
 	free(path);
 	paths_cpy = paths;
@@ -138,6 +140,7 @@ void	excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prev_fds, char *path)
 			redirection(sh, cmd);
 			// fprintf(stderr, "%s after redirection\n", cmd->content);
 
+			fprintf(stderr, "program\t\t%s\n", path);
 			if (path == NULL)
 			{
 				ft_error(cmd->content, NULL, "command not found", ERR_CMD_NOT_FOUND);
