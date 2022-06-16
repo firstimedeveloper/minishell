@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 14:48:43 by juhan             #+#    #+#             */
-/*   Updated: 2021/05/17 19:10:48 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/16 16:43:50 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*ft_strdirjoin(char const *s1, char const *s2)
 	ret[i] = '\0';
 	return (ret);
 }
-
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

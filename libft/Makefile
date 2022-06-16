@@ -32,6 +32,7 @@ FILE_NAMES=memset \
 	strjoin \
 	strtrim \
 	split \
+	split2 \
 	itoa \
 	strmapi \
 	putchar_fd \
