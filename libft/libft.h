@@ -6,7 +6,7 @@
 /*   By: juhan <juhan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 20:47:06 by juhan             #+#    #+#             */
-/*   Updated: 2022/06/14 00:36:21 by juhan            ###   ########.fr       */
+/*   Updated: 2022/06/16 18:44:11 by juhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strnstr(const char *haystack, const char *needle, \
 		size_t len);
-int					ft_strncmp(const char *s1, const char *s2, size_t n1, size_t n2);
+int					ft_strncmp(const char *s1, const char *s2, size_t n1, \
+		size_t n2);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
 char				*ft_strldup(const char *s1, size_t len);
