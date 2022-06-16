@@ -72,9 +72,12 @@ void	redirection_append(t_cmd *cmd, t_cmd *redir)
 
 void	redirection_heredoc(t_minishell *sh, t_cmd *cmd, t_cmd *redir)
 {
-	char	*end;
-	int		temp_fd;
+	char		*end;
+	int			temp_fd;
+	struct stat	s;
 
+	if (stat("heredoc_tempfile", &s) == 0)
+		unlink("heredoc_tempfile");
 	end = redir->next->content;
 	open_for_heredoc(sh, cmd, end);
 	if (cmd->is_left_pipe)

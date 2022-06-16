@@ -37,7 +37,6 @@ void	read_line_heredoc(char **line_read)
 	*line_read = readline("> ");
 	if (*line_read == NULL)
 	{
-		//입력받은거 출력하기 
 		free(*line_read);
 		exit(0);
 	}
