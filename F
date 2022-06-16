@@ -1,0 +1,52 @@
+total 208
+drwxr-xr-x  12 san  2021_seoul    408 Jun 16 14:18 .
+drwxr-xr-x   7 san  2021_seoul    238 Jun 15 16:25 ..
+drwxr-xr-x  15 san  2021_seoul    510 Jun 16 14:03 .git
+-rw-r--r--   1 san  2021_seoul     72 Jun 15 18:32 .gitignore
+-rw-r--r--   1 san  2021_seoul      0 Jun 16 14:18 F
+-rw-r--r--   1 san  2021_seoul   2273 Jun 16 14:04 Makefile
+-rw-r--r--   1 san  2021_seoul     44 Jun 13 19:11 README.md
+drwxr-xr-x  19 san  2021_seoul    646 Jun 16 14:17 build
+drwxr-xr-x   7 san  2021_seoul    238 Jun 16 14:17 libft
+-rwxr-xr-x   1 san  2021_seoul  85520 Jun 16 14:17 minishell
+-rw-r--r--   1 san  2021_seoul   4880 Jun 16 13:59 minishell.h
+drwxr-xr-x  10 san  2021_seoul    340 Jun 16 14:03 src
+total 216
+drwxr-xr-x  12 san  2021_seoul    408 Jun 16 14:18 .
+drwxr-xr-x   7 san  2021_seoul    238 Jun 15 16:25 ..
+drwxr-xr-x  15 san  2021_seoul    510 Jun 16 14:03 .git
+-rw-r--r--   1 san  2021_seoul     72 Jun 15 18:32 .gitignore
+-rw-r--r--   1 san  2021_seoul    702 Jun 16 14:18 F
+-rw-r--r--   1 san  2021_seoul   2273 Jun 16 14:04 Makefile
+-rw-r--r--   1 san  2021_seoul     44 Jun 13 19:11 README.md
+drwxr-xr-x  19 san  2021_seoul    646 Jun 16 14:17 build
+drwxr-xr-x   7 san  2021_seoul    238 Jun 16 14:17 libft
+-rwxr-xr-x   1 san  2021_seoul  85520 Jun 16 14:17 minishell
+-rw-r--r--   1 san  2021_seoul   4880 Jun 16 13:59 minishell.h
+drwxr-xr-x  10 san  2021_seoul    340 Jun 16 14:03 src
+total 216
+drwxr-xr-x  12 san  2021_seoul    408 Jun 16 14:18 .
+drwxr-xr-x   7 san  2021_seoul    238 Jun 15 16:25 ..
+drwxr-xr-x  15 san  2021_seoul    510 Jun 16 14:03 .git
+-rw-r--r--   1 san  2021_seoul     72 Jun 15 18:32 .gitignore
+-rw-r--r--   1 san  2021_seoul   1404 Jun 16 14:18 F
+-rw-r--r--   1 san  2021_seoul   2273 Jun 16 14:04 Makefile
+-rw-r--r--   1 san  2021_seoul     44 Jun 13 19:11 README.md
+drwxr-xr-x  19 san  2021_seoul    646 Jun 16 14:17 build
+drwxr-xr-x   7 san  2021_seoul    238 Jun 16 14:17 libft
+-rwxr-xr-x   1 san  2021_seoul  85520 Jun 16 14:17 minishell
+-rw-r--r--   1 san  2021_seoul   4880 Jun 16 13:59 minishell.h
+drwxr-xr-x  10 san  2021_seoul    340 Jun 16 14:03 src
+total 216
+drwxr-xr-x  12 san  2021_seoul    408 Jun 16 14:18 .
+drwxr-xr-x   7 san  2021_seoul    238 Jun 15 16:25 ..
+drwxr-xr-x  15 san  2021_seoul    510 Jun 16 14:03 .git
+-rw-r--r--   1 san  2021_seoul     72 Jun 15 18:32 .gitignore
+-rw-r--r--   1 san  2021_seoul   2106 Jun 16 14:19 F
+-rw-r--r--   1 san  2021_seoul   2273 Jun 16 14:04 Makefile
+-rw-r--r--   1 san  2021_seoul     44 Jun 13 19:11 README.md
+drwxr-xr-x  19 san  2021_seoul    646 Jun 16 14:17 build
+drwxr-xr-x   7 san  2021_seoul    238 Jun 16 14:17 libft
+-rwxr-xr-x   1 san  2021_seoul  85520 Jun 16 14:17 minishell
+-rw-r--r--   1 san  2021_seoul   4880 Jun 16 13:59 minishell.h
+drwxr-xr-x  10 san  2021_seoul    340 Jun 16 14:03 src

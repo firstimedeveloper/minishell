@@ -108,9 +108,13 @@ void		append_and_increment(char *ret, char *str, int *i, int inc);
 void		set_flag_and_increment(int *flag, int *i);
 int			parse(t_minishell *sh, char *line);
 void		read_line(char **line_read);
+
 int			handle_cmd(t_minishell *sh);
 char		*find_path(char **envp, char *command);
-int			is_builtin(t_cmd *cmd, char *content);
+int			is_builtin(char *content);
+
+void		excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prefds, char *path);
+
 
 /*
 *	builtin functions
@@ -180,10 +184,13 @@ ft_error.c
 void		ft_error(char *command, char *argv, char *err_msg, int err_code);
 void		ft_error_2(char *command, char *argv, int err_code);
 void		ft_error_redir(char *err_msg, int err_code, int fd);
+void		ft_err_hdoc(char *errmsg, int errcode, int fd, char *name);
 void		ft_error_open(char *err_msg, int err_code);
+
 
 void		ft_reset_fd(int *fd);
 void		ft_close(int fd);
-void		read_line_heredoc(char **line_read);
+void		read_line_heredoc_continue(char *end, int temp_fd);
+void		open_for_heredoc(t_minishell *sh, t_cmd *cmd, char *end);
 
 #endif
