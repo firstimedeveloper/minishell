@@ -82,11 +82,24 @@ void	export_print(char **envp)
 	ft_free_all(tmp_envp);
 }
 
+void	cmd_export_change_envplist(t_minishell *sh, char *av)
+{
+	char	*env_val;
+	char	*env_name;
+
+	env_name = get_envp_name(av);
+	env_val = ft_getenv(sh->envp, env_name);
+	if (env_val)
+		change_envp(&(sh->envp), av_have_eq(av), env_name);
+	else
+		export_add(&(sh->envp), av);
+	free(env_val);
+	free(env_name);
+}
+
 void	cmd_export(t_minishell *sh, char **av)
 {
 	int		i;
-	char	*env_val;
-	char	*env_name;
 
 	i = 0;
 	g_e_status = 0;
@@ -100,14 +113,7 @@ void	cmd_export(t_minishell *sh, char **av)
 		{
 			if (check_argv_name(av[i], av[0]) != 0)
 				continue ;
-			env_name = get_envp_name(av[i]);
-			env_val = ft_getenv(sh->envp, env_name);
-			if (env_val)
-				change_envp(&(sh->envp), av_have_eq(av[i]), env_name);
-			else
-				export_add(&(sh->envp), av[i]);
-			free(env_val);
-			free(env_name);
+			cmd_export_change_envplist(sh, av[i]);
 		}
 	}
 }

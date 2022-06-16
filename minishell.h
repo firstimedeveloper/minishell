@@ -22,7 +22,7 @@
 # include <signal.h>
 # include <errno.h>
 # include <sys/wait.h>
-# include <fcntl.h> // open
+# include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 
@@ -107,14 +107,15 @@ char		*handle_expansion(t_minishell *sh, char *str);
 void		append_and_increment(char *ret, char *str, int *i, int inc);
 void		set_flag_and_increment(int *flag, int *i);
 int			parse(t_minishell *sh, char *line);
-void		read_line(char **line_read);
 
+/*
+*	readline & execute
+*/
+void		read_line(char **line_read);
 int			handle_cmd(t_minishell *sh);
 char		*find_path(char **envp, char *command);
 int			is_builtin(char *content);
-
 void		excecute_cmd(t_minishell *sh, t_cmd *cmd, int *prefds, char *path);
-
 
 /*
 *	builtin functions
@@ -128,7 +129,7 @@ void		cmd_pwd(void);
 void		cmd_unset(t_minishell *sh, char **argv);
 
 /*
-* list util functions
+*	list util functions
 */
 void		ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void		ft_lstadd_front(t_cmd **lst, t_cmd *new);
@@ -160,18 +161,20 @@ void		change_envp(char ***envp, char *str, char *env_name);
 int			ch_envp_with_name(char ***envp, char *s1, char *s2);
 
 /*
-* signal.c
+*	signal.c
 */
 void		ft_signal_handler(int signo);
 
 /*
-redirection
- */
+*	redirection
+*/
 t_cmd		*redirection(t_minishell *sh, t_cmd *cmd);
+void		read_line_heredoc_continue(char *end, int temp_fd);
+void		open_for_heredoc(t_minishell *sh, t_cmd *cmd, char *end);
 
 /*
-free.c
- */
+*	free.c
+*/
 void		ft_free(char *str);
 void		ft_free_double(char **ptr);
 void		ft_free_cmd_list(t_minishell *sh);
@@ -179,18 +182,18 @@ void		ft_exit(int exit_code);
 void		ft_free_cmd_lst(t_minishell *sh);
 
 /*
-ft_error.c
- */
+*	ft_error.c
+*/
 void		ft_error(char *command, char *argv, char *err_msg, int err_code);
 void		ft_error_2(char *command, char *argv, int err_code);
 void		ft_error_redir(char *err_msg, int err_code, int fd);
 void		ft_err_hdoc(char *errmsg, int errcode, int fd, char *name);
 void		ft_error_open(char *err_msg, int err_code);
 
-
+/*
+*	fd.c
+*/
 void		ft_reset_fd(int *fd);
 void		ft_close(int fd);
-void		read_line_heredoc_continue(char *end, int temp_fd);
-void		open_for_heredoc(t_minishell *sh, t_cmd *cmd, char *end);
 
 #endif

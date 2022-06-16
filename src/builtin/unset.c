@@ -29,7 +29,7 @@ int	unset_del(char ***envp, char *str)
 	{
 		temp = get_envp_name((*envp)[j]);
 		if (ch_strncmp(str, temp,
-			ft_strlen(temp)) == 0)
+				ft_strlen(temp)) == 0)
 			j--;
 		new[i] = ft_strdup((*envp)[j]);
 		j--;
