@@ -66,10 +66,10 @@ void	get_arg_count(t_cmd *cmd)
 void	init_argv(t_minishell *sh, t_cmd *cur)
 {
 	// fprintf(stderr, "program:\thello\n");
-	if (!is_builtin(cur, cur->content))
+	if (!is_builtin(cur->content))
 		cur->path = find_path(sh->envp, cur->content);	// 명령어의 위치를 찾고
 
-	if (cur->path != NULL || is_builtin(cur, cur->content))				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
+	if (cur->path != NULL || is_builtin(cur->content))				//없으면 에러 메세지 ////////////////빌트인일 떄는? 이거 꼭 있어야  하는 코드인지 
 	{
 		get_arg_count(cur);
 		cur->argv = create_argv(cur, cur->arg_count);

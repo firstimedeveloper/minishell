@@ -27,6 +27,12 @@ void	ft_error_2(char *command, char *argv, int err_code)
 	g_e_status = err_code;
 }
 
+void	ft_error_open(char *err_msg, int err_code)
+{
+	printf("minishell: %s\n", err_msg);
+	g_e_status = err_code;
+}
+
 void	ft_error_redir(char *err_msg, int err_code, int fd)
 {
 	printf("minishell: %s\n", err_msg);
@@ -35,8 +41,15 @@ void	ft_error_redir(char *err_msg, int err_code, int fd)
 	g_e_status = err_code;
 }
 
-void	ft_error_open(char *err_msg, int err_code)
+void	ft_err_hdoc(char *err_msg, int err_code, int fd, char *file_name)
 {
+	int	unlink_fd;
+
 	printf("minishell: %s\n", err_msg);
+	ft_close(fd);
+	fd = -1;
 	g_e_status = err_code;
+	unlink_fd = unlink(file_name);
+	if (unlink_fd == -1)
+		printf("minishell: %s\n", strerror(errno));
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/16 15:57:43 by san               #+#    #+#             */
+/*   Updated: 2022/06/16 15:57:46 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	handle_sigint(pid_t pid)
@@ -10,7 +22,7 @@ void	handle_sigint(pid_t pid)
 		rl_redisplay();
 		g_e_status = 1;
 	}
-	else					//자식 프로세스가 구동 중
+	else
 	{
 		printf("\n");
 		g_e_status = 130;
@@ -19,7 +31,7 @@ void	handle_sigint(pid_t pid)
 
 void	handle_sigquit(pid_t pid)
 {
-	if (pid != -1)			//자식 프로세스가 구동 중
+	if (pid != -1)
 	{
 		printf("Quit: 3\n");
 		rl_replace_line("", 1);
@@ -32,10 +44,9 @@ void	handle_sigquit(pid_t pid)
 void	ft_signal_handler(int signo)
 {
 	pid_t	pid;
-	int	status;
+	int		status;
 
-	pid = waitpid(-1, &status, WNOHANG);	//-1이 아닌 값을 반환하면 자식이 구동중인거, 아니면 -1을 반환
-//	printf("pid : %d\n", pid);
+	pid = waitpid(-1, &status, WNOHANG);
 	if (signo == SIGINT)
 		handle_sigint(pid);
 	else if (signo == SIGQUIT)
