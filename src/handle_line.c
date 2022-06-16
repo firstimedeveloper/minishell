@@ -55,7 +55,10 @@ void	read_line_heredoc_continue(char *end, int temp_fd)
 			free(line);
 		}
 		else
+		{
+			free(line);
 			break ;
+		}
 	}	
 }
 

@@ -30,8 +30,8 @@ void	redirection_input(t_cmd *cmd, t_cmd *redir)
 	{
 		cmd->redir_in = temp_fd;
 		dup2(cmd->redir_in, 0);
-		ft_close(cmd->redir_in);
 	}
+	ft_close(cmd->redir_in);
 	cmd->redir_in = -1;
 }
 
@@ -86,10 +86,8 @@ void	redirection_heredoc(t_minishell *sh, t_cmd *cmd, t_cmd *redir)
 	if (cmd->is_left_pipe)
 		dup2(cmd->fds[1], 1);
 	if (!is_builtin(cmd->content))
-	{
 		dup2(cmd->redir_in, 0);
-		ft_close(cmd->redir_in);
-	}
+	ft_close(cmd->redir_in);
 	cmd->redir_in = -1;
 	temp_fd = unlink("heredoc_tempfile");
 	if (temp_fd == -1)
