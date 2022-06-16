@@ -28,7 +28,7 @@ void	read_line(char **line_read)
 		printf("\033[11C");
 		printf("exit\n");
 		free(*line_read);
-		exit(0);
+		exit(127);
 	}
 }
 

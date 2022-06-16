@@ -55,7 +55,10 @@ void	cmd_exit(char **argv)
 		if (!valid_exit_argv(argv[1]))
 			valid_exit_argv_num(argv);
 		else
+		{
 			ft_error(argv[0], argv[1], "numeric argument required", 255);
+			exit(255);
+		}
 	}
 	else
 		exit(0);

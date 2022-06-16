@@ -96,7 +96,7 @@ long long	ft_atoll(const char *str)
 	}
 	if (overflow_exit((char *)str, neg) == 1)
 	{
-		printf("bash: exit: %s: numeric argument required\n", str);
+		printf("minishell: exit: %s: numeric argument required\n", str);
 		return (0);
 	}
 	while (*str && (*str >= '0' && *str <= '9'))
